@@ -9,30 +9,41 @@ alignedWith:
 provider: Deluxe Corporation
 providerId: deluxe
 publisherName: Deluxe Corporation
-serviceCategory: API
+serviceCategory: Payments / Treasury / Business Services
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
+notes: Deluxe is a multi-product business-services provider (payments, payroll/HR, treasury, marketing/data,
+  check services). FinOps shape is mixed take-rate (payments), per-item (check / lockbox / ACH), and SaaS
+  subscription (payroll, HR, promo). Reconcile per merchant agreement when available.
 tags:
   - Payments
-  - Data Analytics
-  - Marketing
+  - Payroll
+  - Merchant Services
+  - Treasury
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Deluxe Corporation API surface. Provides a FOCUS-aligned
-  mapping for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+description: 'FOCUS-aligned FinOps for Deluxe Corporation services: take-rate plus per-item plus subscription
+  blend across payments, treasury, payroll/HR, and marketing/data product lines. No public per-call API
+  fees; cost is driven by underlying merchant or SaaS contract.'
+sources:
+  - https://www.deluxe.com/payments/
+  - https://developer.deluxe.com/
 principles:
   - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
+    description: Track Deluxe Payment Exchange transaction volume via merchant statements; reconcile per-item
+      counts (check / lockbox / ACH) against monthly invoices; track SaaS seat counts in payroll / HR
+      portals.
   - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
+    description: Allocate take-rate fees by merchant and product line; allocate per-item fees by department
+      processing the items; allocate SaaS seats by HR cost-center mapping.
   - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
+    description: Tune interchange optimization (Level 2 / Level 3 data) on B2B card transactions, batch
+      ACH origination to minimize per-file fees, prune unused payroll seats, and consolidate check / lockbox
+      volumes.
   - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
+    description: Treasury owns merchant statements; HR owns payroll subscription costs; marketing owns
+      promotional / data subscriptions. Route invoice anomalies through Deluxe account team.
 domains:
   - name: Understand Usage and Cost
     capabilities:
@@ -49,20 +60,16 @@ domains:
       - Unit Economics
   - name: Optimize Usage and Cost
     capabilities:
-      - Architecting for Cloud
       - Rate Optimization
       - Workload Optimization
-      - Cloud Sustainability
       - Licensing and SaaS
   - name: Manage the FinOps Practice
     capabilities:
       - FinOps Practice Operations
-      - FinOps Education and Enablement
       - Invoicing and Chargeback
       - Onboarding Workloads
-      - Intersecting Disciplines
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Take Rate + Per-Item + Subscription
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
@@ -73,57 +80,70 @@ billingModel:
     - Adjustment
   chargeFrequency: Recurring
 focusColumns:
-  ServiceName: Deluxe Corporation
-  ServiceCategory: Developer Tools / API
+  ServiceName: Deluxe Corporation API
+  ServiceCategory: Payments / Treasury / Business Services
   ProviderName: Deluxe Corporation
   PublisherName: Deluxe Corporation
   InvoiceIssuerName: Deluxe Corporation
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  PricingCategory: Mixed (Take Rate + Per-Item + Subscription)
+  PricingUnit: varies
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: card_transactions
+    description: Card payment transactions processed via Deluxe Payment Exchange
+    unit: transaction
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
-      - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+      - merchant
+      - card_brand
+      - present
+  - name: ach_originations
+    description: ACH origination transactions
+    unit: transaction
     aggregation: sum
     dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
+      - merchant
+      - sec_code
+  - name: check_items
+    description: Printed checks, lockbox items, or remittance items processed
+    unit: item
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
+      - merchant
+      - product
+  - name: payroll_seats
+    description: Payroll / HR module seats
+    unit: seat
+    aggregation: max
+    dimensions:
+      - subscription
+  - name: subscription_fee
+    description: Monthly subscription fees for SaaS modules
+    unit: month
+    aggregation: sum
+    dimensions:
+      - subscription
+      - product
 apis:
   - name: Deluxe Corporation API
     baseURL: https://api.deluxe.com
     tags:
       - Payments
-      - Data Analytics
+      - Payroll
+      - Treasury
       - Marketing
     serviceName: Deluxe Corporation API
     serviceCategory: API
 unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
+  - name: Effective Take Rate
+    metric: payments_revenue / payments_volume
     target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
+  - name: Cost per Item Processed
+    metric: per_item_cost / items_processed
+    target: TBD
+  - name: Cost per Payroll Seat
+    metric: payroll_subscription_cost / payroll_seats
     target: TBD
 maintainers:
   - FN: Kin Lane
