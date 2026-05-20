@@ -28,6 +28,8 @@ apis:
     description: >-
       The Deluxe Corporation API provides access to platform services and data for enterprise integration and automation.
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/deluxe
   - type: Website
     url: https://www.deluxe.com
 maintainers:
