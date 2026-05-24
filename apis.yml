@@ -32,6 +32,8 @@ common:
     url: https://www.linkedin.com/company/deluxe
   - type: Website
     url: https://www.deluxe.com
+  - type: LLMsTxt
+    url: https://developer.deluxe.com/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
