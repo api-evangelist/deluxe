@@ -28,37 +28,206 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/deluxe.png
 tags:
   - Payments
+  - Merchant Services
+  - Card Processing
+  - ACH
+  - Invoicing
+  - Subscriptions
+  - Tokenization
+  - Webhooks
+  - Reporting
   - Data Analytics
   - Marketing
+  - Small Business
 description: >-
-  Deluxe Corporation is a major US corporation and Fortune 1000 company. The Deluxe Corporation API provides programmatic access to its platform services, data, and integrations for enterprise customers and partners.
+  Deluxe Corporation (NYSE: DLX) is a US payments and data company that has moved from its origin as a
+  check printer into merchant services, treasury management, payroll and marketing data. Its developer
+  surface is the Deluxe Payments Platform (DPP), a gateway sold to independent software vendors and
+  merchants and documented at developer.deluxe.com. DPP publishes three RAML 1.0 APIs covering 56
+  operations: a Gateway Experience API for card and ACH/EFT sales, authorizations, captures, voids,
+  refunds, batches, EMV card-present processing on Ingenico terminals, customer vault and tokenization,
+  subscriptions, payment links and an eight-event webhook surface; a Reports Experience API for daily
+  card and ACH settlement, monthly fee statements and authorized/captured/settled transaction reports;
+  and an Invoice Experience API for drafting, editing, sharing, cloning and downloading invoices. Deluxe
+  also ships two browser-embeddable payment surfaces — a Hosted Payment Form and an Embedded Payments
+  JavaScript SDK — both of which keep the integrator out of PCI DSS scope. Access is not self-serve:
+  credentials are issued by the Deluxe integrations team after an email request, and no pricing is
+  published.
 created: '2026-04-19'
-modified: '2026-04-19'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
   - aid: deluxe:deluxe-api
-    name: Deluxe Corporation API
+    name: Deluxe Payments Platform — Gateway Experience API
     tags:
       - Payments
-      - Data Analytics
-      - Marketing
+      - Card Processing
+      - ACH
+      - EMV
+      - Tokenization
+      - Subscriptions
+      - Webhooks
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.deluxe.com
-    humanURL: https://developer.deluxe.com
+    baseURL: https://api.deluxe.com/dpp/v1
+    humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
     properties:
-      - url: https://developer.deluxe.com/docs
+      - url: openapi/deluxe-dpp-gateway-openapi.yml
+        type: OpenAPI
+      - url: raml/deluxe-dpp-gateway.raml.json
+        type: RAML
+      - url: overlays/deluxe-dpp-gateway-overlay.yaml
+        type: Overlay
+      - url: asyncapi/deluxe-webhooks.yml
+        type: Webhooks
+      - url: https://developer.deluxe.com/api-ref/merchant-services/payments
+        type: APIReference
+      - url: https://developer.deluxe.com/docs-content/payments/merchant-services/overview
         type: Documentation
     description: >-
-      The Deluxe Corporation API provides access to platform services and data for enterprise integration and automation.
+      The DPP Gateway Experience API is the core Deluxe Payments Platform contract: 37 operations across
+      payments (sale, authorize, complete, cancel, search, batch), EMV card-present processing and device
+      management, refunds, subscriptions, payment methods and tokenization, customers and the vault,
+      settlement batches, payment links, and webhook event subscription. Secured with an OAuth 2.0 bearer
+      token plus a required partnerToken merchant header. Business failures are returned as HTTP 200 with
+      a non-zero responseCode rather than a 4xx.
+  - aid: deluxe:dpp-reports-api
+    name: Deluxe Payments Platform — Reports Experience API
+    tags:
+      - Payments
+      - Reporting
+      - Settlement
+      - Data Analytics
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+    baseURL: https://api.deluxe.com/dpp/v1
+    humanURL: https://developer.deluxe.com/api-ref/merchant-services/reports
+    properties:
+      - url: openapi/deluxe-dpp-reports-openapi.yml
+        type: OpenAPI
+      - url: raml/deluxe-dpp-reports.raml.json
+        type: RAML
+      - url: overlays/deluxe-dpp-reports-overlay.yaml
+        type: Overlay
+      - url: https://developer.deluxe.com/api-ref/merchant-services/reports
+        type: APIReference
+    description: >-
+      The DPP Reports Experience API publishes eight read operations over merchant settlement and
+      transaction history — credit card and ACH daily settlement, credit card and ACH monthly fee
+      statements, and authorized, captured and settled transaction reports — plus a custom report
+      endpoint driven by title and date range. Date ranges are MM/DD/YYYY strings and results paginate
+      with page and pageSize.
+  - aid: deluxe:dpp-invoices-api
+    name: Deluxe Payments Platform — Invoice Experience API
+    tags:
+      - Payments
+      - Invoicing
+      - Accounts Receivable
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+    baseURL: https://api.deluxe.com/dpp/v1
+    humanURL: https://developer.deluxe.com/api-ref/merchant-services/invoices
+    properties:
+      - url: openapi/deluxe-dpp-invoices-openapi.yml
+        type: OpenAPI
+      - url: raml/deluxe-dpp-invoices.raml.json
+        type: RAML
+      - url: overlays/deluxe-dpp-invoices-overlay.yaml
+        type: Overlay
+      - url: https://developer.deluxe.com/api-ref/merchant-services/invoices
+        type: APIReference
+    description: >-
+      The DPP Invoice Experience API publishes eleven operations for merchant invoicing — create a draft,
+      modify invoice details, modify invoice status, retrieve, search, share, clone and download an
+      invoice, plus create, read and modify the merchant's invoice configuration. Invoices carry the same
+      customerId and paymentId identifier space as the Gateway Experience API.
+  - aid: deluxe:dpp-sandbox-api
+    name: Deluxe Payments Platform — Sandbox API (Deluxe-published OpenAPI)
+    tags:
+      - Payments
+      - Sandbox
+      - Testing
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+    baseURL: https://sandbox.api.deluxe.com
+    humanURL: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    properties:
+      - url: openapi/deluxe-postman-sandbox-openapi.yml
+        type: OpenAPI
+      - url: overlays/deluxe-postman-sandbox-overlay.yaml
+        type: Overlay
+      - url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+        type: APIReference
+    description: >-
+      The only OpenAPI document Deluxe publishes itself — an OpenAPI 3.0.0 definition titled "Deluxe
+      Postman-Sandbox", served from Deluxe's own Stoplight workspace and describing the sandbox bearer
+      token exchange plus consolidated transaction, report and vault endpoints on
+      sandbox.api.deluxe.com. It documents an older, coarser shape of the platform than the 56-operation
+      RAML set on developer.deluxe.com, and is saved here verbatim.
 common:
+  - type: OpenAPI
+    url: openapi/deluxe-dpp-gateway-openapi.yml
+  - type: Authentication
+    url: authentication/deluxe-authentication.yml
+  - type: Conventions
+    url: conventions/deluxe-conventions.yml
+  - type: DataModel
+    url: data-model/deluxe-data-model.yml
+  - type: ErrorCatalog
+    url: errors/deluxe-problem-types.yml
+  - type: DeclineCodes
+    url: errors/deluxe-decline-codes.yml
+  - type: Lifecycle
+    url: lifecycle/deluxe-lifecycle.yml
+  - type: Conformance
+    url: conformance/deluxe-conformance.yml
+  - type: Sandbox
+    url: sandbox/deluxe-sandbox.yml
+  - type: Components
+    url: components/deluxe-components.yml
+  - type: Packages
+    url: packages/deluxe-packages.yml
+  - type: MCPServer
+    url: mcp/deluxe-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/deluxe-llms.txt
+  - type: Webhooks
+    url: asyncapi/deluxe-webhooks.yml
+  - type: Plans
+    url: plans/deluxe-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/deluxe-rate-limits.yml
+  - type: FinOps
+    url: finops/deluxe-finops.yml
   - type: DomainSecurity
     url: security/deluxe-domain-security.yml
+  - type: DeveloperPortal
+    url: https://developer.deluxe.com/
+  - type: Documentation
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/payments
+  - type: GettingStarted
+    url: https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
+  - type: Support
+    url: https://www.deluxe.com/about/contact-us/
+  - type: Blog
+    url: https://www.deluxe.com/blog/
+  - type: TermsOfService
+    url: https://www.deluxe.com/policy/terms-of-use/
+  - type: PrivacyPolicy
+    url: https://www.deluxe.com/policy/privacy/
   - type: LinkedIn
-    url: https://www.linkedin.com/company/deluxe
+    url: https://www.linkedin.com/company/deluxe-corporation
+  - type: X
+    url: https://twitter.com/Deluxe
+  - type: YouTube
+    url: https://www.youtube.com/@deluxe
   - type: Website
     url: https://www.deluxe.com
-  - type: LlmsText
-    url: https://developer.deluxe.com/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 36
+  pass: local-v1
