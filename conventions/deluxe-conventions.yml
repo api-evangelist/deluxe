@@ -1,0 +1,134 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.deluxe.com/api-ref/api/merchant-services/rootRaml.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/common/commonResponseParameter.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/common/headerResponseParameter.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/common/securityschemasResponseParameter.json,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+provider: Deluxe Corporation
+providerId: deluxe
+api: Deluxe Payments Platform (DPP) — Gateway, Reports and Invoice Experience APIs
+style: REST / JSON
+media_type: application/json
+authentication:
+  style: bearer
+  header: Authorization
+  scheme: Bearer
+  token_format: OAuth 2.0 / OpenID Connect access token
+  token_endpoint: https://sandbox.api.deluxe.com/secservices/oauth2/v2/token
+  token_endpoint_note: >-
+    Deluxe publishes the sandbox token endpoint only. The production token host is issued with the
+    merchant's credentials and is not stated in public documentation.
+  credential_exchange: form-encoded (application/x-www-form-urlencoded) Client ID + Client Secret
+  token_lifetime_minutes: 60
+  refresh_guidance: Re-authenticate every 45 minutes; an unexpired token will not be reissued.
+  alternate_scheme: HTTP Basic (Anypoint Client ID Enforcement) on selected surfaces
+  see: authentication/deluxe-authentication.yml
+required_headers:
+  - name: partnerToken
+    required: true
+    description: Unique merchant identifier for API calls.
+    format: GUID
+    pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+  - name: merchantNumber
+    required: false
+    description: Unique identification number for the merchant (reporting surfaces).
+request_tracing:
+  header: requestId
+  required: false
+  format: GUID
+  echoed_in_response: true
+  guidance: >-
+    "We strongly recommend including the requestId header in every API request. This unique GUID helps
+    trace and correlate API calls across systems, ensuring better observability and troubleshooting."
+  note: >-
+    requestId is a CORRELATION identifier only. Deluxe does not document it — or any other header — as an
+    idempotency key, and nothing in the published contract states that replaying a request with the same
+    requestId is safe.
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  evidence: >-
+    No occurrence of "idempotent" or "idempotency" anywhere in the three published RAML definitions, the
+    three shared RAML libraries, the 56 rendered operation parameter documents, or the Deluxe Payments
+    Platform developer guides on docs.deluxe.com. Payment creation, refunds and batch operations are all
+    unguarded POSTs.
+    NOTE: because Deluxe publishes NO idempotency mechanism, this repo deliberately does NOT carry an
+    `Idempotency` pointer in apis.yml.
+pagination:
+  style: page-number
+  supported_on:
+    - POST /reports (page, pageSize)
+    - GET /reports/* settlement and transaction reports (page, pageSize)
+    - POST /invoices/search (pageNumber, pageSize)
+    - POST /payments/search
+  parameters:
+    - name: page
+      in: query
+      type: integer
+      minimum: 1
+      description: Page number for pagination.
+    - name: pageSize
+      in: query
+      type: integer
+      minimum: 1
+      description: Number of results per page.
+    - name: pageNumber
+      in: body
+      description: Invoice search uses pageNumber in the request body rather than a query parameter.
+  inconsistency: >-
+    The parameter is named `page` on the reporting surface and `pageNumber` on invoice search, and it moves
+    between the query string and the request body depending on the operation. There is no cursor, no
+    published maximum pageSize, and no total-count field documented in the response envelope.
+date_conventions:
+  report_date_format: MM/DD/YYYY
+  report_date_pattern: '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$'
+  note: Reporting date ranges use US MM/DD/YYYY strings, not ISO 8601.
+error_envelope:
+  http_status_for_business_failure: 200
+  code_field: responseCode
+  message_field: responseMessage
+  success_value: 0
+  problem_json: false
+  rfc9457: false
+  see: errors/deluxe-problem-types.yml, errors/deluxe-decline-codes.yml
+versioning:
+  style: path
+  current: /dpp/v1
+  alternate: /dpp/v1/gateway
+  policy: >-
+    "The endpoint supports two base paths /dpp/v1 (default) and /dpp/v1/gateway to enable path-based
+    routing. Both paths will continue to coexist to maintain backward compatibility. However, we
+    recommend using /dpp/v1 as the default for all new integrations."
+  header_versioning: false
+  see: lifecycle/deluxe-lifecycle.yml
+rate_limiting:
+  documented: false
+  response_headers: []
+  exhaustion_status: null
+  see: rate-limits/deluxe-rate-limits.yml
+field_expansion:
+  supported: false
+sparse_fields:
+  supported: false
+metadata:
+  supported: true
+  mechanism: customData
+  shape: array of {name, value} pairs
+  description: >-
+    "Custom data allows integrators to pass additional, customizable information related to a transaction
+    when it does not fit into any predefined fields."
+  echoed_in_response: true
+tokenization:
+  vault: Customer Vault (POST /paymentmethods, POST /customers)
+  single_use: Cryptogram — tokenized payment information, one-time use, expires in 15 minutes
+  reusable: Token — generated by POST /paymentmethods/token
+  note: >-
+    A cryptogram (hosted payment form) and a token (Generate Token API) are different objects with
+    different lifetimes; Deluxe warns they are not to be confused.
+webhooks:
+  supported: true
+  see: asyncapi/deluxe-webhooks.yml

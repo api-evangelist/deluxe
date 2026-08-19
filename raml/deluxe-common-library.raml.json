@@ -1,0 +1,1478 @@
+{
+  "usage": null,
+  "traits": {
+    "Headers": {
+      "headers": {
+        "partnerToken": {
+          "description": "Unique Merchant Identifier for API Calls",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "example": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+        },
+        "requestId": {
+          "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.\n",
+          "type": "string",
+          "required": false,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "example": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+        }
+      }
+    }
+  },
+  "types": {
+    "guid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+    },
+    "Address": {
+      "description": "Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, shipping and compliance systems.",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "description": "Customer's first name",
+          "type": "string",
+          "maxLength": 100,
+          "example": "Jane",
+          "required": false
+        },
+        "lastName": {
+          "description": "Customer's last name",
+          "type": "string",
+          "maxLength": 100,
+          "example": "Doe",
+          "required": false
+        },
+        "address": {
+          "description": "Customer's address",
+          "type": "string",
+          "maxLength": 250,
+          "example": "123 Main St",
+          "required": false
+        },
+        "address2": {
+          "description": "Customer's address line 2",
+          "type": "string",
+          "maxLength": 100,
+          "example": "Apt 5",
+          "required": false
+        },
+        "postalCode": {
+          "description": "Customer's postal/zip code",
+          "type": "string",
+          "maxLength": 50,
+          "example": "94111",
+          "required": false
+        },
+        "city": {
+          "description": "Customer's city",
+          "type": "string",
+          "maxLength": 50,
+          "example": "San Francisco",
+          "required": false
+        },
+        "state": {
+          "description": "Customer's state/province",
+          "type": "string",
+          "maxLength": 25,
+          "example": "CA",
+          "required": false
+        },
+        "country": {
+          "description": "Customer's country",
+          "type": "string",
+          "maxLength": 25,
+          "example": "USA",
+          "required": false
+        },
+        "phone": {
+          "description": "Customer's phone number",
+          "type": "string",
+          "maxLength": 17,
+          "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+          "example": "650-555-1234",
+          "required": false
+        },
+        "email": {
+          "description": "Customer's email address",
+          "type": "string",
+          "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+          "maxLength": 250,
+          "example": "jane@email.com",
+          "required": false
+        }
+      }
+    },
+    "Card": {
+      "description": "Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.",
+      "type": "object",
+      "displayName": "Card",
+      "additionalProperties": false,
+      "properties": {
+        "card": {
+          "type": "object",
+          "displayName": "Card",
+          "description": "Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.",
+          "properties": {
+            "card": {
+              "description": "Card Number",
+              "type": "string",
+              "minLength": 12,
+              "maxLength": 19,
+              "example": "4111111111111110",
+              "required": true
+            },
+            "expiry": {
+              "description": "Card Expiration Month and Year",
+              "type": "string",
+              "example": "11/26",
+              "required": true,
+              "pattern": "^(0[1-9]|1[0-2])\\/\\d{2}$"
+            },
+            "cvv": {
+              "description": "Card CVV/Security Code",
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 4,
+              "example": "245",
+              "required": false
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "ACH": {
+      "description": "Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.",
+      "type": "object",
+      "displayName": "ACH",
+      "additionalProperties": false,
+      "properties": {
+        "ach": {
+          "description": "Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.",
+          "type": "object",
+          "properties": {
+            "accountNumber": {
+              "description": "Bank account number",
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "example": "987654321",
+              "required": true
+            },
+            "routingNumber": {
+              "description": "Bank Routing Number",
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 9,
+              "example": "123456789",
+              "required": true
+            },
+            "accountType": {
+              "description": "Account Type - Checking/Savings",
+              "type": "string",
+              "enum": [
+                "Checking",
+                "Savings"
+              ],
+              "example": "Checking",
+              "required": false
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "Token": {
+      "description": "Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.",
+      "type": "object",
+      "displayName": "Token",
+      "additionalProperties": false,
+      "properties": {
+        "token": {
+          "description": "Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.",
+          "type": "object",
+          "properties": {
+            "token": {
+              "description": "Tokenized string for Card details",
+              "type": "string",
+              "maxLength": 20,
+              "example": "1234567890123450",
+              "required": true
+            },
+            "expiry": {
+              "description": "Card Expiration Month and Year",
+              "type": "string",
+              "example": "10/25",
+              "required": true
+            },
+            "cvv": {
+              "description": "Card CVV/Security Code",
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 4,
+              "example": "245",
+              "required": false
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "ACHToken": {
+      "description": "Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.",
+      "type": "object",
+      "displayName": "ACHToken",
+      "additionalProperties": false,
+      "properties": {
+        "achToken": {
+          "description": "Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.",
+          "type": "object",
+          "properties": {
+            "token": {
+              "description": "Tokenized string for ACH details",
+              "type": "string",
+              "maxLength": 40,
+              "example": "k|1235673473|4567890123450",
+              "required": true
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "Vault": {
+      "description": "Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.",
+      "type": "object",
+      "displayName": "Vault",
+      "additionalProperties": false,
+      "properties": {
+        "vault": {
+          "description": "Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.",
+          "type": "object",
+          "properties": {
+            "paymentMethodId": {
+              "description": "Unique identifier for stored payment method",
+              "type": "string",
+              "example": "99c33585-a62f-45bb-a733-5720dd69ab1e",
+              "required": true,
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+              "properties": {}
+            },
+            "cvv": {
+              "description": "CVV/Security Code",
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 4,
+              "example": "245",
+              "required": false
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "Cryptogram": {
+      "description": "Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.",
+      "type": "object",
+      "displayName": "Cryptogram",
+      "additionalProperties": false,
+      "properties": {
+        "cryptogram": {
+          "description": "Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.",
+          "type": "object",
+          "properties": {
+            "cryptogram": {
+              "description": "Tokenized string that passes Card or Bank details for transaction",
+              "type": "string",
+              "example": "6cd3ef836ce141b789b5755ca3f353f1",
+              "required": true
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "NetworkToken": {
+      "description": "Object to hold secured network token data such as token string, expiration details, cryptographic authentication values, and token source (e.g., ApplePay, GooglePay, Paze). It enhances payment security and enables streamlined digital transactions. Includes billing address and other identifiers to support robust authorization, risk mitigation, and regulatory compliance in tokenized payment ecosystems.",
+      "type": "object",
+      "displayName": "Network Token",
+      "additionalProperties": false,
+      "properties": {
+        "networkToken": {
+          "description": "Object to hold secured network token data such as token string, expiration details, cryptographic authentication values, and token source (e.g., ApplePay, GooglePay, Paze). It enhances payment security and enables streamlined digital transactions. Includes billing address and other identifiers to support robust authorization, risk mitigation, and regulatory compliance in tokenized payment ecosystems.",
+          "type": "object",
+          "properties": {
+            "token": {
+              "description": "Network token string",
+              "type": "string",
+              "minLength": 13,
+              "maxLength": 20,
+              "example": "4895370017589737",
+              "required": true
+            },
+            "expiryMonth": {
+              "description": "Expiry month",
+              "type": "string",
+              "pattern": "^(0?[1-9]|1[0-2])$",
+              "example": "05",
+              "required": true
+            },
+            "expiryYear": {
+              "description": "Expiry Year",
+              "pattern": "^(202[4-9]|20[3-9]\\d|2[1-9]\\d{2})$",
+              "type": "string",
+              "example": "2032",
+              "required": true
+            },
+            "secureCavvData": {
+              "description": "Secure cavv data",
+              "type": "string",
+              "example": "AwAAAAAAmCjhPZYp4s7YQHwAAAA=",
+              "required": true
+            },
+            "eci": {
+              "description": "Electronic commerce indicator",
+              "type": "string",
+              "example": "07",
+              "maxLength": 2,
+              "required": false
+            },
+            "tokenType": {
+              "description": "Token type flag",
+              "type": "number",
+              "minimum": 1,
+              "maximum": 9,
+              "example": 1,
+              "required": false
+            },
+            "tokenSource": {
+              "description": "Token Source - ApplePay/GooglePay/Paze",
+              "type": "string",
+              "enum": [
+                "APPLEPAY",
+                "GOOGLEPAY",
+                "PAZE",
+                "VISA"
+              ],
+              "example": "PAZE",
+              "required": true
+            }
+          }
+        },
+        "billingAddress": {
+          "description": "Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "firstName": {
+              "description": "Customer's first name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Jane",
+              "required": false
+            },
+            "lastName": {
+              "description": "Customer's last name",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Doe",
+              "required": false
+            },
+            "address": {
+              "description": "Customer's address",
+              "type": "string",
+              "maxLength": 250,
+              "example": "123 Main St",
+              "required": false
+            },
+            "address2": {
+              "description": "Customer's address line 2",
+              "type": "string",
+              "maxLength": 100,
+              "example": "Apt 5",
+              "required": false
+            },
+            "postalCode": {
+              "description": "Customer's postal/zip code",
+              "type": "string",
+              "maxLength": 50,
+              "example": "94111",
+              "required": false
+            },
+            "city": {
+              "description": "Customer's city",
+              "type": "string",
+              "maxLength": 50,
+              "example": "San Francisco",
+              "required": false
+            },
+            "state": {
+              "description": "Customer's state/province",
+              "type": "string",
+              "maxLength": 25,
+              "example": "CA",
+              "required": false
+            },
+            "country": {
+              "description": "Customer's country",
+              "type": "string",
+              "maxLength": 25,
+              "example": "USA",
+              "required": false
+            },
+            "phone": {
+              "description": "Customer's phone number",
+              "type": "string",
+              "maxLength": 17,
+              "pattern": "^(\\+\\d{1,3}[\\s-]?)?\\(?\\d{3}\\)?[\\s-]?\\d{3}[\\s-]?\\d{4}$",
+              "example": "650-555-1234",
+              "required": false
+            },
+            "email": {
+              "description": "Customer's email address",
+              "type": "string",
+              "pattern": "^([a-zA-Z0-9.!#$\\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$",
+              "maxLength": 250,
+              "example": "jane@email.com",
+              "required": false
+            }
+          }
+        }
+      }
+    },
+    "level3": {
+      "description": "Level 3 data provides detailed line-item information for each sale item in a transaction, including descriptions, quantities, pricing, and discounts. This level of detail enhances transparency, improves financial reporting and reconciliation, and supports compliance with procurement policies. It also enables more efficient processing for corporate and government transactions, often resulting in lower interchange fees and stronger vendor relationships.\n\nRecommendations for Level 3 Transactions:\n- Use a Level 3-enabled card and provide detailed line-item data.\n- Ensure a non-zero tax amount is included for Level 2 and Level 3 transactions.\n",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Description or name of the sale item",
+          "type": "string",
+          "maxLength": 250,
+          "example": "Apple",
+          "required": false
+        },
+        "skuCode": {
+          "description": "Stock Keeping Unit Code",
+          "type": "string",
+          "maxLength": 100,
+          "example": "SKU1234",
+          "required": false
+        },
+        "unitCost": {
+          "description": "The cost per single unit of the item being purchased.",
+          "type": "number",
+          "example": 5,
+          "required": false
+        },
+        "price": {
+          "description": "Represents the total price of the item sold.",
+          "type": "number",
+          "example": 5,
+          "required": false
+        },
+        "quantity": {
+          "description": "Quantity of item sold",
+          "type": "number",
+          "example": 4,
+          "required": false
+        },
+        "commodityCode": {
+          "description": "Code used to classify the type of goods or services involved in transaction. DPP APIs do not enforce validations for commodity codes. It is recommended to use standardized lists by referring the [link](https://www.mpiprocessing.com/level-3-and-level-2-credit-card-processing-commodity-codes/)\n",
+          "type": "string",
+          "maxLength": 12,
+          "example": "39028",
+          "required": false
+        },
+        "unitOfMeasure": {
+          "description": "Unit of measuring the item. The API do not enforce validations for units of measure, it is recommended to use standardized lists by referring the [link](https://help.usaepay.info/developer/reference/umcodes/)\n",
+          "type": "string",
+          "maxLength": 50,
+          "example": "Dozen",
+          "required": false
+        },
+        "freightAmount": {
+          "description": "The cost of shipping or transportation for the item.",
+          "type": "number",
+          "example": 0,
+          "required": false
+        },
+        "dutyAmount": {
+          "description": "The cost of customs duties or import taxes (especially for international purchases).",
+          "type": "number",
+          "example": 0,
+          "required": false
+        },
+        "itemDiscountAmount": {
+          "description": "Discount amount applied on sale item",
+          "type": "number",
+          "example": 0,
+          "required": false
+        },
+        "itemDiscountRate": {
+          "description": "Discount rate of the sale item",
+          "type": "number",
+          "example": 0,
+          "required": false
+        },
+        "taxAmount": {
+          "description": "Tax amount applied on the sale item.",
+          "type": "number",
+          "example": 2,
+          "required": false
+        }
+      }
+    },
+    "level2": {
+      "description": "Level 2 data enhances transactions by adding contextual fields like customer reference numbers, tax indicators, shipping ZIP codes, and purchase card flags. This additional metadata improves reporting accuracy, simplifies reconciliation, and supports compliance and audit readiness while offering better visibility into spending behavior.\n",
+      "type": "object",
+      "properties": {
+        "customerRefNumber": {
+          "description": "Reference number for customer",
+          "type": "string",
+          "example": "7898654",
+          "required": false
+        },
+        "localTaxFlag": {
+          "description": "Indicator, if local taxes apply.\n> Note: On `localTaxFlag` behavior, user can send the acceptable values 1 and 2.\n- If `taxAmount = 0.00`, set **`localTaxFlag = 2`**, which indicates it is an tax exempted item.  \n- If `taxAmount > 0.00`, set **`localTaxFlag = 1`**.\n",
+          "type": "integer | boolean",
+          "example": 1,
+          "required": false
+        },
+        "purchaseCard": {
+          "description": "Indicates if purchase card",
+          "type": "boolean",
+          "example": false,
+          "required": false
+        },
+        "shippingZip": {
+          "description": "Zip/Postal code of the shipping address",
+          "type": "string",
+          "example": "94002",
+          "required": false
+        },
+        "taxAmount": {
+          "description": "Total Tax Amount is the sum of all individual tax amounts applied to each sale item in a transaction. It represents the overall tax charged on the entire purchase.",
+          "type": "number",
+          "example": 2,
+          "required": false
+        }
+      }
+    },
+    "customData": {
+      "description": "Custom data allows integrators to pass additional, customizable information related to a transaction when it does not fit into any predefined fields. This feature supports sending data as name–value pairs (e.g., Invoice Number and its corresponding value).\n",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Custom Data field name or key",
+          "type": "string",
+          "example": "Invoice Number",
+          "required": false
+        },
+        "value": {
+          "description": "Custom Data field value",
+          "type": "string",
+          "example": "inv1234",
+          "required": false
+        }
+      }
+    },
+    "productData": {
+      "description": "Product data contains key details about the products or services involved in a fleet transaction. This information supports accurate billing, expense tracking, and reporting. However, product data fields do not enforce validations by themselves. Therefore, always refer to the product master data before initiating any transaction to ensure accuracy and consistency.\n",
+      "type": "object",
+      "properties": {
+        "productCode": {
+          "description": "Unique code used to identify the product.",
+          "type": "string",
+          "example": "036",
+          "maxLength": 50,
+          "required": true
+        },
+        "serviceCode": {
+          "description": "Code that represents the service associated with the product.",
+          "type": "string",
+          "example": "S",
+          "maxLength": 50,
+          "required": true
+        },
+        "unitMeasurement": {
+          "description": "The unit in which the product is measured.",
+          "type": "string",
+          "example": "K",
+          "maxLength": 50,
+          "required": true
+        },
+        "unitQuantity": {
+          "description": "The number of smaller units contained within the product.",
+          "type": "number",
+          "example": 2,
+          "required": true
+        },
+        "unitPrice": {
+          "description": "The price per single unit of the product.",
+          "type": "number",
+          "example": 3,
+          "required": true
+        },
+        "price": {
+          "description": "The total value of the single product.",
+          "type": "number",
+          "example": 6,
+          "required": true
+        },
+        "quantity": {
+          "description": "The total number of products.",
+          "type": "number",
+          "example": 5,
+          "required": true
+        },
+        "cost": {
+          "description": "The cost for the product.",
+          "type": "number",
+          "example": 30,
+          "required": true
+        }
+      }
+    },
+    "CustomerData": {
+      "displayName": "Customer Data",
+      "description": "Customer data includes critical details such as odometer readings, sequence numbers, and driver license information. Capturing this data during fleet transactions ensures accuracy and accountability. It also provides valuable context on vehicle usage and driver activity, supporting improved tracking, reporting, and regulatory compliance.\n",
+      "type": "object",
+      "properties": {
+        "sequenceNumber": {
+          "description": "Sequence number of the fleet card transaction",
+          "minLength": 5,
+          "maxLength": 5,
+          "type": "string",
+          "required": true,
+          "example": "56432"
+        },
+        "odometer": {
+          "description": "Odometer reading of the vehicle captured during transaction",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 9,
+          "required": true,
+          "example": "4354235"
+        },
+        "driversLicenseNumber": {
+          "description": "Driving Licence number of the driver captured during transaction",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 15,
+          "required": true,
+          "example": "934564354235"
+        }
+      }
+    },
+    "CustomerDataArray": {
+      "displayName": "Customer Data Array",
+      "description": "Customer data includes critical details such as odometer readings, sequence numbers, and driver license information. Capturing this data during fleet transactions ensures accuracy and accountability. It also provides valuable context on vehicle usage and driver activity, supporting improved tracking, reporting, and regulatory compliance.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "customerCode": {
+            "description": "Please ensure that the correct value is provided in this field based on the intended identifier type.\n- **DS** - Indicates `sequenceNumber`\n- **04** - Indicates `odometer`\n- **05** - Indicates `driversLicenseNumber`\n",
+            "type": "string",
+            "example": "DS",
+            "maxLength": 50,
+            "required": true
+          },
+          "customerValue": {
+            "description": "Ensure the correct value is passed in this field based on the identifier type.\n- Send exactly 5 digts for `sequenceNumber(DS)`\n- Send 9 digits(max) for `odometer(04)`\n- Send 15 digits(max) for `driversLicenseNumber(05)`\n",
+            "type": "string",
+            "example": "10022",
+            "maxLength": 50,
+            "required": true
+          }
+        }
+      }
+    },
+    "amount": {
+      "description": "Object to hold transaction amount details such as the monetary value and the currency (e.g., USD, CAD). It specifies the financial amount involved in the transaction.",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of the transaction",
+          "type": "number",
+          "example": 150,
+          "required": true
+        },
+        "currency": {
+          "description": "Currency of transaction",
+          "type": "string",
+          "enum": [
+            "USD",
+            "CAD"
+          ],
+          "example": "USD",
+          "required": false
+        }
+      }
+    },
+    "subscription": {
+      "description": "Object to hold the subscription details such as subscription start and end dates, billing frequency (e.g., Monthly, Annually), and optional fields such as active status, payment day of the week, and payment month. It defines the schedule and duration for recurring charges.",
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "description": "Specifies the starting date from which recurring billing begins. The startDate must either match the subscription transaction date or be set to a future date.",
+          "type": "string",
+          "required": true,
+          "example": "10/25/2023"
+        },
+        "endDate": {
+          "description": "Defines the termination date of the subscription period.",
+          "type": "string",
+          "required": true,
+          "example": "10/25/2025"
+        },
+        "frequency": {
+          "description": "Indicates how often billing occurs e.g., Monthly, Quarterly, or Annually",
+          "type": "string",
+          "enum": [
+            "Daily",
+            "Weekly",
+            "BiWeekly",
+            "TriWeekly",
+            "Monthly",
+            "BiMonthly",
+            "Quarterly",
+            "Annually",
+            "Custom",
+            "SemiAnnually"
+          ],
+          "required": true,
+          "example": "Monthly"
+        },
+        "active": {
+          "description": "Boolean flag to reflect whether the subscription is currently active or not",
+          "type": "boolean",
+          "default": true,
+          "required": false,
+          "example": true
+        },
+        "paymentDay": {
+          "description": "Specifies the designated day of the week (e.g., Sunday) when payment is scheduled to process; useful for weekly plans.",
+          "type": "string",
+          "enum": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "required": false,
+          "example": "Sunday"
+        },
+        "paymentMonth": {
+          "description": "Defines the month (1 to 12) when payment is intended to occur, relevant for annual billing cycles.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12,
+          "required": false,
+          "example": 10
+        },
+        "custom": {
+          "description": "Object to hold the custom subscription details.",
+          "type": "object",
+          "required": false,
+          "properties": {
+            "interval": {
+              "description": "Specifies the frequency of the billing cycle based on the defined interval type.",
+              "type": "number",
+              "required": false,
+              "minimum": 1,
+              "example": 5
+            },
+            "intervalType": {
+              "description": "Defines the unit of time used for the billing interval (for example, daily, weekly, monthly, or yearly).",
+              "type": "string",
+              "required": false,
+              "enum": [
+                "DAY",
+                "WEEK",
+                "MONTH",
+                "YEAR"
+              ],
+              "example": "DAY"
+            },
+            "duration": {
+              "description": "Specifies how long the subscription will continue.\n- **FIXED_PAYMENTS:** Runs for a limited number of payments.\n- **UNTIL_END_DATE:** The subscription continues indefinitely until end date.\n- **UNTIL_CANCELLED:** The subscription continues indefinitely until manually cancelled.\n",
+              "type": "string",
+              "enum": [
+                "UNTIL_CANCELLED",
+                "UNTIL_END_DATE",
+                "FIXED_PAYMENTS"
+              ],
+              "required": false,
+              "example": "FIXED_PAYMENTS"
+            },
+            "numberOfPayments": {
+              "description": "Specifies the total number of billing cycles for the subscription. This field is required when duration is set to FIXED and is ignored when duration is UNTIL_CANCELLED.",
+              "type": "number",
+              "minimum": 1,
+              "required": false,
+              "example": 5
+            }
+          }
+        }
+      }
+    },
+    "alternateFee": {
+      "displayName": "Surcharge",
+      "description": "Object to hold additional fee details passed by the integrator, such as the fee amount, percentage, fee type (e.g., Surcharge), and optional flags indicating whether the fee is waived or added to the total transaction amount.",
+      "type": "object",
+      "properties": {
+        "feeType": {
+          "description": "Alternate fee description",
+          "type": "string",
+          "required": false,
+          "example": "Surcharge"
+        },
+        "feePercent": {
+          "description": "Percentage of surcharge to be charged",
+          "type": "number",
+          "required": false,
+          "example": 3
+        },
+        "amount": {
+          "description": "Amount of surcharge calculated based on",
+          "type": "number",
+          "required": false,
+          "example": 4.5
+        },
+        "waived": {
+          "description": "Flag to tell if the fee is to be waived or not",
+          "type": "boolean",
+          "required": false,
+          "example": true
+        },
+        "addedToTotalAmount": {
+          "description": "Flag to tell if the fee is to be added to the total amount",
+          "type": "boolean",
+          "required": false,
+          "example": true
+        }
+      }
+    },
+    "ProcessingFee": {
+      "displayName": "Processing Fee",
+      "description": "Object to hold additional fee details passed by the integrator, such as the fee amount, percentage, fee type (e.g., Processing Fee).",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of fee applied",
+          "type": "number",
+          "required": false,
+          "example": 10
+        },
+        "feePercent": {
+          "description": "Alternate fee percentage",
+          "type": "number",
+          "required": false,
+          "example": 80
+        },
+        "feeType": {
+          "description": "Alternate fee description",
+          "type": "string",
+          "required": false,
+          "example": "Processing Fee"
+        }
+      }
+    },
+    "PartnerFee": {
+      "displayName": "Partner Fee",
+      "description": "Object to hold additional fee details passed by the integrator, such as the fee percentage, fee type (e.g., Partner Fee).",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "Amount of fee applied",
+          "type": "number",
+          "required": false,
+          "example": 10
+        },
+        "feeType": {
+          "description": "Alternate fee description",
+          "type": "string",
+          "required": false,
+          "example": "Partner Fee"
+        }
+      }
+    },
+    "orderData": {
+      "displayName": "Order Data",
+      "type": "object",
+      "description": "Object to hold order details such as a unique order ID, a flag indicating whether the order ID should be automatically generated, and whether the order ID is required to be unique. It supports custom or system-generated order identification.",
+      "properties": {
+        "autoGenerateOrderId": {
+          "description": "Flag to tell if Order Id is to be automatically generated",
+          "type": "boolean",
+          "example": true,
+          "required": false
+        },
+        "orderId": {
+          "description": "Unique identifier of Order",
+          "type": "string",
+          "example": "abc12345",
+          "required": false
+        },
+        "orderIdIsUnique": {
+          "description": "Flag to tell if Order Id is unique",
+          "type": "boolean",
+          "example": true,
+          "required": false
+        }
+      }
+    },
+    "fee": {
+      "displayName": "Fee",
+      "description": "Object to hold applied fee details such as the fee amount and the authorizer’s response code for the fee transaction. It captures information related to fee authorization and processing.",
+      "type": "object",
+      "properties": {
+        "feeAmount": {
+          "description": "Amount of fee applied",
+          "type": "number",
+          "example": 1.99,
+          "required": true
+        },
+        "feeAuthResponse": {
+          "description": "Authorizer's response code for fee payment",
+          "type": "string | nil",
+          "example": "441247",
+          "required": true
+        }
+      }
+    },
+    "accountResponseData": {
+      "displayName": "Account Response Data",
+      "type": "object",
+      "description": "Object to hold account verification responses such as AVS (Address Verification Service) and CVV check results. These fields indicate the outcome of address and card security code validations, typically returned by the payment processor.",
+      "properties": {
+        "avs": {
+          "description": "Address verification response",
+          "type": "string",
+          "maxLength": 1,
+          "example": "Y",
+          "required": true
+        },
+        "cvv": {
+          "description": "CVV verification response",
+          "type": "string",
+          "example": "Y",
+          "required": true
+        }
+      }
+    },
+    "Disbursement": {
+      "description": "Request data type details for disbursement the payment",
+      "type": "object",
+      "properties": {
+        "disbursementId": {
+          "description": "Disbursement account Identifier",
+          "type": "string",
+          "example": "80ae9a4a-5efd-412e-89b9-532f2ab2f817",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "properties": {}
+        },
+        "typeId": {
+          "description": "Disbursement type Identifier",
+          "type": "integer | nil",
+          "example": 1,
+          "required": false
+        },
+        "amount": {
+          "description": "A portion of the total amount needs to be disbursed to the specified disbursementId.",
+          "type": "number",
+          "example": 5.99,
+          "required": true
+        },
+        "description": {
+          "description": "Description of disbursement in which amount is to be credited",
+          "type": "string | nil",
+          "required": false,
+          "example": "PARTNERFEE1"
+        },
+        "accountNumberLastFour": {
+          "description": "Disbursement account number with last four digits",
+          "type": "string",
+          "maxLength": 4,
+          "example": "4321",
+          "required": false
+        }
+      }
+    }
+  }
+}

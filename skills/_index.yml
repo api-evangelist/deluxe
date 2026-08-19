@@ -1,0 +1,39 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  openapi/deluxe-dpp-gateway-openapi.yml, openapi/deluxe-dpp-reports-openapi.yml,
+  openapi/deluxe-dpp-invoices-openapi.yml, conventions/deluxe-conventions.yml,
+  errors/deluxe-decline-codes.yml, sandbox/deluxe-sandbox.yml, asyncapi/deluxe-webhooks.yml
+provider: Deluxe Corporation
+providerId: deluxe
+note: >-
+  Deluxe publishes no Agent Skills and no AGENTS.md. These six skills were written by API Evangelist
+  and every operationId in them was taken from the Deluxe-published contract in openapi/ — none was
+  invented. Each skill also carries the platform's real constraints (no idempotency, no webhook
+  signature, no rate limits, HTTP-200 business failures) so an agent is not left to assume them.
+skill_count: 6
+skills:
+  - name: deluxe-authenticate
+    file: deluxe-authenticate.md
+    description: Obtain and manage a DPP bearer token; required before every other skill.
+    operations: []
+  - name: deluxe-take-a-card-payment
+    file: deluxe-take-a-card-payment.md
+    description: Sale, authorize/capture, void, refund and settle a card transaction.
+    operations: [createPayment, authorizePayment, completePayment, cancelPayment, createRefund, searchPayments, closeBatch]
+  - name: deluxe-vault-a-customer
+    file: deluxe-vault-a-customer.md
+    description: Store a customer and instruments, tokenize, and schedule recurring billing.
+    operations: [createCustomer, getSpecificCustomer, getAllCustomers, modifySpecificCustomer, deleteSpecificCustomer, createPaymentMethod, modifyPaymentMethod, generateToken, getCustomerSPaymentMethod, deleteCustomerSPaymentMethod, createSubscription, modifySubscription, verifyAddress, verifyAch]
+  - name: deluxe-subscribe-to-events
+    file: deluxe-subscribe-to-events.md
+    description: Subscribe an HTTPS listener to the eight published webhook event types and verify delivery.
+    operations: [subscribeEvent, unsubscribeEvent, performTestEvent, resendEvent, retrieveEventsReports]
+  - name: deluxe-pull-settlement-reports
+    file: deluxe-pull-settlement-reports.md
+    description: Pull settlement, fee-statement and transaction reports over a MM/DD/YYYY date range.
+    operations: [retrieveCreditCardDailySettlementReport, retrieveAchDailySettlementReport, retrieveCreditCardMonthlyFeesStatement, retrieveAchMonthlyFeesStatment, retrieveAuthorizedTransactions, retrieveCapturedTransactions, retrieveSettledTransactions, customReports]
+  - name: deluxe-issue-an-invoice
+    file: deluxe-issue-an-invoice.md
+    description: Configure, draft, edit, share, clone and download invoices.
+    operations: [createDraftInvoice, modifyInvoiceDetails, modifyInvoiceStatus, getSpecificInvoice, searchInvoice, shareInvoice, cloneInvoice, downloadInvoice, createInvoiceConfiguration, getInvoiceConfiguration, modifyInvoiceConfiguration]

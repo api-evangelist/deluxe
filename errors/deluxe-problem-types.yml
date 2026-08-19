@@ -1,0 +1,61 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  raml/deluxe-security-schemes.raml.json (provider-published RAML security-scheme fragment),
+  openapi/deluxe-dpp-gateway-openapi.yml, and
+  https://docs.deluxe.com/docs/deluxe-payments-platform/en4e8l7er7ckt-error-codes
+provider: Deluxe Corporation
+providerId: deluxe
+format: proprietary
+rfc9457: false
+note: >-
+  Deluxe does NOT publish an RFC 9457 (application/problem+json) error format, and its RAML does not
+  enumerate 4xx/5xx bodies inline. The DPP RAML attaches a shared `StandardErrors.errorHandler` trait
+  to every operation, but that trait lives in a private MuleSoft Anypoint Exchange fragment
+  (api-standard-errors-fragment 2.0.4/2.0.6) that is not published publicly, so the HTTP-level error
+  catalog cannot be read from the contract. The only HTTP error responses Deluxe documents publicly are
+  the 401/403 described by the security schemes. Business-level failures are returned as HTTP 200 with a
+  non-zero `responseCode` in the body — see errors/deluxe-decline-codes.yml for the 57 published codes.
+  Nothing below is invented: every entry is quoted from a document Deluxe serves.
+transport:
+  http_errors_documented: 2
+  business_errors_documented: 57
+  business_error_carrier: 'HTTP 200 response body, numeric responseCode field'
+  correlation_header: requestId
+  correlation_note: >-
+    Deluxe recommends sending a GUID `requestId` header on every request; it is echoed back in the
+    response body so a failure can be correlated across systems.
+problem_types:
+  - status: 401
+    title: Unauthorized
+    scheme: oidcEnforcement
+    detail: >-
+      Unauthorized: invalid token, expired token, or connection error when connecting to the
+      authorization server.
+    remediation: >-
+      Re-authenticate against the Deluxe security service token endpoint and retry with a fresh bearer
+      token. Bearer tokens expire after 60 minutes; Deluxe recommends refreshing at 45 minutes.
+    source: raml/deluxe-security-schemes.raml.json
+  - status: 403
+    title: Forbidden
+    scheme: oidcEnforcement
+    detail: 'Forbidden: invalid client application credentials.'
+    remediation: >-
+      Check the Client ID / Client Secret pair issued for the merchant application, and confirm the
+      partnerToken header carries the correct merchant identifier.
+    source: raml/deluxe-security-schemes.raml.json
+  - status: 401
+    title: Unauthorized (Client ID Enforcement)
+    scheme: clientIdEnforcement
+    detail: >-
+      Unauthorized. Either the provided client id and secret combination is invalid, or the client is
+      not allowed to access the content provided by the requested URL.
+    remediation: >-
+      Verify the Base64-encoded "id:secret" Authorization header and that the client application is
+      entitled to the requested resource.
+    source: raml/deluxe-security-schemes.raml.json
+gaps:
+  - The StandardErrors.errorHandler RAML trait referenced by all 56 operations resolves to a private
+    Anypoint Exchange fragment; its 4xx/5xx bodies are not publicly readable.
+  - No application/problem+json media type is declared anywhere in the published contract.
+  - No 429 / rate-limit error is documented.

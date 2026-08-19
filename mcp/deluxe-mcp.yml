@@ -1,0 +1,134 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/deluxe-dpp-gateway-openapi.yml, openapi/deluxe-dpp-reports-openapi.yml,
+  openapi/deluxe-dpp-invoices-openapi.yml
+provider: Deluxe Corporation
+providerId: deluxe
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: searched
+searched:
+  - target: registry.npmjs.org
+    queries: ['deluxe mcp', 'deluxe-mcp']
+    result: no first-party MCP package
+  - target: developer.deluxe.com
+    result: no MCP, agent or AI-integration section in the portal navigation
+  - target: docs.deluxe.com
+    result: no MCP content in any of the 11 published Stoplight projects
+  - target: /.well-known/ on six Deluxe hosts
+    result: no ai-plugin.json, no agent card, no oauth-protected-resource
+note: >-
+  Deluxe ships no MCP server — no hosted endpoint, no stdio package, no documentation. `mode: none` is
+  a measured absence, and NO endpoint URL is recorded, because guessing one would read as a verified
+  agent surface. The tool list below is a CANDIDATE derived from the 56 operations Deluxe publishes in
+  its own RAML; it is what an MCP server over the Deluxe Payments Platform would expose, not something
+  Deluxe operates.
+candidate_tools:
+  - name: create_payment
+    rest: createPayment
+    description: Run a sale, recurring or tipping card/ACH transaction.
+    write: true
+  - name: authorize_payment
+    rest: authorizePayment
+    description: Reserve funds without capturing.
+    write: true
+  - name: complete_payment
+    rest: completePayment
+    description: Capture a previously authorized payment.
+    write: true
+  - name: cancel_payment
+    rest: cancelPayment
+    description: Void a payment before settlement.
+    write: true
+  - name: search_payments
+    rest: searchPayments
+    description: Search payment transactions.
+    write: false
+  - name: create_refund
+    rest: createRefund
+    description: Refund a settled transaction, or issue a standalone refund.
+    write: true
+  - name: create_customer
+    rest: createCustomer
+    description: Create a stored customer profile.
+    write: true
+  - name: get_customer
+    rest: getSpecificCustomer
+    description: Retrieve one stored customer profile.
+    write: false
+  - name: list_customers
+    rest: getAllCustomers
+    description: List stored customer profiles.
+    write: false
+  - name: create_payment_method
+    rest: createPaymentMethod
+    description: Vault a card or bank account against a customer.
+    write: true
+  - name: generate_token
+    rest: generateToken
+    description: Tokenize an instrument for reuse.
+    write: true
+  - name: verify_address
+    rest: verifyAddress
+    description: Run address verification (AVS) on an instrument.
+    write: false
+  - name: verify_ach
+    rest: verifyAch
+    description: Validate a bank account before ACH origination.
+    write: false
+  - name: check_surcharge
+    rest: checkSurcharge
+    description: Determine whether a surcharge applies to a card.
+    write: false
+  - name: bin_lookup
+    rest: binLookup
+    description: Look up card BIN details.
+    write: false
+  - name: create_subscription
+    rest: createSubscription
+    description: Create a recurring billing schedule.
+    write: true
+  - name: modify_subscription
+    rest: modifySubscription
+    description: Change an existing recurring billing schedule.
+    write: true
+  - name: create_payment_link
+    rest: createPaymentLink
+    description: Generate a shareable hosted payment URL.
+    write: true
+  - name: close_batch
+    rest: closeBatch
+    description: Close a settlement batch.
+    write: true
+  - name: create_invoice
+    rest: createDraftInvoice
+    description: Create a draft invoice.
+    write: true
+  - name: search_invoices
+    rest: searchInvoice
+    description: Search invoices.
+    write: false
+  - name: send_invoice
+    rest: shareInvoice
+    description: Share an invoice with a payer.
+    write: true
+  - name: get_settlement_report
+    rest: [retrieveCreditCardDailySettlementReport, retrieveAchDailySettlementReport]
+    description: Retrieve daily card or ACH settlement reports over a date range.
+    write: false
+  - name: get_transaction_report
+    rest: [retrieveAuthorizedTransactions, retrieveCapturedTransactions, retrieveSettledTransactions]
+    description: Retrieve authorized, captured or settled transaction reports.
+    write: false
+  - name: subscribe_event
+    rest: subscribeEvent
+    description: Subscribe an HTTPS listener to a Deluxe webhook event type.
+    write: true
+agent_safety_note: >-
+  22 of the 56 published operations move money or mutate stored payment credentials, and Deluxe
+  publishes no idempotency mechanism (see conventions/deluxe-conventions.yml). Any MCP server over this
+  API would need its own replay protection before a retrying agent could be allowed near
+  create_payment, create_refund or close_batch.

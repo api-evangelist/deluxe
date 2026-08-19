@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Deluxe Postman-Sandbox
+  version: 1.0.0
+extends: openapi/deluxe-postman-sandbox-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: API Evangelist enrichment pass; findings recorded in conventions/, errors/, lifecycle/, rate-limits/,
+    sandbox/ and asyncapi/ in this repo.
+  note: Annotations only. This overlay adds no operation, field or schema; it records what the Deluxe contract does
+    NOT say, so an agent reading the spec is not left to assume.
+actions:
+- target: $.info
+  update:
+    x-provider: Deluxe Corporation
+    x-provider-id: deluxe
+    x-developer-portal: https://developer.deluxe.com/
+    x-credential-request: isvinquiries@deluxe.com
+    x-self-serve-signup: false
+- target: $.info
+  update:
+    x-idempotency:
+      supported: false
+      header: null
+      note: Deluxe documents no idempotency key on any operation. Retrying a POST may duplicate a money movement.
+    x-rate-limits:
+      documented: false
+      response_headers: []
+      exhaustion_status: null
+      note: No published limits and no rate-limit response headers anywhere in the Deluxe contract.
+    x-error-semantics:
+      rfc9457: false
+      business_failures_use_http_200: true
+      code_field: responseCode
+      message_field: responseMessage
+      success_value: 0
+      catalog: errors/deluxe-decline-codes.yml
+      note: 57 published gateway/issuer codes; 30 of them share the identical masked message "REQUEST DECLINED!".
+    x-deprecation-policy:
+      published: false
+      sunset_header: false
+    x-status-page:
+      published: false
+    x-sandbox:
+      available: true
+      self_serve: false
+      host: https://sandbox.api.deluxe.com
+      artifact: sandbox/deluxe-sandbox.yml

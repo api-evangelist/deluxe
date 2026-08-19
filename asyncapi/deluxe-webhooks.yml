@@ -1,0 +1,107 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.deluxe.com/api-ref/api/merchant-services/events/subscribe/responseParameters.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/events/rootEndpointDescription.md,
+  https://developer.deluxe.com/api-ref/api/merchant-services/rootRaml.json
+provider: Deluxe Corporation
+providerId: deluxe
+api: Deluxe Payments Platform (DPP) Gateway Experience API
+asyncapi_published: false
+note: >-
+  Deluxe ships a real, self-service webhook surface — eight named event types, an HTTPS subscription API,
+  a resend endpoint, a delivery report and a test-fire endpoint — but publishes NO AsyncAPI document and
+  NO event payload schemas. Only the event NAMES and their trigger semantics are documented; a consumer
+  cannot know the shape of the body that will arrive at their listener without integrating first. This
+  file records the webhook catalog verbatim; it is deliberately NOT an AsyncAPI, because writing one
+  would require inventing the payloads.
+transport:
+  protocol: https
+  direction: provider-to-consumer POST
+  subscription_model: API-managed (no dashboard-only configuration documented)
+  endpoint_pattern: consumer-supplied HTTPS URL per event type
+  endpoint_validation: >-
+    eventUri must match ^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-_]+)*(\/)?$ — HTTPS is
+    enforced by the contract.
+  signing: not documented
+  retry_policy: not documented
+  ordering: not documented
+  replay: manual, via POST /events/resend
+management_operations:
+  - operationId: subscribeEvent
+    method: POST
+    path: /events/subscribe
+    description: >-
+      Subscribe to specific events by providing a URL where event notifications will be sent.
+    scope_note: >-
+      Submitting a userName subscribes every merchant account in that user's portfolio; submitting an
+      access token subscribes that one merchant account only.
+  - operationId: unsubscribeEvent
+    method: POST
+    path: /events/unsubscribe
+    description: Remove an existing event subscription.
+  - operationId: resendEvent
+    method: POST
+    path: /events/resend
+    description: Re-deliver an event that was previously fired.
+  - operationId: retrieveEventsReports
+    method: POST
+    path: /events/report
+    description: Retrieve a report of event activity and delivery.
+  - operationId: performTestEvent
+    method: POST
+    path: /events/performTest
+    description: Fire a test event at a subscribed listener to verify the integration.
+events:
+  - name: MERCHANT BOARDED
+    description: Triggered when a new merchant account is successfully created (boarded) into the system.
+    payload_schema_published: false
+  - name: MERCHANT UPDATED
+    description: >-
+      Sent when an existing merchant's information (e.g. address, contact, banking details) has been
+      modified.
+    payload_schema_published: false
+  - name: CC BATCH
+    description: >-
+      Sent when a credit card batch is processed, summarizing a group of card transactions settled
+      together.
+    payload_schema_published: false
+  - name: ACH BATCH
+    description: >-
+      Fires when an ACH (Automated Clearing House) batch is processed, indicating grouped electronic
+      payments or transfers.
+    payload_schema_published: false
+  - name: ACH REJECT
+    description: >-
+      Triggered when an ACH transaction fails or is rejected (e.g. due to insufficient funds, closed
+      account, or invalid details).
+    payload_schema_published: false
+  - name: TRANSACTION
+    description: >-
+      A real-time webhook for individual transaction activity (e.g. authorization, capture, refund,
+      void).
+    payload_schema_published: false
+  - name: VAULT
+    description: >-
+      Fires when there are updates to the customer vault (e.g. customer profile or stored payment
+      methods are added, updated, or deleted).
+    payload_schema_published: false
+  - name: CC CHARGEBACK
+    description: >-
+      Triggered when a cardholder disputes a transaction, and a chargeback request is initiated by the
+      issuing bank.
+    payload_schema_published: false
+summary:
+  event_count: 8
+  payload_schemas_published: 0
+  asyncapi_documents: 0
+  test_fire_supported: true
+  replay_supported: true
+gaps:
+  - No AsyncAPI (or any) machine-readable event contract.
+  - No published payload schema for any of the eight event types.
+  - No documented webhook signature, shared secret, or verification mechanism.
+  - No documented retry, backoff, or delivery-guarantee policy.
+  - >-
+    The older Deluxe Payments Platform guide on docs.deluxe.com still lists Webhooks as
+    "[Coming Soon]" while the current developer portal ships the endpoints — the two surfaces disagree.

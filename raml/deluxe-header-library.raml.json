@@ -1,0 +1,63 @@
+{
+  "usage": "This library defines the standard response trait and type.",
+  "traits": {
+    "customHeaders": {
+      "headers": {
+        "partnerToken": {
+          "description": "Unique Merchant Identifier for API Calls",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "example": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+        }
+      }
+    },
+    "Attributes": {
+      "headers": {
+        "partnerToken": {
+          "description": "Unique Merchant Identifier for API Calls",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+          "example": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+        },
+        "merchantNumber": {
+          "description": "Unique identification number for the merchant",
+          "type": "string",
+          "required": false,
+          "example": "6281270007012107"
+        }
+      },
+      "queryParameters": {
+        "reportStartDate": {
+          "description": "Start date for the report to retrieve the report data.",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$",
+          "example": "05/01/2025",
+          "required": true
+        },
+        "reportEndDate": {
+          "description": "End date for the report to retrieve the report data",
+          "type": "string",
+          "pattern": "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$",
+          "example": "06/01/2025",
+          "required": true
+        },
+        "page": {
+          "description": "Page number for pagination",
+          "type": "integer",
+          "minimum": 1,
+          "example": 1,
+          "required": false
+        },
+        "pageSize": {
+          "description": "Number of results per page",
+          "type": "integer",
+          "minimum": 1,
+          "example": 2,
+          "required": false
+        }
+      }
+    }
+  }
+}

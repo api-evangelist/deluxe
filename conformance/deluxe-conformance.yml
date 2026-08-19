@@ -1,0 +1,116 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/deluxe-dpp-gateway-openapi.yml, raml/deluxe-security-schemes.raml.json,
+  conventions/deluxe-conventions.yml, errors/deluxe-problem-types.yml,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+provider: Deluxe Corporation
+providerId: deluxe
+note: >-
+  Every entry below is judged against something Deluxe actually publishes. `conforms: false` means the
+  published surface does not carry the standard — not that Deluxe fails an audit.
+standards:
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: true
+    evidence: >-
+      The RAML security-scheme fragment declares oidcEnforcement as "OAuth 2.0" and the developer guide
+      documents a client-credentials exchange against
+      https://sandbox.api.deluxe.com/secservices/oauth2/v2/token returning a 60-minute bearer token.
+  - id: oidc
+    name: OpenID Connect
+    conforms: partial
+    evidence: >-
+      Deluxe names the policy "oidcEnforcement" and describes it as "OpenID Connect OAuth 2.0", but
+      publishes no /.well-known/openid-configuration discovery document on any host (probed: 404 or SPA
+      shell on all six), so the OIDC metadata contract is not satisfied.
+  - id: rfc6750
+    name: 'OAuth 2.0 Bearer Token Usage'
+    conforms: true
+    evidence: Authorization header carrying a bearer access token on every operation.
+  - id: pci-dss
+    name: PCI DSS
+    conforms: true
+    evidence: >-
+      Deluxe requires the integrator to be PCI-DSS compliant to run a sale directly, and publishes the
+      Hosted Payment Form and Embedded Payments iFrame products explicitly as the route to avoid PCI
+      scope — "Credit card data is collected directly through iFrames served by Deluxe, removing PCI
+      compliance requirements for the merchant."
+  - id: emv
+    name: EMV (card-present)
+    conforms: true
+    evidence: >-
+      Dedicated /emv resource group with cloud-to-device processing against Ingenico Tetra terminals
+      (5 operations).
+  - id: level2-level3
+    name: 'Card Level 2 / Level 3 interchange data'
+    conforms: true
+    evidence: >-
+      level2 and level3 objects are first-class fields on the Create Payment request with commodity code,
+      unit of measure, unit cost, discount, tax, freight and duty per line item.
+  - id: ach-nacha
+    name: ACH / NACHA
+    conforms: partial
+    evidence: >-
+      ACH payment, ACH verification, ACH batch and ACH reject surfaces exist and ACH settlement reports
+      are published; NACHA SEC codes are not documented in the public contract.
+  - id: rfc9457
+    name: 'RFC 9457 Problem Details for HTTP APIs'
+    conforms: false
+    evidence: >-
+      No application/problem+json media type anywhere in the published contract. Business failures are
+      returned as HTTP 200 with a numeric responseCode.
+  - id: idempotency
+    name: 'Idempotency keys (draft-ietf-httpapi-idempotency-key-header)'
+    conforms: false
+    evidence: >-
+      No idempotency header, scope or retention documented on any of the 56 operations, including
+      Create Payment, Create Refund and the batch operations.
+  - id: pagination
+    name: Consistent pagination
+    conforms: partial
+    evidence: >-
+      page/pageSize on the reporting surface, pageNumber/pageSize in the invoice search body; no cursor,
+      no maximum page size, no total-count field.
+  - id: rfc8594
+    name: 'RFC 8594 Sunset header'
+    conforms: false
+    evidence: No Sunset or Deprecation header and no deprecation policy published.
+  - id: rfc9116
+    name: 'RFC 9116 security.txt'
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt probed on six Deluxe hosts — 404 on www.deluxe.com and api.deluxe.com,
+      503 on sandbox.api.deluxe.com, SPA HTML shell on developer.deluxe.com and payments.deluxe.com.
+  - id: openapi
+    name: OpenAPI
+    conforms: partial
+    evidence: >-
+      Deluxe publishes one genuine OpenAPI 3.0.0 document (the "Deluxe Postman-Sandbox" service on its
+      Stoplight docs workspace, 6 operations). The 56-operation production surface is published as
+      RAML 1.0, not OpenAPI.
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    evidence: >-
+      A live webhook surface with eight named event types exists, but no AsyncAPI document and no event
+      payload schemas are published.
+  - id: mcp
+    name: 'Model Context Protocol'
+    conforms: false
+    evidence: No MCP server, endpoint or package published by Deluxe.
+  - id: a2a
+    name: 'A2A Agent Card'
+    conforms: false
+    evidence: >-
+      /.well-known/agent-card.json and /.well-known/agent.json probed on all six Deluxe hosts; no host
+      returned a JSON AgentCard.
+compliance_program:
+  published: false
+  trust_center: false
+  certifications_published: []
+  note: >-
+    Deluxe names PCI DSS in its developer documentation as an integration constraint, but publishes no
+    trust center, no SOC 2 / ISO 27001 / PCI AoC listing, and no compliance page reachable without sales
+    contact. NOTE: because no certification listing is published, this repo deliberately does NOT carry
+    a `Compliance` pointer in apis.yml.

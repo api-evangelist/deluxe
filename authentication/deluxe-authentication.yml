@@ -1,0 +1,28 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/deluxe-dpp-gateway-openapi.yml, openapi/deluxe-dpp-invoices-openapi.yml, openapi/deluxe-dpp-reports-openapi.yml,
+  openapi/deluxe-postman-sandbox-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: |-
+    This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+    Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.
+  sources:
+  - openapi/deluxe-dpp-gateway-openapi.yml
+  - openapi/deluxe-dpp-invoices-openapi.yml
+  - openapi/deluxe-dpp-reports-openapi.yml
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: This API supports Anypoint's Client ID Enforcement authentication policy.
+  sources:
+  - openapi/deluxe-dpp-gateway-openapi.yml
+  - openapi/deluxe-dpp-invoices-openapi.yml
+  - openapi/deluxe-dpp-reports-openapi.yml
+  - openapi/deluxe-postman-sandbox-openapi.yml

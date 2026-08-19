@@ -3,80 +3,61 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: Deluxe Corporation
 providerId: deluxe
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.deluxe.com/merchant-services/, https://www.deluxe.com/merchant-services/payment-processing/,
+  https://developer.deluxe.com/docs-content/payments/merchant-services/get-started,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
 created: '2026-05-04'
-modified: '2026-05-05'
-reconciled: false
-notes: Deluxe does not publish self-serve API pricing. Their merchant payment, payroll/HR, treasury management,
-  promotional, and data analytics services are sold as merchant accounts, SaaS subscriptions, and statement-of-work
-  engagements with custom rate cards (interchange-plus or interchange-bundled merchant pricing for payments).
-  No public per-call API price exists.
+modified: '2026-08-13'
+reconciled: true
+plan_count: 0
+plans: []
 tags:
   - Payments
-  - Payroll
-  - Treasury Management
   - Merchant Services
-  - Data Analytics
-description: Deluxe APIs are gated behind a merchant or SaaS contract rather than a self-serve developer
-  plan. Payments use merchant-services rate cards (typically interchange-plus or tiered-bundled) negotiated
-  per merchant; payroll, HR, and promotional / data services are sold as subscriptions; treasury and check
-  services price per item or per file. This artifact retains a single contract-bundled plan stub pending
-  direct merchant-agreement reconciliation.
-sources:
-  - https://www.deluxe.com/payments/
-  - https://developer.deluxe.com/
-plans:
-  - id: deluxe-merchant-contract
-    name: Merchant / SaaS Contract
-    type: enterprise
-    description: API access is granted under a Deluxe merchant agreement (payments) or SaaS subscription
-      (payroll, HR, marketing, treasury). Pricing is bilateral and not published publicly.
-    entries:
-      - label: Merchant Payment Processing
-        description: Per-transaction percentage and fixed fee under merchant agreement (interchange-plus
-          or tiered-bundled).
-        name: payment_processing
-        type: metered
-        metric: transaction
-        limit: -1
-        timeFrame: usage
-        geo: US
-        domains:
-          - https://api.deluxe.com
-        unit: 1
-        price: contact sales
-        userMultiplied: false
-      - label: SaaS Subscription
-        description: Monthly subscription for payroll, HR, treasury, or marketing modules.
-        name: saas_subscription
-        type: subscription
-        metric: month
-        limit: 1
-        timeFrame: month
-        geo: US
-        domains:
-          - https://api.deluxe.com
-        unit: 1
-        price: contact sales
-        userMultiplied: false
-      - label: Per-Item / Per-File Fees
-        description: Check printing, lockbox, ACH origination, and remittance services priced per item or per file.
-        name: per_item_fees
-        type: metered
-        metric: varies
-        limit: -1
-        timeFrame: usage
-        geo: US
-        domains:
-          - https://api.deluxe.com
-        unit: 1
-        price: contact sales
-        userMultiplied: false
-    elements:
-      - name: Deluxe Payment Exchange APIs
-      - name: Deluxe Payroll / HR APIs
-      - name: Deluxe Treasury Management APIs
-      - name: Promotional / Marketing Data APIs
-      - name: Deluxe Corporation API
+  - Enterprise Pricing
+description: >-
+  Deluxe publishes NO plans, NO price points and NO rate card for the Deluxe Payments Platform APIs or
+  for Deluxe Merchant Services. Every route to the API terminates in a human: the developer guide says
+  "Email our team at isvinquiries@deluxe.com to request API credentials and access", and the Get Started
+  page offers only a web form, a sales email (DLXmerchserv@deluxe.com) and a sales phone number
+  ((877) 523-1099). There is no self-serve signup, no free tier, no trial and no published transaction
+  fee. This is a verified zero, not a missing measurement.
+probed:
+  - url: https://www.deluxe.com/merchant-services/pricing/
+    status: 404
+  - url: https://www.deluxe.com/pricing
+    status: 404
+  - url: https://www.deluxe.com/merchant-services/
+    status: 200
+    finding: Product marketing only; every call to action is "contact us" or a lead form.
+  - url: https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
+    status: 200
+    finding: >-
+      Three routes to get started, all human — website lead form, sales email, sales phone. No pricing.
+  - url: https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+    status: 200
+    finding: >-
+      "Email our team at isvinquiries@deluxe.com to request API credentials and acess." No plan or price.
+commercial_model:
+  self_serve: false
+  free_tier: false
+  trial: false
+  published_price_points: 0
+  onboarding: sales-gated
+  contract_type: merchant agreement / ISV integration agreement
+  billing_note: >-
+    Deluxe sells payment processing under a bilateral merchant agreement. The economics are real but
+    private; API Evangelist does not model or estimate them here. See finops/deluxe-finops.yml for the
+    FinOps shape of the underlying services.
+contacts:
+  api_credentials: isvinquiries@deluxe.com
+  sales_email: DLXmerchserv@deluxe.com
+  sales_phone: '(877) 523-1099'
+  support_email: customersupport@yourmerchantsupport.com
+  support_phone: '(844) 929-0955'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

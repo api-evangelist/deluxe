@@ -1,0 +1,392 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DPP Reports Experience API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Custom Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/reports",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Custom Report API endpoint allows users to fetch a report based on a specified title and date range. Query parameters page and pageSize enable pagination of the report results for efficient data retrieval."
+        },
+        {
+          "info": {
+            "name": "Retrieve Credit Card Daily Settlement Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/ccdailysettlement",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the Credit Card Settlement Reports on daily basis"
+        },
+        {
+          "info": {
+            "name": "Retrieve ACH Daily Settlement Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/achdailysettlement",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the ACH Settlement Reports on daily basis"
+        },
+        {
+          "info": {
+            "name": "Retrieve Credit Card Monthly Fees Statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/ccmonthlystatement",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the  Credit Card Fees Statment on Monthly basis"
+        },
+        {
+          "info": {
+            "name": "Retrieve ACH Monthly Fees Statment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/achmonthlystatement",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the ACH Fees Statment on Monthly basis"
+        },
+        {
+          "info": {
+            "name": "Retrieve Authorized Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/transauth",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the Authorized Transactions on given date range"
+        },
+        {
+          "info": {
+            "name": "Retrieve Captured Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/transcaptured",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the Captured Transactions on given date range"
+        },
+        {
+          "info": {
+            "name": "Retrieve Settled Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/reports/transsettled",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "reportStartDate",
+                "value": "05/01/2025",
+                "type": "query",
+                "description": "Start date for the report to retrieve the report data."
+              },
+              {
+                "name": "reportEndDate",
+                "value": "06/01/2025",
+                "type": "query",
+                "description": "End date for the report to retrieve the report data"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "2",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "This endpoint allows you to retrieve the settled transactions on given date range"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

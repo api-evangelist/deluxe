@@ -1,0 +1,84 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.deluxe.com/api-ref/api/merchant-services/rootRaml.json,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zz0k5dhftqqpb-release-notes,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform,
+  https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
+provider: Deluxe Corporation
+providerId: deluxe
+versioning:
+  scheme: path
+  current_version: v1
+  base_paths:
+    - path: /dpp/v1
+      status: current
+      recommended: true
+    - path: /dpp/v1/gateway
+      status: supported
+      recommended: false
+      note: >-
+        Legacy path-based routing retained for backward compatibility. Deluxe states both paths "will
+        continue to coexist"; no end date is given.
+  declared_in: 'RAML baseUriParameters.path (enum) on the Gateway and Invoice Experience APIs'
+  header_versioning: false
+  breaking_change_policy_published: false
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  internal_operations:
+    - path: /payments/batch
+      note: >-
+        Marked (internal) in the portal navigation (isInternal: true) while still being rendered in the
+        public API reference — the only operation flagged this way.
+  note: >-
+    Deluxe publishes no deprecation policy, no notice period, and no Sunset/Deprecation response headers.
+    The only lifecycle signal in the contract is the coexistence statement on the two base paths.
+    NOTE: because no deprecation policy exists, this repo deliberately does NOT carry a `Deprecation`
+    pointer in apis.yml.
+status_page:
+  published: false
+  probed:
+    - url: https://status.deluxe.com
+      status: 0
+      result: DNS does not resolve
+    - url: https://trust.deluxe.com
+      status: 0
+      result: DNS does not resolve
+  note: >-
+    Deluxe operates a payments gateway and publishes no public status page, no uptime history and no
+    incident feed. NOTE: because no status page exists, this repo deliberately does NOT carry a
+    `StatusPage` pointer in apis.yml.
+sla:
+  published: false
+  note: No public availability or latency SLA. Terms are set in the merchant agreement.
+release_notes:
+  published: true
+  url: https://docs.deluxe.com/docs/deluxe-payments-platform/zz0k5dhftqqpb-release-notes
+  populated: false
+  content: 'Check back soon for an update!'
+  note: >-
+    A Release Notes page exists in the developer guides and is empty. There is no dated changelog for the
+    Deluxe Payments Platform APIs anywhere on developer.deluxe.com or docs.deluxe.com.
+  see: changelog/deluxe-changelog.yml
+support:
+  developer_support_email: customersupport@yourmerchantsupport.com
+  developer_support_phone: '(844) 929-0955'
+  integrations_email: isvinquiries@deluxe.com
+  sales_email: DLXmerchserv@deluxe.com
+  sales_phone: '(877) 523-1099'
+  source: https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
+migration_signals:
+  - >-
+    The Deluxe Payments Platform guides on docs.deluxe.com (Stoplight, workspace slug "iatspayments",
+    last workspace update 2025-02-12) carry a banner on every page directing readers to
+    developer.deluxe.com for "the latest" documentation — docs.deluxe.com is the superseded surface and
+    developer.deluxe.com ("Deluxe.connect", relaunched 2025) is the current one.
+  - >-
+    The Stoplight API reference still describes a five-endpoint API (health, transactions, vault,
+    reports, webhooks "[Coming Soon]") while the current portal publishes 56 operations across three
+    RAML-defined APIs including a live webhook surface. The two documentation sets are materially out of
+    step with each other.

@@ -1,0 +1,2310 @@
+{
+  "item": [
+    {
+      "id": "5b45b98a-fb58-45ff-8d62-ef7507ae64ae",
+      "name": "reports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e6d56797-8c37-4fd5-8603-04a76b8aa239",
+          "name": "Custom Reports",
+          "request": {
+            "name": "Custom Reports",
+            "description": {
+              "content": "The Custom Report API endpoint allows users to fetch a report based on a specified title and date range. Query parameters page and pageSize enable pagination of the report results for efficient data retrieval.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<number>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<number>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportEndDate\": \"<string>\",\n  \"reportStartDate\": \"<string>\",\n  \"reportTitle\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f9263981-fe25-4be5-9dd8-c6e13606e1c6",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reportTitle\": \"ccReconciliation\",\n  \"reportStartDate\": \"2/13/2023\",\n  \"reportEndDate\": \"2/14/2023\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorcode\": 0,\n  \"data\": [\n    {\n      \"merchantId\": \"6280490007617210\",\n      \"transInfo:CaptureDate\": \"2024-02-01 05:00:13\",\n      \"transInfo:TransactionType\": \"SALE\",\n      \"totalsSummary:Sales(sum)\": \"$67.26\"\n    },\n    {\n      \"merchantId\": \"6280490007617210\",\n      \"transInfo:CaptureDate\": \"2024-02-01 05:00:13\",\n      \"transInfo:TransactionType\": \"STANDALONE REFUND\",\n      \"totalsSummary:Sales(sum)\": \"$-0.62\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32d762f2-e169-49b7-831d-c32931ce90e9",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reportTitle\": \"ccReconciliation\",\n  \"reportStartDate\": \"2/13/2023\",\n  \"reportEndDate\": \"2/14/2023\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62f8582d-a3b1-4f89-aae1-2112af64536c",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"reportTitle\": \"ccReconciliation\",\n  \"reportStartDate\": \"2/13/2023\",\n  \"reportEndDate\": \"2/14/2023\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75783601-ada3-4964-b470-1a49bf4cdf9a",
+          "name": "Retrieve Credit Card Daily Settlement Report",
+          "request": {
+            "name": "Retrieve Credit Card Daily Settlement Report",
+            "description": {
+              "content": "This endpoint allows you to retrieve the Credit Card Settlement Reports on daily basis",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "ccdailysettlement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1036ce3-c6fd-4529-acde-10153aa77631",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e1b1f48-6084-45b3-a02d-811d06bfb4c9",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "afe7f623-7a13-4989-b125-24190b74a853",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50d23555-368f-4ec8-bd77-056017e8c14e",
+          "name": "Retrieve ACH Daily Settlement Report",
+          "request": {
+            "name": "Retrieve ACH Daily Settlement Report",
+            "description": {
+              "content": "This endpoint allows you to retrieve the ACH Settlement Reports on daily basis",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "achdailysettlement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "57c2f144-d645-4566-8241-58a52bc42ba8",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9551984-6b18-471d-9584-40cd18ee0f60",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6d3dc2e1-5903-4d0a-9a42-efc51feedbc7",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achdailysettlement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b81946a7-970c-49eb-b1ac-b68f3959d75c",
+          "name": "Retrieve Credit Card Monthly Fees Statement",
+          "request": {
+            "name": "Retrieve Credit Card Monthly Fees Statement",
+            "description": {
+              "content": "This endpoint allows you to retrieve the  Credit Card Fees Statment on Monthly basis",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "ccmonthlystatement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8995b96e-74ac-4755-9397-5c7b9ce3847c",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2e75eb0-3774-41a7-ae8a-a54ad353c9cd",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "240bc408-edcc-4c93-9224-d6e59e2b30cd",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "ccmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69537a66-dce2-443b-989b-1b2bca7b2c6a",
+          "name": "Retrieve ACH Monthly Fees Statment",
+          "request": {
+            "name": "Retrieve ACH Monthly Fees Statment",
+            "description": {
+              "content": "This endpoint allows you to retrieve the ACH Fees Statment on Monthly basis",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "achmonthlystatement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9977f136-387b-428d-b8fd-117ea6328381",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d17d0fe-996d-4ac0-92eb-e3302ed00666",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cf5e5fcb-7a59-45ed-9c14-4d2899605b84",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "achmonthlystatement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "776f8985-e32c-4e68-89d0-d39f49173d72",
+          "name": "Retrieve Authorized Transactions",
+          "request": {
+            "name": "Retrieve Authorized Transactions",
+            "description": {
+              "content": "This endpoint allows you to retrieve the Authorized Transactions on given date range",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "transauth"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c236333f-be7f-4b43-b24e-c5338b7e05b4",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transauth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"importDate\": \"2025-07-04T00:00:00\",\n    \"terminalId\": \"270007012107001\",\n    \"authorizationAmount\": 450,\n    \"entryMode\": \"MANUAL\",\n    \"voidFlag\": \"yes\",\n    \"declineCode\": \"V215\",\n    \"declineDescription\": \"declined\",\n    \"batchNumber\": \"184001\",\n    \"authorizationTime\": 93633,\n    \"authorizationDate\": \"2025-07-03T00:00:00\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"VS\",\n    \"cardNumber\": \"464018******8465\",\n    \"authorizationCode\": \"1000\",\n    \"transactionType\": \"52\",\n    \"traceNumber\": \"305184525932608\"\n  },\n  {\n    \"importDate\": \"2025-07-04T00:00:00\",\n    \"terminalId\": \"270007012107001\",\n    \"authorizationAmount\": 450,\n    \"entryMode\": \"MANUAL\",\n    \"voidFlag\": \"yes\",\n    \"declineCode\": \"V000\",\n    \"declineDescription\": \"APPROVED\",\n    \"batchNumber\": \"184001\",\n    \"authorizationTime\": 93708,\n    \"authorizationDate\": \"2025-07-03T00:00:00\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"VS\",\n    \"cardNumber\": \"464018******8465\",\n    \"authorizationCode\": \"01262D\",\n    \"transactionType\": \"52\",\n    \"traceNumber\": \"465184526286508\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61811596-1a05-411d-a156-2d1e0de8e0b5",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transauth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4638c1db-9a6b-44d6-a4c2-59a25372ef0f",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transauth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d3cf2286-38c8-4ce5-afa8-257e398b5646",
+          "name": "Retrieve Captured Transactions",
+          "request": {
+            "name": "Retrieve Captured Transactions",
+            "description": {
+              "content": "This endpoint allows you to retrieve the Captured Transactions on given date range",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "transcaptured"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ad47b0eb-41cf-4e9c-a8a6-2cf72b1ee72c",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transcaptured"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"importDate\": \"2025-07-04T00:00:00\",\n    \"terminalId\": \"270007012107001\",\n    \"authorizationAmount\": 450,\n    \"entryMode\": \"MANUAL\",\n    \"voidFlag\": \"\",\n    \"item\": \"002312\",\n    \"batchNumber\": \"184001\",\n    \"authorizationTime\": 93708,\n    \"authorizationDate\": \"2025-07-03T00:00:00\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"VS\",\n    \"cardNumber\": \"464018******8465\",\n    \"authorizationCode\": \"01262D\",\n    \"transactionType\": \"52\",\n    \"traceNumber\": \"465184526286508\"\n  },\n  {\n    \"importDate\": \"2025-07-04T00:00:00\",\n    \"terminalId\": \"270007012107001\",\n    \"authorizationAmount\": 350,\n    \"entryMode\": \"PAN ENTRY, ELECTRONIC COMMERCE W/ CHIP\",\n    \"voidFlag\": \"\",\n    \"item\": \"002313\",\n    \"batchNumber\": \"184001\",\n    \"authorizationTime\": 93711,\n    \"authorizationDate\": \"2025-07-03T00:00:00\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"MC\",\n    \"cardNumber\": \"518752******1918\",\n    \"authorizationCode\": \"00322B\",\n    \"transactionType\": \"52\",\n    \"traceNumber\": \"MPLGZ5B6I\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94a384b7-0187-489e-8b29-d0d233a62ff5",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transcaptured"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e44265dd-4865-4970-8a10-a6f5ebe3eb9b",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transcaptured"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "62ebcead-55b8-49b6-be01-80058450d7fd",
+          "name": "Retrieve Settled Transactions",
+          "request": {
+            "name": "Retrieve Settled Transactions",
+            "description": {
+              "content": "This endpoint allows you to retrieve the settled transactions on given date range",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                "transsettled"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reportStartDate",
+                  "value": "<string>",
+                  "description": "(Required) Start date for the report to retrieve the report data."
+                },
+                {
+                  "disabled": false,
+                  "key": "reportEndDate",
+                  "value": "<string>",
+                  "description": "(Required) End date for the report to retrieve the report data"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>",
+                  "description": "Number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "12260ae4-518b-4d32-8714-ea3cf0eadf99",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transsettled"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"workAsOfDate\": \"2025-07-07T00:00:00\",\n    \"transactionDate\": \"2025-07-06T00:00:00\",\n    \"transactionTime\": 34911,\n    \"cardNumber\": \"440066******6811\",\n    \"transactionAmount\": 100,\n    \"referenceNumber\": \"24207855188162200772341\",\n    \"packageDescription\": \"VISA NON QUALIFIED\",\n    \"planDescription\": \"SMB PRD1 SIG PREF\",\n    \"fapsEntryMode\": \"K\",\n    \"invoiceNumber\": \"\",\n    \"cardUsage\": \"Credit\",\n    \"petTransactionId\": \"465187317512002\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"VS\",\n    \"authorizationCode\": \"03254D\",\n    \"transactionType\": \"PURCHASE\",\n    \"traceNumber\": \"465187317512002\"\n  },\n  {\n    \"workAsOfDate\": \"2025-07-06T00:00:00\",\n    \"transactionDate\": \"2025-07-05T00:00:00\",\n    \"transactionTime\": \"140710\",\n    \"cardNumber\": \"426690******7051\",\n    \"transactionAmount\": 100,\n    \"referenceNumber\": \"24207855187169800884955\",\n    \"packageDescription\": \"VISA NON QUALIFIED\",\n    \"planDescription\": \"SMB PRD1 SIG PREF\",\n    \"fapsEntryMode\": \"K\",\n    \"invoiceNumber\": \"\",\n    \"cardUsage\": \"Credit\",\n    \"petTransactionId\": \"465186688311488\",\n    \"merchantNumber\": \"6281270007012107\",\n    \"cardType\": \"VS\",\n    \"authorizationCode\": \"01334D\",\n    \"transactionType\": \"PURCHASE\",\n    \"traceNumber\": \"465186688311488\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b26088a6-c654-4beb-8536-3e2a8df65757",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transsettled"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a5424980-4d6d-4837-b799-2352e68a28d7",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    "transsettled"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reportStartDate",
+                      "value": "05/01/2025"
+                    },
+                    {
+                      "key": "reportEndDate",
+                      "value": "06/01/2025"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "2"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.deluxe.com/dpp/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "07eb70b9-c9c2-4e18-aa90-35a1b6b93026",
+    "name": "DPP Reports Experience API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This application will be useful to retrieve multiple reports.",
+      "type": "text/plain"
+    }
+  }
+}

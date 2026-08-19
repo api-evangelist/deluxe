@@ -1,0 +1,169 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/deluxe-dpp-gateway-openapi.yml, openapi/deluxe-dpp-reports-openapi.yml,
+  openapi/deluxe-dpp-invoices-openapi.yml (all three derived from the RAML Deluxe publishes at
+  https://developer.deluxe.com/api-ref/api/merchant-services/)
+provider: Deluxe Corporation
+providerId: deluxe
+api: Deluxe Payments Platform (DPP)
+note: >-
+  Derived by walking every request and response schema in the three published DPP contracts and reading
+  the id-reference fields that link one entity to another. Deluxe publishes no ER diagram and no object
+  reference page; nothing here was invented, but the cardinalities are read from field naming and
+  operation shape, not from a Deluxe statement.
+id_convention:
+  format: GUID (UUID v4 shape) for most resource identifiers
+  pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+  prefixed_ids: false
+  note: >-
+    Deluxe does NOT use type-prefixed identifiers (no `pay_`, `cus_` style). A bare GUID does not tell a
+    consumer which resource it addresses. `customerId` is an integer on some responses and a GUID on
+    others; `batchNumber` and `orderId` are opaque merchant-scoped strings/numbers, not GUIDs.
+entities:
+  - name: Merchant
+    key: partnerToken
+    alt_key: merchantNumber
+    description: >-
+      The tenant. Carried as a required GUID request header on every operation rather than as a path
+      resource — there is no /merchants endpoint in the public contract.
+    operations: []
+  - name: Customer
+    key: customerId
+    description: Stored customer profile holding contact detail, vaulted payment methods and subscriptions.
+    operations: [createCustomer, getAllCustomers, getSpecificCustomer, modifySpecificCustomer, deleteSpecificCustomer]
+  - name: PaymentMethod
+    key: paymentMethodId
+    description: >-
+      A vaulted instrument — card, ACH account, token, cryptogram, network token or vault reference.
+    operations: [createPaymentMethod, modifyPaymentMethod, generateToken, verifyAddress, verifyAch, checkSurcharge, binLookup, getCustomerSPaymentMethod, deleteCustomerSPaymentMethod]
+  - name: Payment
+    key: paymentId
+    description: >-
+      A transaction. Supports sale, authorize, complete (capture), cancel (void), search and batch
+      creation.
+    operations: [createPayment, authorizePayment, completePayment, cancelPayment, searchPayments, createBatchPayments]
+  - name: Refund
+    key: paymentId
+    description: >-
+      A refund transaction, standalone or against a parent payment; shares the payment identifier space.
+    operations: [createRefund, createBatchRefunds]
+  - name: Subscription
+    key: subscriptionId
+    description: Recurring billing schedule bound to a customer and a payment method.
+    operations: [createSubscription, modifySubscription]
+  - name: Batch
+    key: batchNumber
+    description: A settlement batch of card or ACH transactions; closed explicitly.
+    operations: [closeBatch]
+  - name: PaymentLink
+    key: paymentLinkId
+    description: A shareable hosted payment URL with amount, customer detail and an expiry.
+    operations: [createPaymentLink, deletePaymentLink]
+  - name: Invoice
+    key: invoiceId
+    description: Draft/issued invoice with line detail, sharing, cloning and PDF download.
+    operations: [createDraftInvoice, modifyInvoiceDetails, modifyInvoiceStatus, getSpecificInvoice, searchInvoice, shareInvoice, cloneInvoice, downloadInvoice]
+  - name: InvoiceConfiguration
+    key: configurationId
+    description: Per-merchant invoice presentation and numbering configuration.
+    operations: [createInvoiceConfiguration, getInvoiceConfiguration, modifyInvoiceConfiguration]
+  - name: EmvDevice
+    key: deviceId
+    alt_keys: [terminalId, terminalConnectionId]
+    description: >-
+      A provisioned card-present terminal (Ingenico Tetra) reachable cloud-to-device by Device ID.
+    operations: [emvPayments, emvRefunds, emvDevicesList, emvDeviceRefreshById, emvDeviceDetailsById]
+  - name: EventSubscription
+    key: eventSubscriptionId
+    description: A webhook subscription binding an event type to a consumer HTTPS URL.
+    operations: [subscribeEvent, unsubscribeEvent, resendEvent, retrieveEventsReports, performTestEvent]
+  - name: Report
+    key: null
+    description: >-
+      Read-only settlement, statement and transaction reports over a MM/DD/YYYY date range.
+    operations: [customReports, retrieveCreditCardDailySettlementReport, retrieveAchDailySettlementReport, retrieveCreditCardMonthlyFeesStatement, retrieveAchMonthlyFeesStatment, retrieveAuthorizedTransactions, retrieveCapturedTransactions, retrieveSettledTransactions]
+relationships:
+  - from: Customer
+    to: PaymentMethod
+    type: has_many
+    via: paymentMethodId
+    evidence: 'GET/DELETE /customers/{customerId}/paymentmethods/{paymentMethodId}'
+  - from: Customer
+    to: Subscription
+    type: has_many
+    via: subscriptionId
+    evidence: subscription array on the Get Customer response
+  - from: Customer
+    to: Payment
+    type: has_many
+    via: customerId
+    evidence: customerId on the payment request and response
+  - from: Payment
+    to: PaymentMethod
+    type: belongs_to
+    via: paymentMethod / paymentMethodId
+    evidence: paymentMethod union (card | ACH | token | vault | cryptogram | networkToken) on Create Payment
+  - from: Payment
+    to: Payment
+    type: belongs_to
+    via: parentPaymentId
+    evidence: parentPaymentId on refund, complete and partial-capture flows
+  - from: Payment
+    to: Batch
+    type: belongs_to
+    via: batchNumber
+    evidence: batchNumber returned on the payment response and used by Close Batch
+  - from: Payment
+    to: Subscription
+    type: belongs_to
+    via: subscriptionId
+    evidence: subscriptionId returned on payments created by a recurring schedule
+  - from: Refund
+    to: Payment
+    type: belongs_to
+    via: parentPaymentId
+    evidence: refund request references the original payment
+  - from: Subscription
+    to: PaymentMethod
+    type: belongs_to
+    via: paymentMethodId
+    evidence: subscription is created against a stored instrument
+  - from: PaymentLink
+    to: Payment
+    type: has_one
+    via: paymentId
+    evidence: paymentId returned once a payment link is paid
+  - from: Invoice
+    to: Customer
+    type: belongs_to
+    via: customerId
+    evidence: customerId on the invoice request
+  - from: Invoice
+    to: Payment
+    type: has_one
+    via: paymentId
+    evidence: paymentId on the invoice response once settled
+  - from: Invoice
+    to: InvoiceConfiguration
+    type: belongs_to
+    via: configurationId
+    evidence: 'PUT /invoices/configuration/{configurationId}'
+  - from: EmvDevice
+    to: Payment
+    type: has_many
+    via: deviceId
+    evidence: deviceId on EMV payment and refund requests
+  - from: EventSubscription
+    to: Merchant
+    type: belongs_to
+    via: userName / access token scope
+    evidence: >-
+      "Submitting Username will result in a subscription for all accounts available under that user's
+      portfolio. Submitting Access Token will result in a subscription for that merchant account only."
+shared_types:
+  source: raml/deluxe-common-library.raml.json
+  types: [guid, Address, Card, ACH, Token, ACHToken, Vault, Cryptogram, NetworkToken, level2, level3, customData, productData, CustomerData, CustomerDataArray, amount, subscription, alternateFee, ProcessingFee, PartnerFee, orderData, fee, accountResponseData, Disbursement]
+  note: >-
+    Deluxe factors 24 reusable types into a shared RAML library used across all three APIs — the
+    strongest single design signal in this contract set.

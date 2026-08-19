@@ -1,0 +1,283 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.deluxe.com/docs/deluxe-payments-platform/en4e8l7er7ckt-error-codes
+provider: Deluxe Corporation
+providerId: deluxe
+api: Deluxe Payments Platform (DPP)
+note: Deluxe publishes a single flat table of 57 gateway/issuer response codes for the Deluxe Payments Platform.
+  The codes are returned INSIDE a 200 response envelope, in the numeric `responseCode` field (0 = approved) with
+  a human string in `responseMessage` — they are not HTTP status codes and there is no RFC 9457 problem+json body.
+  33 of the 57 codes carry the identical masked message 'REQUEST DECLINED!', so the issuer's real reason is deliberately
+  withheld from the integrator; the remaining 24 name a specific condition. Remediation text in `action` is API
+  Evangelist guidance derived from the published meaning, not Deluxe copy.
+envelope:
+  transport: HTTP 200 with a JSON body
+  code_field: responseCode
+  message_field: responseMessage
+  issuer_auth_field: authResponse
+  correlation_field: requestId
+  success_value: 0
+  problem_json: false
+summary:
+  code_count: 57
+  masked_count: 30
+  named_count: 27
+decline_codes:
+- code: 1000
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1100
+  meaning: INPUT VALIDATION FAILURE
+  masked: false
+  action: Fix the request payload against the API reference and resubmit.
+- code: 1200
+  meaning: PAYMENT METHOD NOT CONFIGURED
+  masked: false
+  action: Contact Deluxe merchant support; the merchant account or payment method is not provisioned for this operation.
+- code: 1201
+  meaning: CONFIGURATION ERROR
+  masked: false
+  action: Contact Deluxe merchant support; the merchant account or payment method is not provisioned for this operation.
+- code: 1202
+  meaning: CONFIGURATION ERROR
+  masked: false
+  action: Contact Deluxe merchant support; the merchant account or payment method is not provisioned for this operation.
+- code: 1300
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1400
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1401
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1402
+  meaning: EXPIRED CARD
+  masked: false
+  action: Ask the cardholder for an updated expiry date or a different card. Do not retry the same card unchanged.
+- code: 1403
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1404
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1405
+  meaning: CONFIGURATION ERROR
+  masked: false
+  action: Contact Deluxe merchant support; the merchant account or payment method is not provisioned for this operation.
+- code: 1406
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1407
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1408
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 2319
+  meaning: CONNECTION ERROR
+  masked: false
+  action: Transient. Retry with exponential backoff and a fresh requestId.
+- code: 1409
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1410
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1411
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1412
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1413
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1414
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1415
+  meaning: INVALID ACCOUNT
+  masked: false
+  action: Collect a different payment method; the account cannot be charged.
+- code: 1416
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1417
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1418
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1419
+  meaning: Account Closed
+  masked: false
+  action: Collect a different payment method; the account cannot be charged.
+- code: 1420
+  meaning: Transaction Not Permitted
+  masked: false
+  action: The operation is not allowed for this account or card product. Use a different payment method.
+- code: 1421
+  meaning: POLICY DENIAL
+  masked: false
+  action: The operation is not allowed for this account or card product. Use a different payment method.
+- code: 1422
+  meaning: DECLINED CALL 8887206822
+  masked: false
+  action: Direct the cardholder to contact their issuing bank; do not retry automatically.
+- code: 1423
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1424
+  meaning: CID FORMAT ERROR
+  masked: false
+  action: Re-collect the card security code from the cardholder and retry once.
+- code: 1425
+  meaning: CVV2 MISMATCH
+  masked: false
+  action: Re-collect the card security code from the cardholder and retry once.
+- code: 1426
+  meaning: SERVICE NOT ALLOWED
+  masked: false
+  action: The operation is not allowed for this account or card product. Use a different payment method.
+- code: 1427
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1428
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1429
+  meaning: PICK UP CARD
+  masked: false
+  action: Do not retry and do not return the card. Treat as a hard decline.
+- code: 1430
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1431
+  meaning: CALL ISSUING BANK
+  masked: false
+  action: Direct the cardholder to contact their issuing bank; do not retry automatically.
+- code: 1432
+  meaning: CLOSED ACCOUNT
+  masked: false
+  action: Collect a different payment method; the account cannot be charged.
+- code: 1433
+  meaning: AMOUNT EXCEEDS LIMIT
+  masked: false
+  action: Split the transaction or ask the cardholder to use another payment method.
+- code: 1434
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1435
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1436
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1437
+  meaning: INCORRECT CVV
+  masked: false
+  action: Re-collect the card security code from the cardholder and retry once.
+- code: 1438
+  meaning: UNABLE TO PROCESS
+  masked: false
+  action: Retry once; if it repeats, collect a different payment method.
+- code: 1439
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1440
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1441
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1442
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1443
+  meaning: REQUEST DECLINED!
+  masked: true
+  action: Generic decline. The real issuer reason is intentionally not disclosed to the merchant or buyer. Do not
+    retry the same instrument; ask for another payment method.
+- code: 1444
+  meaning: INVALID CARD SECURITY CODE
+  masked: false
+  action: Re-collect the card security code from the cardholder and retry once.
+- code: 1445
+  meaning: TRANSACTION AMOUNT EXCEEDS THE HIGH TICKET LIMIT
+  masked: false
+  action: Split the transaction or ask the cardholder to use another payment method.
+- code: 1446
+  meaning: EXPIRED CARD
+  masked: false
+  action: Ask the cardholder for an updated expiry date or a different card. Do not retry the same card unchanged.
+- code: 1447
+  meaning: INVALID ACCOUNT
+  masked: false
+  action: Collect a different payment method; the account cannot be charged.
+- code: 1448
+  meaning: INVALID ACCOUNT
+  masked: false
+  action: Collect a different payment method; the account cannot be charged.
+- code: 1449
+  meaning: ACH/EFT Blacklisted
+  masked: false
+  action: Do not retry. The bank account is blocked for ACH/EFT.

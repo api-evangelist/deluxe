@@ -1,0 +1,26 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zz0k5dhftqqpb-release-notes,
+  https://developer.deluxe.com/
+provider: Deluxe Corporation
+providerId: deluxe
+published: false
+scheme: none
+current_version: v1
+entry_count: 0
+entries: []
+probed:
+  - url: https://docs.deluxe.com/docs/deluxe-payments-platform/zz0k5dhftqqpb-release-notes
+    status: 200
+    finding: 'Page exists and reads in full: "# Release Notes / Check back soon for an update!"'
+  - url: https://developer.deluxe.com/
+    status: 200
+    finding: >-
+      Current developer portal (Deluxe.connect) publishes no changelog, release-notes or what's-new
+      section in its navigation.
+note: >-
+  Deluxe publishes an empty Release Notes page and no dated changelog anywhere on its developer surface.
+  An integrator cannot tell when the DPP APIs last changed, what changed, or whether a change was
+  breaking. This is recorded as a verified zero rather than omitted — the page exists, it just has no
+  content. No ChangeLog pointer is emitted in apis.yml, because there is no changelog to point at.

@@ -1,0 +1,76 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, rubygems.org, api.nuget.org, packagist.org, api.github.com;
+  https://developer.deluxe.com/, https://docs.deluxe.com/
+provider: Deluxe Corporation
+providerId: deluxe
+package_count: 0
+official_package_count: 0
+packages: []
+note: >-
+  Deluxe publishes NO first-party client library for the Deluxe Payments Platform APIs in any public
+  package registry. npm, PyPI, RubyGems, NuGet and Packagist were searched for "deluxe",
+  "deluxe-payments", "dpp-payments" and "deluxe payment exchange" on 2026-08-13; every hit belonged to an
+  unrelated project. There is no Deluxe Corporation GitHub organization publishing payment SDKs (the
+  `d3sw` org on GitHub belongs to Deluxe Entertainment Services Group, a different company, and is not
+  used here). The developer portal ships no SDK or downloads section.
+  NOTE: because there is no first-party SDK, this repo deliberately does NOT carry an `SDKs` pointer in
+  apis.yml.
+searched_registries:
+  - registry: npm
+    endpoint: https://registry.npmjs.org/-/v1/search
+    queries: [deluxe, deluxe-payments, dpp-payments, 'deluxe payment exchange']
+    first_party_hits: 0
+  - registry: pypi
+    endpoint: https://pypi.org/pypi/deluxe/json
+    status: 200
+    first_party_hits: 0
+    note: The `deluxe` PyPI name is taken by an unrelated project, not Deluxe Corporation.
+  - registry: rubygems
+    endpoint: https://rubygems.org/api/v1/gems/deluxe.json
+    status: 404
+    first_party_hits: 0
+  - registry: nuget
+    endpoint: https://api.nuget.org/v3/registration5-semver1/deluxe/index.json
+    status: 404
+    first_party_hits: 0
+  - registry: packagist
+    endpoint: https://packagist.org/search.json?q=deluxe%20payments
+    status: 200
+    first_party_hits: 0
+  - registry: github
+    endpoint: https://api.github.com/search/users?q=deluxe+type:org
+    status: 200
+    first_party_hits: 0
+client_side_distribution:
+  note: >-
+    Deluxe DOES ship browser JavaScript, but only as unpinned script tags from its own hosts, never
+    through a registry. See components/deluxe-components.yml for the two loaders
+    (hostedpaymentform.deluxe.com/iframeLoader.js and payments.deluxe.com/embedded/javascripts/deluxe.js),
+    both recorded with `version: null` because the URLs are unversioned and a consumer cannot tell which
+    build they are getting either.
+integration_paths_published:
+  - name: WordPress plugin
+    kind: platform-plugin
+    docs: https://docs.deluxe.com/docs/dpp-wordpress-plugin
+    registry: null
+    version: null
+    note: Documented on the Deluxe Stoplight workspace; no registry metadata endpoint to query.
+  - name: 'Brickwork for Salesforce (iATS Payments by Deluxe)'
+    kind: platform-app
+    docs: https://docs.deluxe.com/docs/brickwork
+    registry: null
+    version: null
+    note: Native Salesforce application, distributed through Salesforce, not a package registry.
+  - name: iATS Drupal module
+    kind: platform-plugin
+    docs: https://docs.deluxe.com/docs/iats---drupal
+    registry: null
+    version: null
+    note: Documented on the Deluxe Stoplight workspace; no registry metadata endpoint to query.
+  - name: iATS WordPress plugin
+    kind: platform-plugin
+    docs: https://docs.deluxe.com/docs/iats-wordpress-plugin
+    registry: null
+    version: null

@@ -1,0 +1,137 @@
+generated: '2026-08-13'
+method: probed
+source: live HTTPS probes of every apis.yml baseURL host, every OpenAPI servers[] host and the docs/portal hosts
+note: >-
+  Every /.well-known/ path was probed on all six Deluxe hosts and NOT ONE returned a real document.
+  www.deluxe.com and api.deluxe.com return honest 404s. developer.deluxe.com, docs.deluxe.com and
+  payments.deluxe.com answer 200 for every /.well-known/* path with the single-page-app HTML shell
+  (identical byte counts across unrelated paths, content-type text/html) — a catch-all route, not a
+  document. sandbox.api.deluxe.com returned 503 to anonymous requests. Because no path returned a
+  real document, NO WellKnown or SecurityTxt pointer is emitted for this provider; this file records
+  a verified absence.
+hosts:
+  - host: https://www.deluxe.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://api.deluxe.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://sandbox.api.deluxe.com
+    note: anonymous requests are refused at the edge
+    documents:
+      - path: /.well-known/security.txt
+        status: 503
+      - path: /.well-known/openid-configuration
+        status: 503
+      - path: /.well-known/oauth-authorization-server
+        status: 503
+      - path: /.well-known/oauth-protected-resource
+        status: 503
+      - path: /.well-known/api-catalog
+        status: 503
+      - path: /.well-known/ai-plugin.json
+        status: 503
+      - path: /.well-known/agent-card.json
+        status: 503
+      - path: /.well-known/agent.json
+        status: 503
+  - host: https://developer.deluxe.com
+    note: SPA catch-all — every path returns 200 text/html (485 or 5158 bytes), no document
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/openid-configuration
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/api-catalog
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/agent-card.json
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/agent.json
+        status: 200
+        document: false
+        content_type: text/html
+  - host: https://docs.deluxe.com
+    note: Stoplight-hosted docs; every /.well-known/* path returns the docs SPA shell
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        document: false
+      - path: /.well-known/agent-card.json
+        status: 404
+        document: false
+      - path: /.well-known/agent.json
+        status: 404
+        document: false
+  - host: https://payments.deluxe.com
+    note: SPA catch-all — every path returns 200 text/html (1620 bytes), no document
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/agent-card.json
+        status: 200
+        document: false
+        content_type: text/html
+      - path: /.well-known/agent.json
+        status: 200
+        document: false
+        content_type: text/html
+summary:
+  paths_probed: 40
+  real_documents_found: 0
+  security_txt: false
+  agent_card: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  api_catalog: false

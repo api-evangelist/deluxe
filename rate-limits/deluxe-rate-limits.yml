@@ -3,42 +3,57 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Deluxe Corporation
 providerId: deluxe
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developer.deluxe.com/api-ref/api/merchant-services/rootRaml.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/common/commonResponseParameter.json,
+  https://developer.deluxe.com/api-ref/api/merchant-services/common/securityschemasResponseParameter.json,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/en4e8l7er7ckt-error-codes
 created: '2026-05-04'
-modified: '2026-05-05'
-reconciled: false
-notes: Deluxe does not publish a public rate-limit table. Operational limits are set per merchant integration
-  or SaaS subscription and exposed via partner / merchant onboarding documentation behind login. Headers
-  and response codes below are scaffold defaults pending direct doc reconciliation.
+modified: '2026-08-13'
+reconciled: true
+limit_count: 0
+limits: []
 tags:
   - Payments
-  - Payroll
   - Merchant Services
   - Rate Limiting
-description: Per-merchant and per-subscription rate limits set during onboarding rather than self-serve.
-  Standard 4xx / 5xx semantics for throttle and quota signaling are assumed.
-sources:
-  - https://developer.deluxe.com/
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: merchant
-    name: Merchant-Negotiated Limit
-    scope: contract
-    metric: varies
-    limit: 'set per merchant / subscription onboarding'
-    applies:
-      - Deluxe Corporation API
-policies:
-  - name: Per-Merchant Onboarding
-    description: TPS and daily quotas are configured during merchant or SaaS onboarding; defaults are
-      not published publicly.
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring Retry-After when present.
-  - name: PCI Considerations
-    description: Payment APIs require PCI-compliant integration (e.g. tokenization / hosted fields); rate
-      limits are aligned to the gateway's capacity and merchant risk profile.
+description: >-
+  Deluxe publishes NO rate limits for the Deluxe Payments Platform APIs. This replaces a 2026-05-04
+  scaffold that asserted per-merchant negotiated limits and 429/503 response codes; none of that was
+  sourced from Deluxe and it has been removed.
+response_headers:
+  documented: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header appears in any of the three published RAML
+    definitions, the three shared RAML libraries, or the 56 rendered operation parameter documents. The
+    only response headers Deluxe documents at all are the request headers it requires inbound
+    (partnerToken, requestId).
+exhaustion:
+  status_code: null
+  documented: false
+  note: >-
+    429 does not appear anywhere in the published contract. The published error-code table
+    (57 codes) contains no throttling or quota code; 2319 CONNECTION ERROR is the only transient-looking
+    entry and it is described as a connection failure, not a rate limit.
+searched:
+  - url: https://developer.deluxe.com/api-ref/api/merchant-services/rootRaml.json
+    status: 200
+    finding: No rate-limit trait, header or response documented on any of the 37 gateway operations.
+  - url: https://docs.deluxe.com/docs/deluxe-payments-platform/en4e8l7er7ckt-error-codes
+    status: 200
+    finding: 57 gateway/issuer response codes published; none is a rate-limit or quota code.
+  - url: https://docs.deluxe.com/docs/deluxe-payments-platform/mgepg7fjccrmj-frequently-asked-questions
+    status: 200
+    finding: No rate-limit guidance.
+guidance:
+  - >-
+    The only throughput-shaped guidance Deluxe publishes is about token lifetime, not request volume:
+    bearer tokens expire after 60 minutes, should be refreshed at 45 minutes, and an unexpired token
+    will not be reissued — so a client that re-authenticates on every call will simply be handed the
+    same token back.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

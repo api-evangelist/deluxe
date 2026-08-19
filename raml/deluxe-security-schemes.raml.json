@@ -1,0 +1,54 @@
+{
+  "usage": "This library defines the standard security schemes for APIs.",
+  "securitySchemes": {
+    "clientIdEnforcement": {
+      "description": "This API supports Anypoint's Client ID Enforcement authentication policy.\n",
+      "type": "Basic Authentication",
+      "describedBy": {
+        "headers": {
+          "Authorization": {
+            "description": "Used to send the Base64 encoded the client \"id:secret\"\ncredentials\n",
+            "type": "string",
+            "required": true
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized. Either the provided client id and secret\ncombination is invalid, or the client is not allowed to\naccess the content provided by the requested URL.\n"
+          }
+        }
+      }
+    },
+    "oidcEnforcement": {
+      "description": "This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.\n",
+      "type": "OAuth 2.0",
+      "describedBy": {
+        "headers": {
+          "Authorization": {
+            "description": "Used to send a valid OAuth 2 access token.\n",
+            "type": "string",
+            "required": true
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.\n"
+          },
+          "403": {
+            "description": "Forbidden: invalid client application credentials.\n"
+          }
+        }
+      },
+      "settings": {
+        "authorizationUri": "Use IdP's authorization URL.  Not used for Client Credentials or Password grant types.",
+        "accessTokenUri": "Use IdP's token URL.",
+        "authorizationGrants": [
+          "authorization_code",
+          "client_credentials",
+          "implicit",
+          "password"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DPP Invoice Experience API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Draft Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/invoices",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates draft invoice using customer details, billing information, and optional shipping data. Line items such as sale item name, price, and quantity are required along with payment terms like due days or discounts. Draft invoices allow merchants to review and edit before publishing, ensuring accuracy. This endpoint is the first step in generating a professional, standardized invoice aligned with predefined invoice configurations.\n> **Note:** An active invoice configuration is required before yo"
+        },
+        {
+          "info": {
+            "name": "Get Specific Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/:invoiceId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter invoiceId."
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific invoice using its invoiceId. The response includes billing and shipping addresses, items, totals, discounts, payment terms, and current status. If payment is made, details are also included. This endpoint is key for auditing, reporting, and customer inquiries."
+        },
+        {
+          "info": {
+            "name": "Modify Invoice Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/:invoiceId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter invoiceId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates details of an existing draft invoice using its `invoiceId`. Merchants can adjust billing, shipping, customer information, line items, and payment terms. This ensures invoice accuracy before publishing. Useful when customer details change or corrections are needed after initial creation."
+        },
+        {
+          "info": {
+            "name": "Modify Invoice Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/:invoiceId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter invoiceId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows merchants to **publish** or **cancel** a draft invoice using its `invoiceId`. Publishing makes it visible to customers, while canceling removes drafts that are no longer valid. This helps maintain accurate records and prevents unintended distribution of invoices."
+        },
+        {
+          "info": {
+            "name": "Search Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/search",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables merchants to find invoices using filters like date ranges, invoiceId, customerId, and status. This is useful for audits, reporting, overdue payment tracking, or quickly locating invoices during customer support inquiries. It reduces manual searches and improves operational efficiency."
+        },
+        {
+          "info": {
+            "name": "Share Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/share",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows invoices to be shared with customers via email, SMS, or both. This ensures customers are promptly notified and can easily access their invoices. Sharing supports better communication, reduces missed payments, and enhances customer satisfaction."
+        },
+        {
+          "info": {
+            "name": "Clone Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/clone",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a duplicate of an existing invoice using its invoiceId. The cloned invoice includes all original details but is saved in draft status, allowing edits before publishing. This is particularly useful for recurring customers or repeat orders, reducing manual entry and errors."
+        },
+        {
+          "info": {
+            "name": "Download Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/download/:invoiceId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter invoiceId."
+              }
+            ]
+          },
+          "docs": "Retrieves an invoice as a Base64-encoded string, which can be decoded into a PDF. This ensures customers receive professional, printable documents suitable for storage, sharing, and compliance purposes."
+        },
+        {
+          "info": {
+            "name": "Get Invoice Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/configuration",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ]
+          },
+          "docs": "Retrieves current configuration details for a merchant, including branding preferences, reminders, and invoice enablement status. This ensures merchants can review or validate settings applied to all generated invoices."
+        },
+        {
+          "info": {
+            "name": "Create Invoice Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/configuration",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows merchants to set up invoice configurations, including merchant details, branding, payment reminders, due days, colors, logos, and display options. A configuration must be created before generating invoices, ensuring standardization and professionalism across all invoices."
+        },
+        {
+          "info": {
+            "name": "Modify Invoice Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.deluxe.com/dpp/v1/invoices/configuration/:configurationId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "configurationId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter configurationId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify an existing configuration using configurationId. Merchants can revise merchant details, logos, colors, reminders, display preferences, and enable/disable invoice generation. This ensures configurations remain aligned with branding and policy changes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

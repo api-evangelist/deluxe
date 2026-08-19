@@ -1,0 +1,767 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DPP Gateway Experience API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Payments resource in the API is a comprehensive service that manages essential payment operations, processing sales, handling recurring payments, authorizing transactions, capturing funds, and voiding payments. This resource ensures seamless and secure payment processing, supporting various transaction types and providing the necessary flexibility for managing payment workflows efficiently."
+        },
+        {
+          "info": {
+            "name": "Cancel Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments/cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this API to cancel a payment that is still in process and has not yet been settled. This endpoint is typically used to void transactions on the same day they are initiated, before the batch closure occurs. By utilizing this API, you can halt a payment before it enters the settlement phase, effectively preventing the transfer of funds. This is particularly useful in scenarios where a payment needs to be stopped due to errors, cancellations, or changes in the transaction."
+        },
+        {
+          "info": {
+            "name": "Authorize Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments/authorize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits a payment authorization request to reserve the specified amount on the customer's payment method. This authorization process ensures that the funds are available but does not complete the transaction until a capture is performed. The endpoint supports authorizations using a direct card, a tokenized payment method, or a card stored in a secure vault. This process is crucial for scenarios where the payment needs to be confirmed or adjusted before finalizing the charge."
+        },
+        {
+          "info": {
+            "name": "Complete Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments/complete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this API to finalize a previously authorized payment or to add a tip to the original transaction. This endpoint allows you to capture or complete an amount that is either equal to or less than the initially authorized amount. Partial captures are supported, enabling flexibility in payment processing. Any remaining authorized funds that are not captured will be automatically released by the bank after a specified period. This feature is particularly useful for scenarios like tip adjustments o"
+        },
+        {
+          "info": {
+            "name": "Search Payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint is used to search and retrieve a list of payments, providing details about each payment for a given data range. The response indicates whether the search was successful or if there were errors or validation issues."
+        },
+        {
+          "info": {
+            "name": "Create Batch Payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/payments/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Create Batch Payments end point allows you to send multiple transctions in a single API call and process all of them in single batch in a given date. This feature is useful for processing multiple payment transactions in one batch."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "emv",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "EMV Payments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/emv/payment",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a sale or authorization on a physical EMV device by sending the ``deviceId``, ``amount``, and a ``callbackUrl``. The terminal processes the transaction and returns a simple in‑API response, while the detailed transaction result is delivered to the callback URL. Use this endpoint for chip‑based, card‑present transactions on supported devices.\n\nBegin your integration with the Overview and Get Started pages under **API Reference > EMV Payments**, accessible through the main menu via **Pay"
+        },
+        {
+          "info": {
+            "name": "EMV Refunds",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/emv/refund",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a stand‑alone refund on a physical EMV device by providing the ``deviceId``, ``amount``, and a ``callbackUrl``. The terminal processes the refund and returns a simple in‑API response, while the detailed transaction result is sent to your callback URL. Use this endpoint to handle chip‑based, card‑present refund transactions on supported devices.\n\nBegin your integration with the Overview and Get Started pages under **API Reference > EMV Payments**, accessible through the main menu via **"
+        },
+        {
+          "info": {
+            "name": "EMV Devices List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/emv/devices"
+          },
+          "docs": "Retrieves a list of all devices associated with the partnerToken provided in the request."
+        },
+        {
+          "info": {
+            "name": "EMV Device Refresh By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/emv/devices/:deviceId/refresh",
+            "params": [
+              {
+                "name": "deviceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter deviceId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refreshes the device of the specified deviceId along with the associated partnerToken provided in the request."
+        },
+        {
+          "info": {
+            "name": "EMV Device Details By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/emv/devicedetails/:deviceId",
+            "params": [
+              {
+                "name": "deviceId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter deviceId."
+              }
+            ]
+          },
+          "docs": "Retrieves the details of the specified deviceId along with the associated partnerToken provided in the request."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "refunds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Refund",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/refunds",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Processes refunds through a single endpoint supporting multiple use cases. For standard refunds, provide the paymentId and refund amount. For standalone refunds, specify the refund amount and payment method details, such as card information (cardNumber, expirationDate, CVV) or ACH/Credit details (accountNumber, routingNumber, accountType). For vault refunds, use the paymentMethodId of a stored payment method along with the refund amount. This endpoint ensures flexibility and secure handling of a"
+        },
+        {
+          "info": {
+            "name": "Create Batch Refunds",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/refunds/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Batch refund end point allows you to send multiple refund or credit transctions in a single API call. This feature is useful when processing multiple refunds in one batch."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/subscriptions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint creates a new subscription for a customer with the specified payment and billing details. You need to provide the following information payment type, amount (including currency), payment method (such as credit card details and billing address), and subscription details (such as start and end dates, frequency, and payment schedule). Additionally, you can specify shipping address, tax information, itemized details (Level 2 and Level 3 data), custom data, merchant category, and an"
+        },
+        {
+          "info": {
+            "name": "Modify Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.deluxe.com/dpp/v1/subscriptions/:subscriptionId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter subscriptionId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint modifies an existing subscription identified by the subscriptionId passed in the URL. You must provide the customer’s ID, the payment method ID, and updated subscription details including frequency, paymentDay, startDate, endDate, paymentMonth, amount, and active. Upon successful modification, the subscription is updated accordingly, and a confirmation with the updated details is returned."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "paymentmethods",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint allows you to create a new payment method for a customer. You need to provide details including a nickname for the payment method, its active status, ACH information (such as account number and routing number), and the billing address. Additionally, you must specify the customer ID associated with the payment method. The API will store these details securely for future transactions."
+        },
+        {
+          "info": {
+            "name": "Modify Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/:paymentMethodId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "paymentMethodId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter paymentMethodId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint allows you to update an existing payment method for a customer. You can modify details such as the payment method nickname, its active status, ACH information (including account number and routing number), and the billing address. Additionally, you need to provide the customer ID to identify which payment method to update. The API ensures that all changes are applied securely to the specified payment method."
+        },
+        {
+          "info": {
+            "name": "Generate Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint generates a secure token for a payment method, which can be used for future transactions without storing sensitive payment details directly. The input requires credit card information, including the card number, expiry date, and CVV. The API responds with a token that represents the payment method, along with a response code, payment ID, and request ID. This token can then be used in subsequent API calls to process payments securely."
+        },
+        {
+          "info": {
+            "name": "Verify Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/avs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates an Address Verification Service (AVS) check for the provided billing address.This request will validate the address details (e.g., street address, zip code) and return a response indicating whether the address matches the records on file with the payment provider."
+        },
+        {
+          "info": {
+            "name": "Verify ACH",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/verification/ach",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates an ACH Verification"
+        },
+        {
+          "info": {
+            "name": "Check Surcharge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/surcharge",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint allows you to verify the surcharge associated to merchant for the given payment methods such as card, token, vault and cryptogram. The input requires a payment method and optional amount and currency and you will get surcharge rate/percentage and surcharge amount in response. This will help merchants to check the applicable surcharge rate before actual transaction."
+        },
+        {
+          "info": {
+            "name": "BIN Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/paymentmethods/binlookup",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "bin",
+                "value": "411111",
+                "type": "query",
+                "description": "BIN used to retrieve details."
+              }
+            ]
+          },
+          "docs": "Verify BIN lookup retrieves details by passing the first 6 to 8 digits of the card number. It returns information such as whether the cardholder is eligible for Level 2 or Level 3 surcharges, the card type, brand, and country."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All Customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/customers"
+          },
+          "docs": "The Get Customers API retrieves a list of all customers along with their associated details. Each customer record includes basic information such as name, address, contact details, and email. Additionally, the response provides information about the customer’s shipping address, payment methods stored in the vault, and any active subscriptions. Payment methods include details like card type, masked PAN, and account information, while subscription details include the start and end dates, frequency"
+        },
+        {
+          "info": {
+            "name": "Create Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/customers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Create Customer API allows you to add a new customer to the system by providing their personal and contact information, including name, address, phone number, and email. Additionally, you can also crate a payment method using card, ACH, token, ACHToken and Cryptograms while creating customer with optional billing address details."
+        },
+        {
+          "info": {
+            "name": "Get Specific Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/customers/:customerId",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter customerId."
+              }
+            ]
+          },
+          "docs": "This API retrieves the details of a specific customer using their unique identifier, including name, address, contact details, and email. It also returns the customer's shipping address, stored payment methods, and any active subscriptions. Payment methods include details such as card type, masked PAN, and account information, while subscription details cover start and end dates, frequency, and status."
+        },
+        {
+          "info": {
+            "name": "Modify Specific Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.deluxe.com/dpp/v1/customers/:customerId",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter customerId."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Modify Customer API allows you to update the details of an existing customer. You can modify the customer’s personal information, such as their first and last name, address, phone number, and email. This ensures that all customer records remain accurate and up-to-date."
+        },
+        {
+          "info": {
+            "name": "Delete Specific Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.deluxe.com/dpp/v1/customers/:customerId",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter customerId."
+              }
+            ]
+          },
+          "docs": "Deletes the customer identified by the given customer ID and permanently removes all associated records, including personal details,contact information,email,payment methods and subscriptions.\n>**Note:**\n> - The customer will be permanently removed from the Vault.\n> - All upcoming payments will be cancelled.\n> - All associated transactions will no longer be linked to the customer.\n> - Perform an impact or dependency check before deletion using the endpoint:\"https://api.deluxe.com/dpp/v1/customer"
+        },
+        {
+          "info": {
+            "name": "Get Customer's Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.deluxe.com/dpp/v1/customers/:customerId/paymentmethods/:paymentMethodId",
+            "headers": [
+              {
+                "name": "partnerToken",
+                "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+              },
+              {
+                "name": "requestId",
+                "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+              }
+            ],
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter customerId."
+              },
+              {
+                "name": "paymentMethodId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter paymentMethodId."
+              }
+            ]
+          },
+          "docs": "This API endpoint allows you to get an existing payment method for a customer. The payment details such as orderId, batchNumber, SubscriptionId (if applicable), fee, token details, account response data, paymentId etc details can be seen as part of this response."
+        },
+        {
+          "info": {
+            "name": "Delete Customer's Payment Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.deluxe.com/dpp/v1/customers/:customerId/paymentmethods/:paymentMethodId",
+            "params": [
+              {
+                "name": "customerId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter customerId."
+              },
+              {
+                "name": "paymentMethodId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter paymentMethodId."
+              },
+              {
+                "name": "forceDelete",
+                "value": "true",
+                "type": "query",
+                "description": "Indicates whether the payment method should be deleted forcefully. When set to true, the payment method will be deleted even if there are associated upcoming or recurring payments."
+              }
+            ]
+          },
+          "docs": "Delete an existing payment method for a customer.All upcoming payments linked to this payment method will also be deleted.\n> **Note:** \n> - Once a payment method is deleted, all the upcoming payments linked to that payment method will be deleted. \n> - To modify a payment method use \"https://api.deluxe.com/dpp/v1/paymentmethods/{paymentMethodId}\""
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "batches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Close Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/batches",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Close Batch API endpoint finalizes and closes a transaction batch, sending notifications based on the provided email addresses. Input includes emails for success notifications, failure notifications, and general notifications to ensure relevant stakeholders are informed of the batch status."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "paymentlinks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Payment Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/paymentlinks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Create Payment Link API endpoint generates a customized URL that can be shared with customers to accept online payments. It allows the specification of payment details, customer information, order data, itemized purchases, and additional custom data. The generated payment link can be configured with various options like payment method acceptance, billing, and contact requirements. The link can be sent to the customer via email and includes a personalized confirmation message. Upon successful"
+        },
+        {
+          "info": {
+            "name": "Delete Payment Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.deluxe.com/dpp/v1/paymentlinks/:paymentLinkId",
+            "params": [
+              {
+                "name": "paymentLinkId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter paymentLinkId."
+              }
+            ]
+          },
+          "docs": "The Delete Payment Link operation allows you to remove an existing payment link that is no longer needed. This action permanently deletes the specified payment link."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Subscribe Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/events/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to subscribe to specific events by providing a URL where event notifications will be sent. Upon successful subscription, you will receive notifications based on the specified event types at the provided webhook URL."
+        },
+        {
+          "info": {
+            "name": "Unsubscribe Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/events/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows you to unsubscribe from specific events by providing the associated subscription details, including the email address and eventSubscriptionId. Upon successful unsubscription, you will no longer receive notifications for the specified events."
+        },
+        {
+          "info": {
+            "name": "Resend Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/events/resend",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The Resend Event API endpoint allows you to resend a previously triggered event, enabling the system to reprocess the event's associated actions or notifications. This is useful for scenarios where the original event processing may have failed or needs to be re-triggered for verification purposes."
+        },
+        {
+          "info": {
+            "name": "Retrieve Events Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/events/report",
+            "params": [
+              {
+                "name": "pageNumber",
+                "value": "1",
+                "type": "query",
+                "description": "Specifies the page of results to retrieve. This is useful for navigating large datasets by retrieving data in manageable chunks."
+              },
+              {
+                "name": "pageSize",
+                "value": "1",
+                "type": "query",
+                "description": "Defines the number of records to be returned in a single response. This helps control response size and optimize performance."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This call is related to reports for different kinds of webhooks such as Merchant Boarded, Merchant Updated, CC Batch, ACH Batch, ACH Reject, Vault, CC chargeback. The result has all kinds of webhooks requests and responses along with their report statuses."
+        },
+        {
+          "info": {
+            "name": "Perform Test Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.deluxe.com/dpp/v1/events/performTest",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint allows you to test the webhook endpoint. This endpoint posts a sample/test data as payload based on the webhook type to the URL provided in the request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

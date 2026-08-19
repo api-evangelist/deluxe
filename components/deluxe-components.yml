@@ -1,0 +1,116 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.deluxe.com/docs/deluxe-payments-platform/kr826m000tv9k-hosted-payment-forms,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/jonapyivx2673-embedded-payments,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/nyi73upymbxi5-sale-using-cryptogram
+provider: Deluxe Corporation
+providerId: deluxe
+note: >-
+  Deluxe ships two client-side, browser-embeddable payment surfaces. Both are distributed as unpinned
+  script tags from Deluxe-operated hosts — there is no npm/CDN package, no version in the URL, and no
+  integrity attribute, so an integrator cannot tell which build they are loading. Both URLs were probed
+  live on 2026-08-13 and returned 200 application/javascript.
+families:
+  - name: Hosted Payment Form (HPF)
+    kind: hosted-iframe
+    description: >-
+      "The HPF is a Javascript that creates an iFrame that is hosted on the gateway platform to minimize
+      the risk of sensitive information theft." Its purpose is to keep the merchant out of PCI DSS scope
+      by collecting card data inside a Deluxe-served iframe.
+    operations:
+      - name: Generate Cryptogram
+        description: >-
+          Creates a cryptogram representing the payment information, usable to complete a transaction.
+          "A cryptogram is tokenized payment information that expires in 15 minutes and is a one-time use
+          only token. It is not to be confused by the payment token generated using other API calls."
+      - name: Create Vault
+        description: >-
+          Creates a customer vault usable for later recurring payments such as subscriptions or
+          memberships.
+    loaders:
+      - environment: production
+        url: https://hostedpaymentform.deluxe.com/iframeLoader.js
+        probed_status: 200
+        version: null
+        version_note: >-
+          Unpinned. The URL carries no version and no integrity hash; the served bundle floats to
+          whatever Deluxe deploys. Probed 2026-08-13 at 7156 bytes.
+      - environment: sandbox
+        url: https://hostedform2.deluxe.com/iframeLoader.js
+        probed_status: 200
+        version: null
+        version_note: Unpinned. Probed 2026-08-13 at 7150 bytes.
+    configuration:
+      mechanism: data-* attributes on the script tag
+      required_attributes:
+        - name: data-xtoken
+          type: string
+          description: Access token created for use with the Deluxe Payment REST API.
+        - name: data-xapp
+          type: string
+          description: Id of application registered with DPP.
+        - name: data-xrtype
+          type: string
+          description: 'Operation type: "Create Vault" or "Generate Cryptogram".'
+      optional_attributes:
+        - name: data-xautoprompt
+          type: boolean
+          description: Enables an automatic submit prompt.
+    security_note: >-
+      Deluxe recommends serving the HPF only from pages delivered over HTTPS; all form submissions are
+      made over HTTPS.
+  - name: Embedded Payments
+    kind: javascript-sdk
+    description: >-
+      A JavaScript SDK that renders a full Deluxe checkout panel into a merchant-supplied DIV, keeping
+      the buyer on the merchant's site. Card fields are served in Deluxe iFrames, removing PCI scope
+      from the merchant. Supports cards, digital wallets, product display and recurring payments.
+    loaders:
+      - environment: production
+        url: https://payments.deluxe.com/embedded/javascripts/deluxe.js
+        probed_status: 200
+        version: null
+        version_note: Unpinned. Probed 2026-08-13 at 68419 bytes.
+      - environment: sandbox
+        url: https://payments2.deluxe.com/embedded/javascripts/deluxe.js
+        probed_status: 200
+        version: null
+        version_note: Unpinned. Probed 2026-08-13 at 68420 bytes.
+    mount_point: '<div id="embeddedpayments"></div>'
+    authentication: >-
+      A JSON Web Token signed with a shared secret, carrying the transaction details (amount, reference).
+      Access token, security key and the signing secret are issued by the Deluxe integrations team
+      (isvinquiries@deluxe.com).
+    api:
+      - method: EmbeddedPayments.init(jwt, options)
+        description: Initialize the payment panel with a signed JWT and configuration options.
+      - method: EmbeddedPayments.render(options)
+        description: Render the payment panel, passing styling options.
+      - method: EmbeddedPayments.pay(jwt)
+        description: Programmatically initiate payment.
+      - method: EmbeddedPayments.onTxnSuccess(cb)
+        description: Callback fired when a payment succeeds.
+      - method: EmbeddedPayments.onTxnFailed(cb)
+        description: Callback fired when a payment fails.
+      - method: EmbeddedPayments.onTxnCancelled(cb)
+        description: Callback fired when a payment is cancelled.
+      - method: EmbeddedPayments.onValidationError(cb)
+        description: Callback fired on a payment validation error.
+    customization:
+      - Colors and theming
+      - Show/hide panels (products, addresses)
+      - Product display for pre-payment confirmation
+      - Digital wallet support when enabled on the merchant account
+summary:
+  family_count: 2
+  loader_count: 4
+  registry_distributed: false
+  pinned_versions: 0
+gaps:
+  - No npm, jsDelivr or unpkg distribution — the components exist only as unpinned first-party script URLs.
+  - No Subresource Integrity hash published for either loader.
+  - No published version, build number or component changelog.
+  - >-
+    Deluxe's own Embedded Payments guide still contains unfinished authoring notes ("(link to tables)",
+    "(support info - will also provide information on steps for setting up production URL)").

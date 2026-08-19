@@ -1,0 +1,2789 @@
+{
+  "item": [
+    {
+      "id": "029b7442-b1af-4b0f-a154-5f60f8305d73",
+      "name": "invoices",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "79aec071-0cae-4409-8267-25edf5940829",
+          "name": "Create Draft Invoice",
+          "request": {
+            "name": "Create Draft Invoice",
+            "description": {
+              "content": "Creates draft invoice using customer details, billing information, and optional shipping data. Line items such as sale item name, price, and quantity are required along with payment terms like due days or discounts. Draft invoices allow merchants to review and edit before publishing, ensuring accuracy. This endpoint is the first step in generating a professional, standardized invoice aligned with predefined invoice configurations.\n> **Note:** An active invoice configuration is required before you can start creating invoices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billingAddress\": {\n    \"address\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"website\": \"<string>\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": \"<integer>\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    }\n  ],\n  \"total\": {\n    \"currency\": \"<string>\",\n    \"discountRate\": \"0.00\"\n  },\n  \"customerId\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"shippingAddress\": {\n    \"shippingMethod\": \"<string>\"\n  },\n  \"customData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ba6b977c-d653-41c6-b6ca-23321fe1ca8e",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": 515365,\n  \"orderId\": 1231245,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"AlanKent@cmail.com\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"123 main st\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxe.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Pen\",\n      \"price\": \"2.49\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"ball\",\n      \"price\": \"4.99\",\n      \"quantity\": 100\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"message\",\n      \"value\": \"Thanks for the order\"\n    },\n    {\n      \"name\": \"Custome Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 14843,\n  \"responseMessage\": \"Invoice created successfully.\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb13efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "339d345d-5f01-412f-9bc0-45f25fc5f49c",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": 515365,\n  \"orderId\": 1231245,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"AlanKent@cmail.com\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"123 main st\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxe.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Pen\",\n      \"price\": \"2.49\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"ball\",\n      \"price\": \"4.99\",\n      \"quantity\": 100\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"message\",\n      \"value\": \"Thanks for the order\"\n    },\n    {\n      \"name\": \"Custome Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "db82fef4-2914-4cdb-8668-75f35649fd0c",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customerId\": 515365,\n  \"orderId\": 1231245,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"AlanKent@cmail.com\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"123 main st\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxe.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Pen\",\n      \"price\": \"2.49\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"ball\",\n      \"price\": \"4.99\",\n      \"quantity\": 100\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"message\",\n      \"value\": \"Thanks for the order\"\n    },\n    {\n      \"name\": \"Custome Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1d1eb2c5-a2a2-4d76-bb55-e2eaee256b83",
+          "name": "Modify Invoice Details",
+          "request": {
+            "name": "Modify Invoice Details",
+            "description": {
+              "content": "Updates details of an existing draft invoice using its `invoiceId`. Merchants can adjust billing, shipping, customer information, line items, and payment terms. This ensures invoice accuracy before publishing. Useful when customer details change or corrections are needed after initial creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                ":invoiceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "invoiceId",
+                  "description": "(Required) Path parameter invoiceId."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billingAddress\": {\n    \"address\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"website\": \"<string>\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": \"<integer>\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    }\n  ],\n  \"total\": {\n    \"currency\": \"<string>\",\n    \"discountRate\": \"0.00\"\n  },\n  \"customerId\": \"<integer>\",\n  \"orderId\": \"<integer>\",\n  \"shippingAddress\": {\n    \"shippingMethod\": \"<string>\"\n  },\n  \"customData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2914540b-b85d-45ff-a914-c11e6a476d29",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"10000032\",\n  \"customerId\": 515365,\n  \"orderId\": 12312345,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"sampath@cmail.com\",\n    \"website\": \"www.deluxbill.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxship.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Product one\",\n      \"price\": \"12.50\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"Product two\",\n      \"price\": \"3.99\",\n      \"quantity\": 52\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"Invoice Number\",\n      \"value\": \"inv1234\"\n    },\n    {\n      \"name\": \"Custom Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 14843,\n  \"responseMessage\": \"Invoice updated successfully.\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb13efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "615ce6f6-a7c6-4699-a1f1-d2bc2ce990a2",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"10000032\",\n  \"customerId\": 515365,\n  \"orderId\": 12312345,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"sampath@cmail.com\",\n    \"website\": \"www.deluxbill.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxship.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Product one\",\n      \"price\": \"12.50\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"Product two\",\n      \"price\": \"3.99\",\n      \"quantity\": 52\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"Invoice Number\",\n      \"value\": \"inv1234\"\n    },\n    {\n      \"name\": \"Custom Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6ae94054-c3ee-4513-9a26-bb3d199e469e",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"10000032\",\n  \"customerId\": 515365,\n  \"orderId\": 12312345,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"sampath@cmail.com\",\n    \"website\": \"www.deluxbill.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+1 123-456-7890\",\n    \"fax\": \"+44-208-1234567\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxship.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Product one\",\n      \"price\": \"12.50\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"Product two\",\n      \"price\": \"3.99\",\n      \"quantity\": 52\n    }\n  ],\n  \"total\": {\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 1\n  },\n  \"customData\": [\n    {\n      \"name\": \"Invoice Number\",\n      \"value\": \"inv1234\"\n    },\n    {\n      \"name\": \"Custom Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74c031c8-e061-4f4e-b97a-f58f78fe5dd9",
+          "name": "Modify Invoice Status",
+          "request": {
+            "name": "Modify Invoice Status",
+            "description": {
+              "content": "Allows merchants to **publish** or **cancel** a draft invoice using its `invoiceId`. Publishing makes it visible to customers, while canceling removes drafts that are no longer valid. This helps maintain accurate records and prevents unintended distribution of invoices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                ":invoiceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "invoiceId",
+                  "description": "(Required) Path parameter invoiceId."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceStatus\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b78c3f95-dd94-4ab6-b4d4-2c76442b548f",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceStatus\": \"PUBLISH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 4321,\n  \"responseMessage\": \"Invoice published successfully.\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb13efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4732603c-e927-4f6b-b6d4-103574790e85",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceStatus\": \"PUBLISH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "854b5b88-78b5-40e3-ad88-0f250df41745",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceStatus\": \"PUBLISH\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db0ebbfc-12c6-45e9-813e-89b153246c16",
+          "name": "Get Specific Invoice",
+          "request": {
+            "name": "Get Specific Invoice",
+            "description": {
+              "content": "Retrieves details of a specific invoice using its invoiceId. The response includes billing and shipping addresses, items, totals, discounts, payment terms, and current status. If payment is made, details are also included. This endpoint is key for auditing, reporting, and customer inquiries.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                ":invoiceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "invoiceId",
+                  "description": "(Required) Path parameter invoiceId."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ee4bf431-1875-40b4-8ce7-d2d4ba45790e",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 21599,\n  \"invoiceNumber\": \"100000132\",\n  \"createdDate\": \"12/16/2024\",\n  \"invoiceStatus\": \"DRAFT\",\n  \"invoicePublishedDate\": \"12/16/2024\",\n  \"customerId\": 515365,\n  \"orderId\": 1231245,\n  \"billingAddress\": {\n    \"firstName\": \"Alan\",\n    \"lastName\": \"kent\",\n    \"address\": \"588 Delaware Avenue\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+11234567890\",\n    \"fax\": \"+11234567890\",\n    \"email\": \"AlanKent@cmail.com\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"shippingAddress\": {\n    \"firstName\": \"Bob\",\n    \"lastName\": \"murphy\",\n    \"address\": \"123 main st\",\n    \"address2\": \"Houston\",\n    \"city\": \"Bris\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"94005\",\n    \"phone\": \"+14085551234\",\n    \"fax\": \"+14085551234\",\n    \"email\": \"bobmurphy@cmail.com\",\n    \"website\": \"www.deluxe.com\",\n    \"shippingMethod\": \"Courier\"\n  },\n  \"saleItems\": [\n    {\n      \"detailId\": 1,\n      \"name\": \"Pen\",\n      \"price\": \"2.49\",\n      \"quantity\": 100\n    },\n    {\n      \"detailId\": 2,\n      \"name\": \"ball\",\n      \"price\": \"4.99\",\n      \"quantity\": 100\n    }\n  ],\n  \"total\": {\n    \"amount\": \"730.30\",\n    \"discountRate\": \"2.50\",\n    \"currency\": \"USD\"\n  },\n  \"paymentTerms\": {\n    \"dueDays\": 5,\n    \"dueDate\": \"12/21/2024\",\n    \"latePenaltyRate\": \"1.50\",\n    \"paymentLinkId\": \"6ff4e445-6aae-4c25-bc55-1348435145c2\"\n  },\n  \"paymentDetails\": [\n    {\n      \"amount\": \"400.00\",\n      \"date\": \"02/15/2025\",\n      \"paymentId\": \"2b5c68f9-4a11-a553-d140-daacaf559851\"\n    }\n  ],\n  \"customData\": [\n    {\n      \"name\": \"message\",\n      \"value\": \"Thanks for the order\"\n    },\n    {\n      \"name\": \"Custome Name\",\n      \"value\": \"Custome Value\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12ceb571-c003-4106-8bf3-9c81659aee22",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "68aac9f6-fbba-498a-ac14-d8c7a9d49bad",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36758d4a-603c-47d2-af6e-3793f4116989",
+          "name": "Search Invoice",
+          "request": {
+            "name": "Search Invoice",
+            "description": {
+              "content": "Enables merchants to find invoices using filters like date ranges, invoiceId, customerId, and status. This is useful for audits, reporting, overdue payment tracking, or quickly locating invoices during customer support inquiries. It reduces manual searches and improves operational efficiency.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromDueDate\": \"<string>\",\n  \"toDueDate\": \"<object>\",\n  \"invoiceNumber\": \"<string>\",\n  \"invoiceStatus\": [\n    \"<string>\"\n  ],\n  \"pageSize\": \"<integer>\",\n  \"pageNumber\": \"<integer>\",\n  \"searchString\": \"<string>\",\n  \"customerId\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1acd3762-4762-4770-9c51-0d6eaa076c4d",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"100000163\",\n  \"invoiceStatus\": [\n    \"DRAFT\"\n  ],\n  \"pageSize\": 20,\n  \"pageNumber\": 55,\n  \"searchString\": \"narayana\",\n  \"fromDueDate\": \"01/20/2025\",\n  \"toDueDate\": \"02/20/2025\",\n  \"customerId\": 12345\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"invoiceId\": 21951,\n    \"invoiceNumber\": \"100000384\",\n    \"invoiceStatus\": \"DRAFT\",\n    \"createdDate\": \"01/31/2025\",\n    \"dueDate\": \"02/01/2025\",\n    \"invoiceAmount\": \"24.65\",\n    \"isLatePaymentFee\": false,\n    \"customerId\": 1347,\n    \"firstName\": \"Alan\",\n    \"lastName\": \"A.Leclairdgd\",\n    \"email\": \"test@deluxe.com\",\n    \"phone\": \"6505551234\"\n  },\n  {\n    \"invoiceId\": 21950,\n    \"invoiceNumber\": \"100000383\",\n    \"invoiceStatus\": \"PAID\",\n    \"createdDate\": \"01/31/2025\",\n    \"dueDate\": \"02/05/2025\",\n    \"invoiceAmount\": \"61.30\",\n    \"isLatePaymentFee\": false,\n    \"customerId\": 0,\n    \"firstName\": \"harsha\",\n    \"lastName\": \"bharule\",\n    \"email\": \"narayana@email.com\",\n    \"phone\": \"6105657845\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72886984-c361-4d6a-8fdc-27b2e356393f",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"100000163\",\n  \"invoiceStatus\": [\n    \"DRAFT\"\n  ],\n  \"pageSize\": 20,\n  \"pageNumber\": 55,\n  \"searchString\": \"narayana\",\n  \"fromDueDate\": \"01/20/2025\",\n  \"toDueDate\": \"02/20/2025\",\n  \"customerId\": 12345\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8fd02265-6318-4e8e-9de2-819c25707fcc",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceNumber\": \"100000163\",\n  \"invoiceStatus\": [\n    \"DRAFT\"\n  ],\n  \"pageSize\": 20,\n  \"pageNumber\": 55,\n  \"searchString\": \"narayana\",\n  \"fromDueDate\": \"01/20/2025\",\n  \"toDueDate\": \"02/20/2025\",\n  \"customerId\": 12345\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5be68e69-0301-4d0e-b8bb-6586246309a0",
+          "name": "Share Invoice",
+          "request": {
+            "name": "Share Invoice",
+            "description": {
+              "content": "Allows invoices to be shared with customers via email, SMS, or both. This ensures customers are promptly notified and can easily access their invoices. Sharing supports better communication, reduces missed payments, and enhances customer satisfaction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "share"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deliveryMethod\": {\n    \"email\": \"<string>\",\n    \"phone\": \"<string>\"\n  },\n  \"invoiceId\": \"<integer>\",\n  \"invoiceNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "34871e58-44c6-465d-ae0a-19e9c8ed7bc4",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321,\n  \"invoiceNumber\": \"INV1000234\",\n  \"deliveryMethod\": {\n    \"email\": \"jane@email.com\",\n    \"phone\": \"+918272372381\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 4321,\n  \"responseMessage\": \"Invoice shared successfully.\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb13efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8242a554-39ef-48ec-9ac2-b9178318f329",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321,\n  \"invoiceNumber\": \"INV1000234\",\n  \"deliveryMethod\": {\n    \"email\": \"jane@email.com\",\n    \"phone\": \"+918272372381\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e4287f8f-4e25-40c2-a78a-625b23f8acbe",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321,\n  \"invoiceNumber\": \"INV1000234\",\n  \"deliveryMethod\": {\n    \"email\": \"jane@email.com\",\n    \"phone\": \"+918272372381\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6addb365-3955-479a-8a6b-e77cbf525353",
+          "name": "Clone Invoice",
+          "request": {
+            "name": "Clone Invoice",
+            "description": {
+              "content": "Creates a duplicate of an existing invoice using its invoiceId. The cloned invoice includes all original details but is saved in draft status, allowing edits before publishing. This is particularly useful for recurring customers or repeat orders, reducing manual entry and errors.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "clone"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceId\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05a47a78-af79-4f94-8051-ca3d8035f975",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "clone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 14843,\n  \"responseMessage\": \"Invoice is cloned successfully.\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb13efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab695cd1-e163-4266-992d-4b37107b31c9",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "clone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f520a262-bc7d-4b65-ba16-f106fa76cb76",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "clone"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"invoiceId\": 4321\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad7f2c4e-1a02-41dd-9959-a4d1d1617369",
+          "name": "Download Invoice",
+          "request": {
+            "name": "Download Invoice",
+            "description": {
+              "content": "Retrieves an invoice as a Base64-encoded string, which can be decoded into a PDF. This ensures customers receive professional, printable documents suitable for storage, sharing, and compliance purposes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "download",
+                ":invoiceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "invoiceId",
+                  "description": "(Required) Path parameter invoiceId."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7a7a5cf5-9469-41b5-bd6d-aa04ff563af1",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "download",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoiceId\": 4321,\n  \"invoiceString\": \"JVBERi0xLjcKJeLjz9MKOCAwIG9iago8PC9BIDkgMCBSL0JvcmRlclswIDAgMF0vRiA0L1AgNCAwIFIvUmVjdFs0MjkuOCA3NjQuMTQgNTE5LjUyIDc3NS4xMl0vU3VidHlwZS9MaW5rPj4KZW5kb2JqCjEwIDAgb2JqCjw8L0EgMTEgMCBSL0JvcmRlclswIDAgMF0vRiA0L1AgNCAwIFIvUmVjdFs0MjkuOCA3NTAuNzkgNTAzLjczIDc2MS43N10vU3VidHlwZS9MaW5rPj4KZW5kb2JqCjEyIDAgb2JqCjw8L0EgMTMgMCBSL0JvcmRlclswIDAgMF0vRiA0L1AgNCAwIFIvUmVjdFs3MC40MiA2MjkuOTIgMTg4LjggNjQwLjldL1N1YnR5cGUvTGluaz4=\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50fefd50-3682-4274-b41a-e9152e8ec7b7",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "download",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dedaee90-22ea-4364-be92-4cc1f6756fbf",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "download",
+                    ":invoiceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "invoiceId",
+                      "description": "(Required) Path parameter invoiceId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7e429e56-ddc7-4d2d-97d6-39f3d06deb52",
+          "name": "Create Invoice Configuration",
+          "request": {
+            "name": "Create Invoice Configuration",
+            "description": {
+              "content": "Allows merchants to set up invoice configurations, including merchant details, branding, payment reminders, due days, colors, logos, and display options. A configuration must be created before generating invoices, ensuring standardization and professionalism across all invoices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "configuration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autoReminderDayBeforeDueDate\": \"<integer>\",\n  \"invoiceNumberStartWith\": \"<string>\",\n  \"isEnableConfiguration\": \"<boolean>\",\n  \"latePenaltyRate\": \"<string>\",\n  \"merchantAddress\": {\n    \"address\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"website\": \"<string>\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": false,\n    \"isLastNameVisible\": false,\n    \"isAddressVisible\": false,\n    \"isAddress2Visible\": false,\n    \"isCityVisible\": false,\n    \"isStateVisible\": false,\n    \"isCountryVisible\": false,\n    \"isPostalCodeVisible\": false,\n    \"isEmailVisible\": false,\n    \"isPhoneVisible\": false,\n    \"isFaxVisible\": false,\n    \"isWebsiteVisible\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "77a8c59e-71b7-4018-84f4-94724300bc1f",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@email.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configurationId\": 41,\n  \"responseMessage\": \"invoice configuration created\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb19efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6db2d22-0c90-4431-b5e7-e5d324ac592e",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@email.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "61d14b96-14a2-423b-850d-9741973eeb6d",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@email.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "da27c188-4b44-4b8f-91f2-4395ec7fb30c",
+          "name": "Get Invoice Configuration",
+          "request": {
+            "name": "Get Invoice Configuration",
+            "description": {
+              "content": "Retrieves current configuration details for a merchant, including branding preferences, reminders, and invoice enablement status. This ensures merchants can review or validate settings applied to all generated invoices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "configuration"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ba80cdb4-5918-460d-b9bc-e4d97e72c3d3",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configurationId\": 47,\n  \"createdDate\": \"2024-09-13T08:14:50.063\",\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@email.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2ab33e2-679c-4c3b-a9e5-3bfb668aa74e",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "57a61a4e-f854-4350-ba19-1972411def52",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b41d2be2-0384-48c4-b77a-4e8d2642a0c3",
+          "name": "Modify Invoice Configuration",
+          "request": {
+            "name": "Modify Invoice Configuration",
+            "description": {
+              "content": "Modify an existing configuration using configurationId. Merchants can revise merchant details, logos, colors, reminders, display preferences, and enable/disable invoice generation. This ensures configurations remain aligned with branding and policy changes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                "configuration",
+                ":configurationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "configurationId",
+                  "description": "(Required) Path parameter configurationId."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Unique Merchant Identifier for API Calls",
+                "key": "partnerToken",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                "key": "requestId",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autoReminderDayBeforeDueDate\": \"<integer>\",\n  \"invoiceNumberStartWith\": \"<string>\",\n  \"isEnableConfiguration\": \"<boolean>\",\n  \"latePenaltyRate\": \"<string>\",\n  \"merchantAddress\": {\n    \"address\": \"<string>\",\n    \"city\": \"<string>\",\n    \"country\": \"<string>\",\n    \"email\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"postalCode\": \"<string>\",\n    \"state\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"fax\": \"<string>\",\n    \"website\": \"<string>\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": false,\n    \"isLastNameVisible\": false,\n    \"isAddressVisible\": false,\n    \"isAddress2Visible\": false,\n    \"isCityVisible\": false,\n    \"isStateVisible\": false,\n    \"isCountryVisible\": false,\n    \"isPostalCodeVisible\": false,\n    \"isEmailVisible\": false,\n    \"isPhoneVisible\": false,\n    \"isFaxVisible\": false,\n    \"isWebsiteVisible\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "286a3d49-93c0-4569-9e72-ee96072beba5",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration",
+                    ":configurationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configurationId",
+                      "description": "(Required) Path parameter configurationId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@hmail.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"configurationId\": 17,\n  \"responseMessage\": \"Invoice configuration updated\",\n  \"requestId\": \"a2406639-8692-4e1c-978d-1805eb19efdf\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66bc5b63-ac45-438d-a9fa-4d977ddb67f3",
+              "name": "Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration",
+                    ":configurationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configurationId",
+                      "description": "(Required) Path parameter configurationId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@hmail.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "28a048d7-2d78-42ec-bf32-808c6c9cfb12",
+              "name": "Forbidden: invalid client application credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    "configuration",
+                    ":configurationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configurationId",
+                      "description": "(Required) Path parameter configurationId."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Unique Merchant Identifier for API Calls",
+                    "key": "partnerToken",
+                    "value": "80ae9a4a-5efd-412e-89b9-532f2ab2f817"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.\n> **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.",
+                    "key": "requestId",
+                    "value": "56ae9a4a-5efd-412e-89b9-532f2ab2f275"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnableConfiguration\": true,\n  \"dueDays\": 9,\n  \"invoiceNumberStartWith\": \"100000\",\n  \"autoReminderDayBeforeDueDate\": 3,\n  \"latePenaltyRate\": \"1.25\",\n  \"merchantAddress\": {\n    \"firstName\": \"Deluxe\",\n    \"lastName\": \"Corporation\",\n    \"address\": \"123 Main St\",\n    \"address2\": \"Apt 5\",\n    \"city\": \"CA\",\n    \"state\": \"CA\",\n    \"country\": \"US\",\n    \"postalCode\": \"50232\",\n    \"email\": \"deluxecorp@hmail.com\",\n    \"fax\": \"+9112345678901\",\n    \"phone\": \"+919632587411\",\n    \"website\": \"www.deluxe.com\"\n  },\n  \"configurations\": {\n    \"isFirstNameVisible\": true,\n    \"isLastNameVisible\": true,\n    \"isAddress2Visible\": true,\n    \"isAddressVisible\": true,\n    \"isCityVisible\": true,\n    \"isCountryVisible\": true,\n    \"isEmailVisible\": true,\n    \"isFaxVisible\": true,\n    \"isPhoneVisible\": true,\n    \"isPostalCodeVisible\": true,\n    \"isStateVisible\": true,\n    \"isWebsiteVisible\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.deluxe.com/dpp/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "903bfcc3-32b5-49be-b664-3b98bf6eef67",
+    "name": "DPP Invoice Experience API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The DPP Invoice Experience API enables merchants to manage invoice lifecycles and configurations efficiently. It provides endpoints for creating, updating, sharing, cloning, searching, downloading, and configuring invoices. Each operation is designed to ensure accuracy, consistency, and ease of integration. The API supports flexible routing through baseUri parameters, ensuring compatibility with current and future structures. By offering features like invoice branding, payment terms, health checks, Base64-encoded downloads, and secure sharing, it helps merchants streamline workflows and enhance customer experiences. This API is particularly useful for businesses looking to standardize invoicing practices, improve customer communication, and maintain professional and reliable financial records.",
+      "type": "text/plain"
+    }
+  }
+}

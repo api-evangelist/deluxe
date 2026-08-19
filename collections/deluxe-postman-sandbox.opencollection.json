@@ -1,0 +1,192 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Deluxe Postman-Sandbox",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "BearerToken",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://sandbox.api.deluxe.com/secservices/oauth2/v2/token",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": ""
+          },
+          {
+            "name": "Authorization",
+            "value": "Basic {Base64Encoded}"
+          }
+        ],
+        "body": {
+          "type": "form-urlencoded",
+          "data": [
+            {
+              "name": "grant_type",
+              "value": ""
+            },
+            {
+              "name": "scope",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "docs": "Use this call to authenticate and receive a bearer token. Bearer token is valid for 59 minutes only and required on all API calls."
+    },
+    {
+      "info": {
+        "name": "Transaction Processing",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://sandbox.api.deluxe.com/american/v1/family/transactions",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9"
+          },
+          {
+            "name": "ApplicationId",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          },
+          {
+            "name": "AccessToken",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Transaction Processing"
+    },
+    {
+      "info": {
+        "name": "Report Processing",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://sandbox.api.deluxe.com/american/v1/family/reports",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": ""
+          },
+          {
+            "name": "ApplicationId",
+            "value": ""
+          },
+          {
+            "name": "AccessToken",
+            "value": ""
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "The reporting endpoint is used to get transaction information based on specific search criteria."
+    },
+    {
+      "info": {
+        "name": "Vault / Customer Processing",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://sandbox.api.deluxe.com/american/v1/family/vault",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9"
+          },
+          {
+            "name": "ApplicationId",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          },
+          {
+            "name": "AccessToken",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          }
+        ]
+      },
+      "docs": "Vault / Customer Processing"
+    },
+    {
+      "info": {
+        "name": "Vault / Customer Processing",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://sandbox.api.deluxe.com/american/v1/family/vault",
+        "headers": [
+          {
+            "name": "ms2-authorization",
+            "value": "bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9"
+          },
+          {
+            "name": "ApplicationId",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          },
+          {
+            "name": "AccessToken",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Vault / Customer Processing"
+    },
+    {
+      "info": {
+        "name": "Vault / Customer Processing",
+        "type": "http"
+      },
+      "http": {
+        "method": "PATCH",
+        "url": "https://sandbox.api.deluxe.com/american/v1/family/vault",
+        "headers": [
+          {
+            "name": "ms2-authorization",
+            "value": "bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9"
+          },
+          {
+            "name": "ApplicationId",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          },
+          {
+            "name": "AccessToken",
+            "value": "7775AD1E-AA25-4ED3-812F-21C966D97C26"
+          }
+        ],
+        "body": {
+          "type": "json",
+          "data": "{}"
+        }
+      },
+      "docs": "Vault / Customer Processing"
+    }
+  ],
+  "bundled": true
+}

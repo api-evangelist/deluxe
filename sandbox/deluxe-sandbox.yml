@@ -1,0 +1,112 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.deluxe.com/docs/deluxe-payments-platform/h259yvmvb1zg4-test-data,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/kr826m000tv9k-hosted-payment-forms,
+  https://docs.deluxe.com/docs/deluxe-payments-platform/jonapyivx2673-embedded-payments
+provider: Deluxe Corporation
+providerId: deluxe
+api: Deluxe Payments Platform (DPP)
+available: true
+self_serve: false
+note: >-
+  Deluxe publishes a real sandbox with published test cards and test bank details, but sandbox access is
+  NOT self-serve: a Client ID and Client Secret must be requested from the Deluxe integrations team by
+  email (isvinquiries@deluxe.com) before any call can be made. Every value below is quoted verbatim from
+  Deluxe's own test-data page; none of it was invented.
+environments:
+  - name: sandbox
+    host: https://sandbox.api.deluxe.com
+    token_endpoint: https://sandbox.api.deluxe.com/secservices/oauth2/v2/token
+    base_path: /dpp/v1
+    test_merchant_id: '6280780007735798'
+    test_merchant_label: IATS DPP TEST
+    hosted_payment_form_script: https://hostedform2.deluxe.com/iframeLoader.js
+    embedded_payments_script: https://payments2.deluxe.com/embedded/javascripts/deluxe.js
+  - name: production
+    host: https://api.deluxe.com
+    base_path: /dpp/v1
+    alternate_base_path: /dpp/v1/gateway
+    hosted_payment_form_script: https://hostedpaymentform.deluxe.com/iframeLoader.js
+    embedded_payments_script: https://payments.deluxe.com/embedded/javascripts/deluxe.js
+access:
+  mode: request-credentials
+  how: Email isvinquiries@deluxe.com to request a Client Application (Client ID + Client Secret).
+  documented_at: https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+  key_separation: >-
+    Deluxe does not use a test-vs-live key PREFIX convention. The environment is selected by host
+    (sandbox.api.deluxe.com vs api.deluxe.com) and by which credential pair was issued, not by an
+    inspectable key shape. An integrator cannot tell a test credential from a live one by looking at it.
+token:
+  type: bearer
+  lifetime_minutes: 60
+  refresh_guidance: Deluxe recommends re-authenticating every 45 minutes.
+  reissue_behavior: >-
+    "If the Bearer token has not expired, the server will not return a new bearer token." Token
+    expiry times must be converted to the caller's local time zone.
+test_cards:
+  note: >-
+    Expiration date can be any future date; CVV can be any 3 digits unless a CVV trigger value is used.
+  approvals:
+    - card: '4005519200000004'
+      auth_code: '123456'
+    - card: '4009348888881881'
+      auth_code: '123456'
+    - card: '4012000033330026'
+      auth_code: '123456'
+    - card: '4012000077777777'
+      auth_code: '123456'
+    - card: '4012888888881881'
+      auth_code: '123456'
+    - card: '4217651111111119'
+      auth_code: '123456'
+    - card: '4500600000000061'
+      auth_code: '123456'
+    - card: '5555555555554444'
+      auth_code: '123456'
+    - card: '2223000048400011'
+      auth_code: '123456'
+    - card: '378282246310005'
+      auth_code: '123456'
+    - card: '371449635398431'
+      auth_code: '123456'
+    - card: '6011111111111117'
+      auth_code: '123456'
+    - card: '36259600000004'
+      auth_code: '123456'
+    - card: '3530111333300000'
+      auth_code: '123456'
+  triggers:
+    - card: '4000000000000002'
+      response: Decline
+    - card: '4000000000009995'
+      response: Insufficient Funds
+    - card: '4000000000000069'
+      response: Expired Card
+    - card: any approval card above
+      cvv: '200'
+      response: CVV Does not match
+    - card: any approval card above
+      cvv: '201'
+      response: CVV Not verified
+    - card: any approval card above
+      cvv: '301'
+      response: CVV No participate
+test_bank_account:
+  aba_routing_number: '123123123'
+  dda_account_number: '1234567890'
+capabilities:
+  test_clock: false
+  time_simulation: false
+  fixture_tooling: false
+  webhook_test_trigger: true
+  webhook_test_trigger_operation: performTestEvent
+  webhook_test_trigger_path: /events/performTest
+  hosted_test_form: true
+  mock_server: false
+gaps:
+  - No self-serve sandbox signup; credentials are issued by a human after an email request.
+  - No test clock or time simulation for subscriptions/recurring billing.
+  - No published fixture/seed tooling or CLI for generating sandbox state.
+  - Test cards and the test merchant ID are shared, not per-tenant.
