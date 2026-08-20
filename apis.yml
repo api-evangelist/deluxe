@@ -32,6 +32,19 @@ tags:
   - Card Processing
   - ACH
   - Invoicing
+  - Subscription
+  - Tokenization
+  - Webhook
+  - Reporting
+  - Data Analytics
+  - Marketing
+  - Small Business
+tags_raw:
+  - Payments
+  - Merchant Services
+  - Card Processing
+  - ACH
+  - Invoicing
   - Subscriptions
   - Tokenization
   - Webhooks
@@ -60,6 +73,14 @@ apis:
   - aid: deluxe:deluxe-api
     name: Deluxe Payments Platform — Gateway Experience API
     tags:
+      - Payments
+      - Card Processing
+      - ACH
+      - EMV
+      - Tokenization
+      - Subscription
+      - Webhook
+    tags_raw:
       - Payments
       - Card Processing
       - ACH
