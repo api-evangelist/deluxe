@@ -3,15 +3,16 @@ url: https://raw.githubusercontent.com/api-evangelist/deluxe/refs/heads/main/api
 name: Deluxe Corporation
 type: Index
 deliveryModel:
-  model: unknown
+  model: saas
   open_source: false
-  commercial: false
-  callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
   source:
-  - none
-  generated: '2026-08-11'
+  - openapi
+  - pricing
+  generated: '2026-08-28'
   method: derived
 accessModel:
   pricing: unknown
