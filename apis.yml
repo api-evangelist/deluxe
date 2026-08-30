@@ -106,6 +106,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Batches
+  tags_raw:
   - batches
   properties:
   - type: OpenAPI
@@ -135,6 +137,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Customers
+  tags_raw:
   - customers
   properties:
   - type: OpenAPI
@@ -164,6 +168,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - EMV
+  tags_raw:
   - emv
   properties:
   - type: OpenAPI
@@ -193,6 +199,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Event
+  tags_raw:
   - events
   properties:
   - type: OpenAPI
@@ -222,6 +230,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Invoices
+  tags_raw:
   - invoices
   properties:
   - type: OpenAPI
@@ -251,6 +261,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Payment Links
+  tags_raw:
   - paymentlinks
   properties:
   - type: OpenAPI
@@ -280,6 +292,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Payment Methods
+  tags_raw:
   - paymentmethods
   properties:
   - type: OpenAPI
@@ -309,6 +323,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Payments
+  tags_raw:
   - payments
   properties:
   - type: OpenAPI
@@ -338,6 +354,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Refunds
+  tags_raw:
   - refunds
   properties:
   - type: OpenAPI
@@ -367,6 +385,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Reports
+  tags_raw:
   - reports
   properties:
   - type: OpenAPI
@@ -425,6 +445,8 @@ apis:
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
+  - Subscription
+  tags_raw:
   - subscriptions
   properties:
   - type: OpenAPI
