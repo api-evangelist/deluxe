@@ -1,0 +1,795 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Emv API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: emv
+paths:
+  /emv/payment:
+    post:
+      operationId: emvPayments
+      summary: EMV Payments
+      tags:
+      - emv
+      description: 'Initiates a sale or authorization on a physical EMV device by sending the ``deviceId``, ``amount``, and a ``callbackUrl``. The terminal processes the transaction and returns a simple in‑API response, while the detailed transaction result is delivered to the callback URL. Use this endpoint for chip‑based, card‑present transactions on supported devices.
+
+
+        Begin your integration with the Overview and Get Started pages under **API Reference > EMV Payments**, accessible through the main menu via **Payments › Merchant Services**. Use these endpoint details when implementing specific calls.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request to hold EMV based transaction attributes.
+              type: object
+              properties:
+                transactionType:
+                  description: Identifies if the transaction type is of SALE/AUTHORIZE.
+                  type: string
+                  enum:
+                  - SALE
+                  - AUTHORIZE
+                  examples:
+                  - SALE
+                deviceId:
+                  description: Unique identifier of the EMV payment device.
+                  type: string
+                  minLength: 1
+                  maxLength: 50
+                  examples:
+                  - '10'
+                callbackUrl:
+                  description: Webhook URL to get the updated response details, if any.
+                  type: string
+                  minLength: 5
+                  maxLength: 100
+                  examples:
+                  - https://webhook.site/63b65a42-6012-49ea-b98f-d01d46283018
+                amount:
+                  description: Sale amount of the transaction done through cloud EMV device payment method
+                  type: object
+                  properties:
+                    amount:
+                      description: Amount of the transaction
+                      type: number
+                      minimum: 0.01
+                      examples:
+                      - 19.99
+                    currency:
+                      description: Type of currency in which transaction is done.
+                      type: string
+                      enum:
+                      - USD
+                      examples:
+                      - USD
+                  required:
+                  - amount
+              required:
+              - callbackUrl
+              - deviceId
+              - transactionType
+            example:
+              transactionType: SALE
+              deviceId: '2'
+              callbackUrl: https://webhook.site/63b65a42-6012-49ea-b98f-d01d46283018
+              amount:
+                amount: 19.99
+                currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response DataType
+                type: object
+                properties:
+                  paymentId:
+                    description: Unique identifier for the payment done.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 63748a11-312d-456e-b55d-2008f8deea90
+                  requestId:
+                    description: Unique identifier for the API request.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - bb75b884-e7a7-4510-aabc-3fdade625654
+                  responseMessage:
+                    description: Response message
+                    type: string
+                    examples:
+                    - Sale completed successfully.
+              example:
+                paymentId: 63748a11-312d-456e-b55d-2008f8deea90
+                requestId: bb75b884-e7a7-4510-aabc-3fdade625654
+                responseMessage: Your transaction is currently being processed. For more details, please check the callback URL in sometime.
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /emv/refund:
+    post:
+      operationId: emvRefunds
+      summary: EMV Refunds
+      tags:
+      - emv
+      description: 'Initiates a stand‑alone refund on a physical EMV device by providing the ``deviceId``, ``amount``, and a ``callbackUrl``. The terminal processes the refund and returns a simple in‑API response, while the detailed transaction result is sent to your callback URL. Use this endpoint to handle chip‑based, card‑present refund transactions on supported devices.
+
+
+        Begin your integration with the Overview and Get Started pages under **API Reference > EMV Payments**, accessible through the main menu via **Payments › Merchant Services**. Use these endpoint details when implementing specific calls.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request to hold EMV based transaction attributes.
+              type: object
+              properties:
+                deviceId:
+                  description: Unique identifier of the EMV payment device.
+                  type: string
+                  minLength: 1
+                  maxLength: 50
+                  examples:
+                  - '10'
+                callbackUrl:
+                  description: Webhook URL to get the updated response details, if any.
+                  type: string
+                  minLength: 5
+                  maxLength: 100
+                  examples:
+                  - https://webhook.site/63b65a42-6012-49ea-b98f-d01d46283018
+                amount:
+                  description: Refund amount of the transaction done through cloud EMV device payment method
+                  type: object
+                  properties:
+                    amount:
+                      description: Amount of the transaction
+                      type: number
+                      minimum: 0.01
+                      examples:
+                      - 19.99
+                    currency:
+                      description: Type of currency in which transaction is done.
+                      type: string
+                      enum:
+                      - USD
+                      examples:
+                      - USD
+                  required:
+                  - amount
+              required:
+              - callbackUrl
+              - deviceId
+            example:
+              deviceId: '2'
+              callbackUrl: https://webhook.site/63b65a42-6012-49ea-b98f-d01d46283018
+              amount:
+                amount: 19.99
+                currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response DataType
+                type: object
+                properties:
+                  paymentId:
+                    description: Unique identifier for the payment done.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 63748a11-312d-456e-b55d-2008f8deea90
+                  requestId:
+                    description: Unique identifier for the API request.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - bb75b884-e7a7-4510-aabc-3fdade625654
+                  responseMessage:
+                    description: Response message
+                    type: string
+                    examples:
+                    - Refund completed successfully.
+              example:
+                paymentId: 63748a11-312d-456e-b55d-2008f8deea90
+                requestId: bb75b884-e7a7-4510-aabc-3fdade625654
+                responseMessage: Your transaction is currently being processed. For more details, please check the callback URL in sometime.
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /emv/devices:
+    get:
+      operationId: emvDevicesList
+      summary: EMV Devices List
+      tags:
+      - emv
+      description: Retrieves a list of all devices associated with the partnerToken provided in the request.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response DataType
+                type: object
+                properties:
+                  devices:
+                    description: 'Object that holds the required device-related details.
+
+
+                      **Device-specific fields**
+
+
+                      **CLOUD**
+
+                      - `merchantId`
+
+                      - `terminalId`
+
+                      - `deviceType`
+
+                      - `deviceDisplayName`
+
+                      - `terminalStatus`
+
+                      - `deviceId`
+
+                      - `terminalName`
+
+                      - `deviceSerialNumber`
+
+                      - `multiMIDSharing`
+
+                      - `cloudStatus`
+
+                      - `sharedMerchantIds`
+
+                      - `primaryMerchantId`
+
+                      - `terminalConnectionId`
+
+                      - `terminalAccessKey`
+
+                      - `merchantAccessKey`
+
+                      - `posAccessKey`
+
+
+                      **STANDALONE**
+
+                      - `merchantId`
+
+                      - `terminalId`
+
+                      - `deviceType`
+
+                      - `deviceDisplayName`
+
+                      - `terminalStatus`
+
+
+                      **GATEWAY**
+
+                      - `merchantId`
+
+                      - `terminalId`
+
+                      - `deviceType`
+
+                      - `deviceDisplayName`
+
+                      - `terminalStatus`'
+                    type: array
+                    items:
+                      description: Object that holds the required device related details
+                      type: object
+                      properties:
+                        deviceId:
+                          description: Unique identifier of the EMV payment device.
+                          type: string
+                          minLength: 1
+                          maxLength: 50
+                          examples:
+                          - '10'
+                        terminalName:
+                          description: Name of the terminal through which EMV type payment is done.
+                          type: string
+                          minLength: 1
+                          maxLength: 250
+                          examples:
+                          - QA D3500 WIFI
+                        deviceDisplayName:
+                          description: Display name of the device through which EMV type payment is done.
+                          type: string
+                          minLength: 1
+                          maxLength: 250
+                          examples:
+                          - QA D3500 WIFI test
+                        deviceSerialNumber:
+                          description: Serial number of the device through which EMV type payment is done.
+                          type: string
+                          minLength: 0
+                          maxLength: 250
+                          examples:
+                          - QA1234
+                        multiMIDSharing:
+                          description: This value indicates whether device is shared for linked merchant or not.
+                          type: string
+                          minLength: 1
+                          maxLength: 250
+                          examples:
+                          - Disabled
+                        terminalStatus:
+                          description: Indicates whether the device is online or offline.
+                          type: string
+                          minLength: 1
+                          maxLength: 250
+                          examples:
+                          - Online
+                        cloudStatus:
+                          description: Indicates whether cloud integration for the device is active.
+                          type: string
+                          minLength: 1
+                          maxLength: 250
+                          examples:
+                          - Online
+                        sharedMerchantIds:
+                          description: List of merchant IDs associated with the device when multi-MID sharing is enabled. Each merchant ID represents a merchant that can process transactions through the shared device.
+                          type: array
+                          items: {}
+                          examples:
+                          - - '6280490007617228'
+                            - '6280490007617244'
+                            - '6280490007617210'
+                        primaryMerchantId:
+                          description: Primary merchant ID assigned to the device and used as the default merchant account for transaction processing.
+                          type: string
+                          examples:
+                          - '6280490007617228'
+                        merchantId:
+                          description: Unique identifier of the merchant registered within the EMV Device Cloud platform. Used to associate devices, terminals, and transactions with a specific merchant account.
+                          type: string
+                          examples:
+                          - '6280490007617228'
+                        terminalId:
+                          description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                          type: string
+                          examples:
+                          - '001'
+                        deviceType:
+                          description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                          type: string
+                          examples:
+                          - Cloud
+                        posAccessKey:
+                          description: Authentication credential used by the Point-of-Sale (POS) application to securely connect and exchange information with the EMV Device Cloud.
+                          type: string
+                          examples:
+                          - 36b3607d96584290f5aad1175f94a351
+                        terminalAccessKey:
+                          description: Authentication credential used to authorize communication between an EMV terminal and the EMV Device Cloud.
+                          type: string
+                          examples:
+                          - 204f3b9dde011ede53664c089fa30b88
+                        merchantAccessKey:
+                          description: Authentication credential used to authorize merchant-level access to EMV Device Cloud services and resources.
+                          type: string
+                          examples:
+                          - v4123d6e4ecac9b57a9f34bce9144fce3
+                        terminalConnectionId:
+                          description: The unique identifier of the terminal connection associated with an EMV device.
+                          type: string
+                          examples:
+                          - gUNNN-5hFQAYKEj_3A==
+              example:
+                devices:
+                - merchantId: '6289980008342008'
+                  terminalId: '004'
+                  deviceType: Gateway
+                  deviceDisplayName: 001 Proddev
+                  terminalStatus: Active
+                - deviceId: '10'
+                  deviceName: XUAT DESK3500
+                  terminalName: XUAT DESK3500
+                  terminalConnectionId: gTbF1-5XwQAYKEhuDA==
+                  deviceSerialNumber: '221197303251060424702233'
+                  multiMIDSharing: Enabled
+                  cloudStatus: Offline
+                  sharedMerchantIds:
+                  - '6289980008340630'
+                  - '6289980008342010'
+                  primaryMerchantId: '6289980008342008'
+                  posAccessKey: 36b3607d96584290f5aad1175f94a351
+                  terminalAccessKey: 204f3b9dde011ede53664c089fa30b88
+                  merchantAccessKey: 4123d6e4ecac9b57a9f34bce9144fce3
+                  merchantId: '6289980008342008'
+                  terminalId: '001'
+                  deviceType: Cloud
+                  deviceDisplayName: New Test
+                  terminalStatus: Active
+                - merchantId: '6289980008342008'
+                  terminalId: '001'
+                  deviceType: Standalone
+                  deviceDisplayName: Ingenico
+                  terminalStatus: Active
+                - merchantId: '6289980008342008'
+                  terminalId: '001'
+                  deviceType: Gateway
+                  deviceDisplayName: QA D3500 Latest
+                  terminalStatus: Active
+                - merchantId: '6289980008342008'
+                  terminalId: '003'
+                  deviceType: Standalone
+                  deviceDisplayName: QA D3500 WiFi RS
+                  terminalStatus: Active
+                - deviceId: '9'
+                  deviceName: QA GD test WIFI
+                  terminalName: QA D3500 WIFI
+                  terminalConnectionId: gTbF1-5XwQAYKEhuDA=+
+                  deviceSerialNumber: '24702233'
+                  multiMIDSharing: Enabled
+                  cloudStatus: Offline
+                  sharedMerchantIds:
+                  - '6289980008340630'
+                  - '6289980008342008'
+                  primaryMerchantId: '6289980008342010'
+                  posAccessKey: 36b3607d96584290f5aad1175f94a351
+                  terminalAccessKey: 204f3b9dde011ede53664c089fa30b88
+                  merchantAccessKey: ''
+                  merchantId: '6289980008342010'
+                  terminalId: '001'
+                  deviceType: Cloud
+                  deviceDisplayName: QA D3500 WIFI
+                  terminalStatus: Inactive
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /emv/devices/{deviceId}/refresh:
+    post:
+      operationId: emvDeviceRefreshById
+      summary: EMV Device Refresh By Id
+      tags:
+      - emv
+      description: Refreshes the device of the specified deviceId along with the associated partnerToken provided in the request.
+      parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter deviceId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: 'Request containing EMV transaction attributes
+
+
+                **Note:**
+
+                - A valid `terminalConnectionId` is required and must not be null or empty.
+
+                - The `terminalConnectionId` can be retrieved from the **EMV Devices List** API or the **EMV Device Details By Id** API.
+
+                - Device refresh is dependent on external services and may not complete immediately.
+
+                - If the refresh fails, retry the request after a short interval.
+
+                - A successful refresh generates a new `terminalConnectionId`.
+
+                - Device refresh is applicable only for **Cloud** devices, not for **Standalone** or **Gateway**.'
+              type: object
+              properties:
+                terminalConnectionId:
+                  description: A unique identifier assigned to the terminal connection associated with an EMV device.
+                  type: string
+                  examples:
+                  - gTbF1-5XwQAYKEhuDA==
+              required:
+              - terminalConnectionId
+            example:
+              terminalConnectionId: gWRUYC74KQAYKEhkeA==
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response DataType
+                type: object
+                properties:
+                  deviceId:
+                    description: Unique identifier of the EMV payment device.
+                    type: string
+                    minLength: 1
+                    maxLength: 50
+                    examples:
+                    - '10'
+                  terminalStatus:
+                    description: Indicates whether the device is online or offline.
+                    type: string
+                    minLength: 1
+                    maxLength: 250
+                    examples:
+                    - Online
+                  cloudStatus:
+                    description: Indicates whether cloud integration for the device is active.
+                    type: string
+                    minLength: 1
+                    maxLength: 250
+                    examples:
+                    - Online
+                  terminalAccessKey:
+                    description: Authentication credential used to authorize communication between an EMV terminal and the EMV Device Cloud.
+                    type: string
+                    examples:
+                    - 204f3b9dde011ede53664c089fa30b88
+                  terminalConnectionId:
+                    description: The unique identifier of the terminal connection associated with an EMV device.
+                    type: string
+                    examples:
+                    - gTbF1-5XwQAYKEhuDA==
+                  requestId:
+                    description: Unique identifier for the API request.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - bb75b884-e7a7-4510-aabc-3fdade625654
+                  responseMessage:
+                    description: Response message
+                    type: string
+                    examples:
+                    - Device refreshed successfully.
+              example:
+                deviceId: '10'
+                terminalAccessKey: 204f3b9dde011ede53664c089fa30b88
+                terminalConnectionId: gTbF1-5XwQAYKEhuDA==
+                cloudStatus: Online
+                terminalStatus: Active
+                responseMessage: Device refreshed successfully.
+                requestId: 4fd7a890-83ec-11f1-8a76-7c1e523b13df
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /emv/devicedetails/{deviceId}:
+    get:
+      operationId: emvDeviceDetailsById
+      summary: EMV Device Details By Id
+      tags:
+      - emv
+      description: Retrieves the details of the specified deviceId along with the associated partnerToken provided in the request.
+      parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter deviceId.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: 'Object to hold EMV device details
+
+
+                  **Note:**
+
+                  Response attributes are available for the following EMV device types:
+
+                  - Cloud
+
+                  - Standalone
+
+                  - Gateway'
+                oneOf:
+                - description: EMV payment device registered with a cloud-hosted platform, enabling remote terminal management, secure communication, transaction processing, and device monitoring.
+                  type: object
+                  properties:
+                    deviceId:
+                      description: Unique identifier of the EMV payment device.
+                      type: string
+                      minLength: 1
+                      maxLength: 50
+                      examples:
+                      - '10'
+                    deviceName:
+                      description: Name assigned to the EMV payment device.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - PROD DESK3500
+                    cloudStatus:
+                      description: Indicates whether cloud integration for the device is active.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Online
+                    sharedMerchantIds:
+                      description: List of merchant IDs associated with the device when multi-MID sharing is enabled. Each merchant ID represents a merchant that can process transactions through the shared device.
+                      type: array
+                      items: {}
+                      examples:
+                      - - '6280490007617228'
+                        - '6280490007617244'
+                        - '6280490007617210'
+                    primaryMerchantId:
+                      description: Primary merchant ID assigned to the device and used as the default merchant account for transaction processing.
+                      type: string
+                      examples:
+                      - '6280490007617228'
+                    posAccessKey:
+                      description: Authentication credential used by the Point-of-Sale (POS) application to securely connect and exchange information with the EMV Device Cloud.
+                      type: string
+                      examples:
+                      - 36b3607d96584290f5aad1175f94a351
+                    terminalAccessKey:
+                      description: Authentication credential associated with a specific EMV terminal, used to authorize terminal-level communication with the EMV Device Cloud.
+                      type: string
+                      examples:
+                      - 204f3b9dde011ede53664c089fa30b88
+                    merchantAccessKey:
+                      description: Authentication credential used to authorize merchant-level access to EMV Device Cloud services and resources.
+                      type: string
+                      examples:
+                      - v4123d6e4ecac9b57a9f34bce9144fce3
+                    terminalConnectionId:
+                      description: The unique identifier of the terminal connection associated with an EMV device.
+                      type: string
+                      examples:
+                      - gUNNN-5hFQAYKEj_3A==
+                    merchantId:
+                      description: Unique identifier of the merchant registered within the EMV Device Cloud platform. Used to associate devices, terminals, and transactions with a specific merchant account.
+                      type: string
+                      examples:
+                      - '6280490007617228'
+                    terminalId:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - '001'
+                    deviceType:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - Cloud
+                    deviceDisplayName:
+                      description: Display name of the device through which EMV type payment is done.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Prod Cloud 3500
+                    terminalStatus:
+                      description: Indicates whether the device is online or offline.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Active
+                - description: EMV payment device that communicates directly with the Point-of-Sale (POS) application over a local network or physical connection, without relying on cloud-based terminal management or connectivity services.
+                  type: object
+                  properties:
+                    merchantId:
+                      description: Unique identifier of the merchant registered within the EMV Device Cloud platform. Used to associate devices, terminals, and transactions with a specific merchant account.
+                      type: string
+                      examples:
+                      - '6280490007617228'
+                    terminalId:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - '001'
+                    deviceType:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - Standalone
+                    deviceDisplayName:
+                      description: Display name of the device through which EMV type payment is done.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Ingenicos
+                    terminalStatus:
+                      description: Indicates whether the device is online or offline.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Active
+                - description: EMV payment device integrated through a payment gateway, where transaction requests and terminal communications are routed via the gateway for authorization, processing, and device management.
+                  type: object
+                  properties:
+                    merchantId:
+                      description: Unique identifier of the merchant registered within the EMV Device Cloud platform. Used to associate devices, terminals, and transactions with a specific merchant account.
+                      type: string
+                      examples:
+                      - '6280490007617228'
+                    terminalId:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - '004'
+                    deviceType:
+                      description: Type or model of the EMV device registered in the EMV Device Cloud, used to determine supported capabilities and device-specific configurations.
+                      type: string
+                      examples:
+                      - Gateway
+                    deviceDisplayName:
+                      description: Display name of the device through which EMV type payment is done.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - 001 Proddev
+                    terminalStatus:
+                      description: Indicates whether the device is online or offline.
+                      type: string
+                      minLength: 1
+                      maxLength: 250
+                      examples:
+                      - Active
+              example:
+                deviceId: '10'
+                deviceName: XUAT DESK3500
+                terminalConnectionId: gTbF1-5XwQAYKEhuDA==
+                deviceSerialNumber: '221197303251060424702233'
+                cloudStatus: Offline
+                sharedMerchantIds:
+                - '6289980008340630'
+                - '6289980008342010'
+                primaryMerchantId: '6289980008342008'
+                posAccessKey: 36b3607d96584290f5aad1175f94a351
+                terminalAccessKey: 204f3b9dde011ede53664c089fa30b88
+                merchantAccessKey: 4123d6e4ecac9b57a9f34bce9144fce3
+                merchantId: '6289980008342008'
+                terminalId: '001'
+                deviceType: Cloud
+                deviceDisplayName: New Test
+                terminalStatus: Active
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

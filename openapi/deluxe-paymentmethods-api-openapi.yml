@@ -1,0 +1,2338 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Paymentmethods API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: paymentmethods
+paths:
+  /paymentmethods:
+    post:
+      operationId: createPaymentMethod
+      summary: Create Payment Method
+      tags:
+      - paymentmethods
+      description: This API endpoint allows you to create a new payment method for a customer. You need to provide details including a nickname for the payment method, its active status, ACH information (such as account number and routing number), and the billing address. Additionally, you must specify the customer ID associated with the payment method. The API will store these details securely for future transactions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request DataType
+              type: object
+              properties:
+                customerId:
+                  description: Unique identifier for a customer
+                  type: number
+                  examples:
+                  - 4321
+                paymentMethod:
+                  description: payment method details
+                  oneOf:
+                  - description: Object to hold card details
+                    type: object
+                    properties:
+                      card:
+                        description: Object to hold card details
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                        required:
+                        - card
+                        - expiry
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.
+                    type: object
+                    properties:
+                      ach:
+                        description: Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.
+                        type: object
+                        properties:
+                          accountNumber:
+                            description: Bank account number
+                            type: string
+                            minLength: 1
+                            maxLength: 20
+                            examples:
+                            - '987654321'
+                          routingNumber:
+                            description: Bank Routing Number
+                            type: string
+                            minLength: 8
+                            maxLength: 9
+                            examples:
+                            - '123456789'
+                          accountType:
+                            description: Account Type - Checking/Savings
+                            type: string
+                            enum:
+                            - Checking
+                            - Savings
+                            examples:
+                            - Checking
+                        required:
+                        - accountNumber
+                        - routingNumber
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.
+                    type: object
+                    properties:
+                      cryptogram:
+                        description: Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.
+                        type: object
+                        properties:
+                          cryptogram:
+                            description: Tokenized string that passes Card or Bank details for transaction
+                            type: string
+                            examples:
+                            - 6cd3ef836ce141b789b5755ca3f353f1
+                        required:
+                        - cryptogram
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold token details
+                    type: object
+                    properties:
+                      token:
+                        description: Object to hold token details
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for Card details
+                            type: string
+                            maxLength: 20
+                            examples:
+                            - '1234567890123450'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            examples:
+                            - 10/25
+                        required:
+                        - expiry
+                        - token
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                    type: object
+                    properties:
+                      achToken:
+                        description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for ACH details
+                            type: string
+                            maxLength: 40
+                            examples:
+                            - k|1235673473|4567890123450
+                        required:
+                        - token
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+              required:
+              - customerId
+              - paymentMethod
+            example:
+              customerId: 11989
+              paymentMethod:
+                accNickName: anusha
+                isActive: false
+                card:
+                  card: '374245455400126'
+                  expiry: 05/26
+                billingAddress:
+                  state: CA
+                  address: 123 Main St
+                  lastName: Doe
+                  firstName: Jane
+                  email: jane@email.com
+                  country: USA
+                  phone: 650-555-1234
+                  city: San Francisco
+                  address2: Apt 5
+                  postalCode: '94111'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response parameters for the API
+                type: object
+                properties:
+                  paymentMethodId:
+                    description: Unique identifier for a payment method (ACH or Card)
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d10f860c-ab05-4002-86b3-b4a707d9a999
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 4321
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - customerId
+                - paymentMethodId
+                - requestId
+              example:
+                customerId: 123
+                paymentMethodId: dc4017fd-5b14-1496-3274-298337c01289
+                requestId: 056e9055-cf2d-48c3-93db-918e3ec583d0
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/{paymentMethodId}:
+    patch:
+      operationId: modifyPaymentMethod
+      summary: Modify Payment Method
+      tags:
+      - paymentmethods
+      description: This API endpoint allows you to update an existing payment method for a customer. You can modify details such as the payment method nickname, its active status, ACH information (including account number and routing number), and the billing address. Additionally, you need to provide the customer ID to identify which payment method to update. The API ensures that all changes are applied securely to the specified payment method.
+      parameters:
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter paymentMethodId.
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request DataType
+              type: object
+              properties:
+                customerId:
+                  description: Unique identifier for a customer
+                  type: number
+                  examples:
+                  - 4321
+                paymentMethod:
+                  description: Payment method details
+                  oneOf:
+                  - description: Object to hold card details
+                    type: object
+                    properties:
+                      card:
+                        description: Card details
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                        required:
+                        - expiry
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold payment information
+                    type: object
+                    properties:
+                      ach:
+                        description: ACH details
+                        type: object
+                        properties:
+                          accountNumber:
+                            description: Bank account number
+                            type: string
+                            minLength: 1
+                            maxLength: 20
+                            examples:
+                            - '987654321'
+                          routingNumber:
+                            description: Bank Routing Number
+                            type: string
+                            minLength: 8
+                            maxLength: 9
+                            examples:
+                            - '123456789'
+                          accountType:
+                            description: Account Type - Checking/Savings
+                            type: string
+                            enum:
+                            - Checking
+                            - Savings
+                            examples:
+                            - Checking
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      cryptogram:
+                        description: cryptogram details
+                        type: object
+                        properties:
+                          cryptogram:
+                            description: Tokenized string that passes Card or Bank details for transaction
+                            type: string
+                            examples:
+                            - 6cd3ef836ce141b789b5755ca3f353f1
+                        required:
+                        - cryptogram
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold account token details
+                    type: object
+                    properties:
+                      token:
+                        description: Token details
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for Card details
+                            type: string
+                            maxLength: 20
+                            examples:
+                            - '1234567890123450'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            examples:
+                            - 10/25
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                    type: object
+                    properties:
+                      achToken:
+                        description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for ACH details
+                            type: string
+                            maxLength: 40
+                            examples:
+                            - k|1235673473|4567890123450
+                        required:
+                        - token
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold fleet card details
+                    type: object
+                    properties:
+                      fleetCard:
+                        type: object
+                        properties:
+                          card:
+                            description: Fleet Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '6900460430001234566'
+                          expiry:
+                            description: Fleet Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                        additionalProperties: false
+                      sequenceNumber:
+                        description: Sequence number of the  fleet card transaction
+                        type: string
+                        minLength: 5
+                        maxLength: 5
+                        examples:
+                        - '76545'
+                      odometer:
+                        description: Odometer reading of the  fleet card transaction
+                        type: string
+                        minLength: 1
+                        maxLength: 9
+                        examples:
+                        - '87655'
+                      driversLicenseNumber:
+                        description: Driving Licence number of the  fleet card transaction
+                        type: string
+                        minLength: 1
+                        maxLength: 15
+                        examples:
+                        - '234667'
+                      billingAddress:
+                        description: Billing Information
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+              required:
+              - customerId
+              - paymentMethod
+            example:
+              customerId: 11996
+              paymentMethod:
+                card:
+                  card: '378282246310005'
+                  expiry: 05/26
+                billingAddress:
+                  state: CA
+                  address: 123 Main St
+                  lastName: Doe
+                  firstName: Jane
+                  email: jane@email.com
+                  country: USA
+                  phone: 650-555-1234
+                  city: San Francisco
+                  address2: Apt 5
+                  postalCode: '94111'
+                accNickName: test
+                isActive: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response parameters for the API
+                type: object
+                properties:
+                  paymentMethodId:
+                    description: Unique identifier for a payment method (ACH or Card)
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d10f860c-ab05-4002-86b3-b4a707d9a999
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 4321
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - customerId
+                - paymentMethodId
+                - requestId
+              example:
+                customerId: 1234
+                paymentMethodId: b7a04890-231c-f71c-62bf-6a910a45c2fd
+                requestId: 142de31d-8f8f-4ba0-a2c2-29265b501c89
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/token:
+    post:
+      operationId: generateToken
+      summary: Generate Token
+      tags:
+      - paymentmethods
+      description: This API endpoint generates a secure token for a payment method, which can be used for future transactions without storing sensitive payment details directly. The input requires credit card information, including the card number, expiry date, and CVV. The API responds with a token that represents the payment method, along with a response code, payment ID, and request ID. This token can then be used in subsequent API calls to process payments securely.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request DataType
+              type: object
+              properties:
+                paymentMethod:
+                  description: Object to hold payment details
+                  oneOf:
+                  - description: Object to hold card details
+                    type: object
+                    properties:
+                      card:
+                        description: Object to hold card details
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                          cvv:
+                            description: Card CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - card
+                        - expiry
+                    additionalProperties: false
+                  - description: Object to hold payment information
+                    type: object
+                    properties:
+                      ach:
+                        description: Object to hold payment information
+                        type: object
+                        properties:
+                          accountNumber:
+                            description: Bank account number
+                            type: string
+                            minLength: 1
+                            maxLength: 20
+                            examples:
+                            - '987654321'
+                          routingNumber:
+                            description: Bank Routing Number
+                            type: string
+                            minLength: 8
+                            maxLength: 9
+                            examples:
+                            - '123456789'
+                          accountType:
+                            description: Account Type - Checking/Savings
+                            type: string
+                            enum:
+                            - Checking
+                            - Savings
+                            examples:
+                            - Checking
+                        required:
+                        - accountNumber
+                        - accountType
+                        - routingNumber
+                    additionalProperties: false
+              required:
+              - paymentMethod
+            example:
+              paymentMethod:
+                card:
+                  card: '4111111111111110'
+                  expiry: 11/26
+                  cvv: '245'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    description: Payment token used
+                    type: string
+                    examples:
+                    - '1556778677451110'
+                  responseCode:
+                    description: Authorizer response code
+                    type: number
+                    examples:
+                    - 0
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - paymentId
+                - requestId
+                - responseCode
+                - responseMessage
+                - token
+              example:
+                token: '1556778677451110'
+                responseCode: 0
+                responseMessage: null
+                paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/avs:
+    post:
+      operationId: verifyAddress
+      summary: Verify Address
+      tags:
+      - paymentmethods
+      description: Initiates an Address Verification Service (AVS) check for the provided billing address.This request will validate the address details (e.g., street address, zip code) and return a response indicating whether the address matches the records on file with the payment provider.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details used to get avs.
+              type: object
+              properties:
+                paymentMethod:
+                  description: Payment method details used to get avs.
+                  oneOf:
+                  - description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                    type: object
+                    properties:
+                      card:
+                        description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                          cvv:
+                            description: Card CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - card
+                        - expiry
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.
+                    type: object
+                    properties:
+                      token:
+                        description: Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for Card details
+                            type: string
+                            maxLength: 20
+                            examples:
+                            - '1234567890123450'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            examples:
+                            - 10/25
+                          cvv:
+                            description: Card CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - expiry
+                        - token
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.
+                    type: object
+                    properties:
+                      vault:
+                        description: Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.
+                        type: object
+                        properties:
+                          paymentMethodId:
+                            description: Unique identifier for stored payment method
+                            type: string
+                            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                            examples:
+                            - 99c33585-a62f-45bb-a733-5720dd69ab1e
+                          cvv:
+                            description: CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - paymentMethodId
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.
+                    type: object
+                    properties:
+                      cryptogram:
+                        description: Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.
+                        type: object
+                        properties:
+                          cryptogram:
+                            description: Tokenized string that passes Card or Bank details for transaction
+                            type: string
+                            examples:
+                            - 6cd3ef836ce141b789b5755ca3f353f1
+                        required:
+                        - cryptogram
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold secured network token data such as token string, expiration details, cryptographic authentication values, and token source (e.g., ApplePay, GooglePay, Paze). It enhances payment security and enables streamlined digital transactions. Includes billing address and other identifiers to support robust authorization, risk mitigation, and regulatory compliance in tokenized payment ecosystems.
+                    type: object
+                    properties:
+                      networkToken:
+                        description: Object to hold secured network token data such as token string, expiration details, cryptographic authentication values, and token source (e.g., ApplePay, GooglePay, Paze). It enhances payment security and enables streamlined digital transactions. Includes billing address and other identifiers to support robust authorization, risk mitigation, and regulatory compliance in tokenized payment ecosystems.
+                        type: object
+                        properties:
+                          token:
+                            description: Network token string
+                            type: string
+                            minLength: 13
+                            maxLength: 20
+                            examples:
+                            - '4895370017589737'
+                          expiryMonth:
+                            description: Expiry month
+                            type: string
+                            pattern: ^(0?[1-9]|1[0-2])$
+                            examples:
+                            - '05'
+                          expiryYear:
+                            description: Expiry Year
+                            type: string
+                            pattern: ^(202[4-9]|20[3-9]\d|2[1-9]\d{2})$
+                            examples:
+                            - '2032'
+                          secureCavvData:
+                            description: Secure cavv data
+                            type: string
+                            examples:
+                            - AwAAAAAAmCjhPZYp4s7YQHwAAAA=
+                          eci:
+                            description: Electronic commerce indicator
+                            type: string
+                            maxLength: 2
+                            examples:
+                            - '07'
+                          tokenType:
+                            description: Token type flag
+                            type: number
+                            minimum: 1
+                            maximum: 9
+                            examples:
+                            - 1
+                          tokenSource:
+                            description: Token Source - ApplePay/GooglePay/Paze
+                            type: string
+                            enum:
+                            - APPLEPAY
+                            - GOOGLEPAY
+                            - PAZE
+                            - VISA
+                            examples:
+                            - PAZE
+                        required:
+                        - expiryMonth
+                        - expiryYear
+                        - secureCavvData
+                        - token
+                        - tokenSource
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+              required:
+              - paymentMethod
+            example:
+              paymentMethod:
+                card:
+                  card: '4141414141414141'
+                  expiry: 12/25
+                billingAddress:
+                  firstName: Narthana
+                  lastName: Chepyala
+                  address: 1331 LAKE FOREST DR
+                  address2: San
+                  city: Fort Worth
+                  state: TX
+                  country: US
+                  postalCode: '12345'
+                  phone: '+18985683254'
+                  email: narthana.chepyala@email.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Object to hold avs response details.
+                type: object
+                properties:
+                  accountResponseData:
+                    description: Object to hold account response data.
+                    type: object
+                    properties:
+                      avs:
+                        description: Address verification response
+                        type: string
+                        maxLength: 1
+                        examples:
+                        - Y
+                      cvv:
+                        description: CVV verification response
+                        type: string
+                        examples:
+                        - Y
+                    required:
+                    - avs
+                    - cvv
+                  authResponse:
+                    description: Authorization code from issuer
+                    type: string
+                    examples:
+                    - ABC123
+                  responseCode:
+                    description: Authorizer response code
+                    type: number
+                    examples:
+                    - 0
+                  responseMessage:
+                    description: Description of response code
+                    type: string
+                    examples:
+                    - Success
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                required:
+                - accountResponseData
+                - authResponse
+                - paymentId
+                - requestId
+                - responseCode
+                - responseMessage
+              example:
+                accountResponseData:
+                  avs: Y
+                  cvv: Y
+                authResponse: ABC123
+                responseCode: 0
+                responseMessage: response message
+                requestId: 7f9a96d2-d60f-41d3-b34c-05dd01298618
+                paymentId: 7a0afa41-9c13-4a80-a7d3-9f5c8eb62a36
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/verification/ach:
+    post:
+      operationId: verifyAch
+      summary: Verify ACH
+      tags:
+      - paymentmethods
+      description: Initiates an ACH Verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details used for ACH verification.
+              type: object
+              properties:
+                paymentMethod:
+                  description: Payment method details used to get avs.
+                  type: object
+                  properties:
+                    ach:
+                      description: Card details used to get avs.
+                      type: object
+                      properties:
+                        accountNumber:
+                          description: Bank account number
+                          type: string
+                          minLength: 1
+                          maxLength: 20
+                          examples:
+                          - '987654321'
+                        routingNumber:
+                          description: Bank Routing Number
+                          type: string
+                          minLength: 8
+                          maxLength: 9
+                          examples:
+                          - '123456789'
+                      required:
+                      - accountNumber
+                      - routingNumber
+                    currency:
+                      description: Currency
+                      type: string
+                      enum:
+                      - USD
+                      - CAD
+                      examples:
+                      - USD
+            example:
+              paymentMethod:
+                ach:
+                  routingNumber: '123456789'
+                  accountNumber: '987654321'
+                currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Object to hold avs response details.
+                type: object
+                properties:
+                  status:
+                    description: ACH Verification status
+                    type: string
+                    enum:
+                    - INVALID
+                    - VALID
+                    - BLOCKED
+                  isValidRoutingNumber:
+                    description: Boolean flag that specifies if the routing number is valid.
+                    type: boolean
+                    examples:
+                    - true
+                  responseMessage:
+                    description: Description of response code
+                    type: string
+                    examples:
+                    - Success
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - isValidRoutingNumber
+                - requestId
+                - responseMessage
+                - status
+              example:
+                status: INVALID
+                isValidRoutingNumber: true
+                responseMessage: Success
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/surcharge:
+    post:
+      operationId: checkSurcharge
+      summary: Check Surcharge
+      tags:
+      - paymentmethods
+      description: This API endpoint allows you to verify the surcharge associated to merchant for the given payment methods such as card, token, vault and cryptogram. The input requires a payment method and optional amount and currency and you will get surcharge rate/percentage and surcharge amount in response. This will help merchants to check the applicable surcharge rate before actual transaction.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details to get Surcharge
+              type: object
+              properties:
+                paymentMethod:
+                  description: Object to hold the payment method details that are using to get Surcharge
+                  oneOf:
+                  - description: Object to hold card details
+                    type: object
+                    properties:
+                      card:
+                        description: Card object containing card number
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                        required:
+                        - card
+                  - type: object
+                    properties:
+                      token:
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for Card details
+                            type: string
+                            maxLength: 20
+                            examples:
+                            - '1234567890123450'
+                        required:
+                        - token
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      vault:
+                        type: object
+                        properties:
+                          paymentMethodId:
+                            description: Unique identifier for stored payment method
+                            type: string
+                            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                            examples:
+                            - 99c33585-a62f-45bb-a733-5720dd69ab1e
+                        required:
+                        - paymentMethodId
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      cryptogram:
+                        type: object
+                        properties:
+                          cryptogram:
+                            description: Tokenized string that passes Card or Bank details
+                            type: string
+                            examples:
+                            - 6cd3ef836ce141b789b5755ca3f353f1
+                        required:
+                        - cryptogram
+                    additionalProperties: false
+                amount:
+                  description: Object to hold the amount details
+                  type: object
+                  properties:
+                    amount:
+                      description: Amount of the transaction
+                      type: number
+                      examples:
+                      - 150
+                    currency:
+                      description: Currency of transaction
+                      type: string
+                      enum:
+                      - USD
+                      - CAD
+                      examples:
+                      - USD
+                  required:
+                  - amount
+              required:
+              - paymentMethod
+            example:
+              paymentMethod:
+                card:
+                  card: '4141414141414141'
+              amount:
+                amount: 10
+                currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  surchargeRate:
+                    description: Applicable rate or percentage of the surcharge for a given payment method
+                    type: number
+                    examples:
+                    - 3
+                  surchargeAmount:
+                    description: Applicable amount of the surcharge for a given payment method
+                    type: number
+                    examples:
+                    - 0.3
+                  cardType:
+                    description: Type of the card that surcharge is retriving. i.e DEBIT or CREDIT
+                    type: string
+                    examples:
+                    - Card
+                  isSurchargeEnabled:
+                    description: Flag to tell if the surcharge is enabled or not
+                    type: boolean
+                    examples:
+                    - true
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - cardType
+                - isSurchargeEnabled
+                - requestId
+                - surchargeRate
+              example:
+                surchargeRate: 3
+                surchargeAmount: 0.3
+                cardType: CREDIT
+                isSurchargeEnabled: true
+                requestId: fe4e03ad-b047-4bbd-a7ba-b8a136785b58
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentmethods/binlookup:
+    get:
+      operationId: binLookup
+      summary: BIN Lookup
+      tags:
+      - paymentmethods
+      description: Verify BIN lookup retrieves details by passing the first 6 to 8 digits of the card number. It returns information such as whether the cardholder is eligible for Level 2 or Level 3 surcharges, the card type, brand, and country.
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: bin
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 6
+          maxLength: 8
+          examples:
+          - '411111'
+        description: BIN used to retrieve details.
+        example: '411111'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bin:
+                    description: BIN used to retrieve card details.
+                    type: string
+                    examples:
+                    - '411111'
+                  cardType:
+                    description: Indicates the type of card associated with the provided BIN (Bank Identification Number), such as CREDIT,DEBIT.
+                    type: string
+                    enum:
+                    - CREDIT
+                    - DEBIT
+                    examples:
+                    - CREDIT
+                  brand:
+                    description: The brand of the card.
+                    type: string
+                    examples:
+                    - VISA
+                  country:
+                    description: Full country name where the card was issued.
+                    type: object
+                    properties:
+                      name:
+                        description: Full country name where the card was issued.
+                        type: string
+                        examples:
+                        - UNITED STATES
+                      abbreviation:
+                        description: ISO or short-form code of the country.
+                        type: string
+                        examples:
+                        - USA
+                    required:
+                    - abbreviation
+                    - name
+                  prepaid:
+                    description: Indicates whether the card is a prepaid card.
+                    type: boolean
+                    examples:
+                    - false
+                  qualifications:
+                    description: Indicates whether the BIN qualifies for Level 2 or Level 3 processing along with surcharge eligibility details.
+                    type: object
+                    properties:
+                      level2:
+                        description: Indicates if the card qualifies for Level 2 processing.
+                        type: boolean
+                        examples:
+                        - true
+                      level3:
+                        description: Indicates if the card qualifies for Level 3 processing.
+                        type: boolean
+                        examples:
+                        - true
+                      surcharge:
+                        description: Indicates whether a surcharge can be applied to the card.
+                        type: boolean
+                        examples:
+                        - false
+                    required:
+                    - level2
+                    - level3
+                    - surcharge
+                required:
+                - bin
+                - brand
+                - cardType
+                - country
+                - prepaid
+                - qualifications
+              example:
+                bin: '411111'
+                cardType: CREDIT
+                brand: VISA
+                prepaid: false
+                country:
+                  name: UNITED STATES
+                  abbreviation: USA
+                qualifications:
+                  level2: true
+                  level3: true
+                  surcharge: false
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

@@ -1,0 +1,136 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Batches API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: batches
+paths:
+  /batches:
+    post:
+      operationId: closeBatch
+      summary: Close Batch
+      tags:
+      - batches
+      description: The Close Batch API endpoint finalizes and closes a transaction batch, sending notifications based on the provided email addresses. Input includes emails for success notifications, failure notifications, and general notifications to ensure relevant stakeholders are informed of the batch status.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details
+              type: object
+              properties:
+                successEmail:
+                  description: Email address for batch close successful notification
+                  type: string
+                  examples:
+                  - ops@example.com
+                failEmail:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                  description: Email address for batch close failure notification
+                  examples:
+                  - - ops@example.com
+                    - dev@example.com
+                notifyEmail:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                  description: Email address for all batch close notification
+                  examples:
+                  - - ops@example.com
+                    - dev@example.com
+            example:
+              successEmail: ops@example.com
+              failEmail:
+              - ops@example.com
+              - dev@example.com
+              notifyEmail:
+              - ops@example.com
+              - dev@example.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response details
+                type: object
+                properties:
+                  authResponse:
+                    description: Authorizer response code and BatchID
+                    type: string
+                    examples:
+                    - '1556780000000000'
+                  responseCode:
+                    description: Authorizer response code
+                    type: number
+                    examples:
+                    - 0
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - null
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - paymentId
+                - requestId
+                - responseCode
+                - responseMessage
+              example:
+                authResponse: NOBATCH
+                responseCode: 0
+                responseMessage: null
+                paymentId: 9e8e1c75-5454-46fc-9970-74e9aa3726a0
+                requestId: 9ccd0e1a-9a0e-4b56-bac5-0b118c0279bc
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

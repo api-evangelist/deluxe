@@ -1,0 +1,915 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Refunds API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: refunds
+paths:
+  /refunds:
+    post:
+      operationId: createRefund
+      summary: Create Refund
+      tags:
+      - refunds
+      description: Processes refunds through a single endpoint supporting multiple use cases. For standard refunds, provide the paymentId and refund amount. For standalone refunds, specify the refund amount and payment method details, such as card information (cardNumber, expirationDate, CVV) or ACH/Credit details (accountNumber, routingNumber, accountType). For vault refunds, use the paymentMethodId of a stored payment method along with the refund amount. This endpoint ensures flexibility and secure handling of all refund scenarios.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: 'Refund endpoint supports 3 request types such as Refund, Credit, and Standalone Refund
+
+                - **Refund**: Initiates a full or partial refund for an original transaction that has already settled.
+
+                - **Credit**: Initiates a new credit(refund) transaction by providing ACH details.
+
+                - **Standalone Refund**: Initiates a new refund transaction by providing payment method details such as Card or paymentMethodId.'
+              oneOf:
+              - description: Object represents the details for transaction reversal and includes the original payment ID, the amount to be refunded, and associated order details such as the order ID. It is used to process partial or full refunds against completed payments for specific orders.
+                type: object
+                properties:
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  isACH:
+                    description: Flag to indicate whether the original sale or debit transaction was processed via ACH.
+                    type: boolean
+                    examples:
+                    - false
+                  amount:
+                    description: Object to hold amount details
+                    type: object
+                    properties:
+                      amount:
+                        description: Amount of the transaction
+                        type: number
+                        examples:
+                        - 150
+                      currency:
+                        description: Currency of transaction
+                        type: string
+                        enum:
+                        - USD
+                        - CAD
+                        examples:
+                        - USD
+                    required:
+                    - amount
+                  orderData:
+                    description: Object to hold order details
+                    type: object
+                    properties:
+                      autoGenerateOrderId:
+                        description: Flag to tell if Order Id is to be automatically generated
+                        type: boolean
+                        examples:
+                        - true
+                      orderId:
+                        description: Unique identifier of Order
+                        type: string
+                        examples:
+                        - abc12345
+                      orderIdIsUnique:
+                        description: Flag to tell if Order Id is unique
+                        type: boolean
+                        examples:
+                        - true
+                    required:
+                    - orderId
+                required:
+                - amount
+                - paymentId
+              - description: Object to hold the details to initiates a refund directly to ACH payment method without referencing a prior payment. It includes the refund amount, payment method details.
+                type: object
+                properties:
+                  amount:
+                    description: Object to hold amount details such as amount value and currency
+                    type: object
+                    properties:
+                      amount:
+                        description: Amount of the transaction
+                        type: number
+                        examples:
+                        - 150
+                      currency:
+                        description: Currency of transaction
+                        type: string
+                        enum:
+                        - USD
+                        - CAD
+                        examples:
+                        - USD
+                    required:
+                    - amount
+                  paymentMethod:
+                    description: Object to hold the details of ACH payment method.
+                    type: object
+                    properties:
+                      ach:
+                        description: Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.
+                        type: object
+                        properties:
+                          accountNumber:
+                            description: Bank account number
+                            type: string
+                            minLength: 1
+                            maxLength: 20
+                            examples:
+                            - '987654321'
+                          routingNumber:
+                            description: Bank Routing Number
+                            type: string
+                            minLength: 8
+                            maxLength: 9
+                            examples:
+                            - '123456789'
+                          accountType:
+                            description: Account Type - Checking/Savings
+                            type: string
+                            enum:
+                            - Checking
+                            - Savings
+                            examples:
+                            - Checking
+                        required:
+                        - accountNumber
+                        - routingNumber
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                required:
+                - amount
+                - paymentMethod
+              - description: Object to hold the details to initiates a refund directly to a payment method such as a card or a stored payment method ID without referencing a prior payment. It includes the refund amount, payment method details.
+                type: object
+                properties:
+                  amount:
+                    description: Object to hold amount details such as amount value and currency
+                    type: object
+                    properties:
+                      amount:
+                        description: Amount of the transaction
+                        type: number
+                        examples:
+                        - 150
+                      currency:
+                        description: Currency of transaction
+                        type: string
+                        enum:
+                        - USD
+                        - CAD
+                        examples:
+                        - USD
+                    required:
+                    - amount
+                  paymentMethod:
+                    description: Object to hold the details of payment methods such as a card or vault.
+                    oneOf:
+                    - description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                      type: object
+                      properties:
+                        card:
+                          description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                          type: object
+                          properties:
+                            card:
+                              description: Card Number
+                              type: string
+                              minLength: 12
+                              maxLength: 19
+                              examples:
+                              - '4111111111111110'
+                            expiry:
+                              description: Card Expiration Month and Year
+                              type: string
+                              pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                              examples:
+                              - 11/26
+                            cvv:
+                              description: Card CVV/Security Code
+                              type: string
+                              minLength: 3
+                              maxLength: 4
+                              examples:
+                              - '245'
+                          required:
+                          - card
+                          - expiry
+                        billingAddress:
+                          description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                      additionalProperties: false
+                    - description: Object to hold vault information such as payment method identifier.
+                      type: object
+                      properties:
+                        paymentMethodId:
+                          description: Unique identifier for vaultID
+                          type: string
+                          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                          examples:
+                          - 99c33585-a62f-45bb-a733-5720dd69ab1e
+                      required:
+                      - paymentMethodId
+                      additionalProperties: false
+                required:
+                - amount
+                - paymentMethod
+            example:
+              paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+              isACH: false
+              amount:
+                amount: 19.99
+                currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: 'Refund endpoint returns one of three response types upon successful processing: Refund, Credit, or Standalone Refund.
+
+                  - **Refund:** Indicates a full or partial refund has been issued for a previously settled transaction.
+
+                  - **Credit:** Confirms a new credit (refund) transaction has been created using ACH details.
+
+                  - **Standalone Refund:** Confirms a new refund transaction has been processed using payment method details such as a card or paymentMethodId.'
+                oneOf:
+                - type: object
+                  properties:
+                    amountApproved:
+                      description: Approved payment amount
+                      type: number
+                      examples:
+                      - 99.95
+                    authResponse:
+                      description: Authorization code from issuer
+                      type: string
+                      examples:
+                      - ABC123
+                    batchNumber:
+                      description: Indicated batch number in which the transaction will be settled
+                      type: number
+                      examples:
+                      - 1234
+                    responseCode:
+                      description: Authorizer response code
+                      type: number
+                      examples:
+                      - 0
+                    orderId:
+                      description: Merchant order ID
+                      type: string
+                      examples:
+                      - Order123
+                    parentPaymentId:
+                      description: The original transaction ID generated by the payment gateway
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d290f1ee-6c54-4b01-90e6-d701748f0851
+                    responseMessage:
+                      description: Description of any code returned
+                      type:
+                      - string
+                      - 'null'
+                      examples:
+                      - success
+                    paymentId:
+                      description: Payment gateway transaction ID
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d290f1ee-6c54-4b01-90e6-d701748f0851
+                    requestId:
+                      description: Unique identifier for an API call
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - a2406639-8692-4e1c-978d-1805eb13efdf
+                  required:
+                  - amountApproved
+                  - authResponse
+                  - batchNumber
+                  - orderId
+                  - parentPaymentId
+                  - paymentId
+                  - requestId
+                  - responseCode
+                  - responseMessage
+                - description: Object to hold the refund response
+                  type: object
+                  properties:
+                    isPartial:
+                      description: Indicates if partial payment
+                      type: boolean
+                      examples:
+                      - false
+                    orderId:
+                      description: Merchant order ID
+                      type: string
+                      examples:
+                      - Order123
+                    customerId:
+                      description: Unique identifier for a customer
+                      type: number
+                      examples:
+                      - 4321
+                    batchNumber:
+                      description: Indicated batch number in which the transaction will be settled
+                      type: number
+                      examples:
+                      - 1234
+                    subscriptionId:
+                      description: Unique identifier for a recurring payment
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                    fee:
+                      description: Object to hold fee details
+                      type: object
+                      properties:
+                        feeAmount:
+                          description: Amount of fee applied
+                          type: number
+                          examples:
+                          - 1.99
+                        feeAuthResponse:
+                          description: Authorizer's response code for fee payment
+                          type:
+                          - string
+                          - 'null'
+                          examples:
+                          - '441248'
+                      required:
+                      - feeAmount
+                      - feeAuthResponse
+                    token:
+                      description: Payment token used
+                      type: string
+                      examples:
+                      - '1556778677451110'
+                    accountResponseData:
+                      description: Object to hold account response details
+                      type: object
+                      properties:
+                        avs:
+                          description: Address verification response
+                          type: string
+                          maxLength: 1
+                          examples:
+                          - Y
+                        cvv:
+                          description: CVV verification response
+                          type: string
+                          examples:
+                          - Y
+                      required:
+                      - avs
+                      - cvv
+                    amountApproved:
+                      description: Approved payment amount
+                      type: number
+                      examples:
+                      - 99.95
+                    authResponse:
+                      description: Authorization code from issuer
+                      type: string
+                      examples:
+                      - ABC123
+                    responseCode:
+                      description: Authorizer response code
+                      type: number
+                      examples:
+                      - 0
+                    responseMessage:
+                      description: Description of any code returned
+                      type:
+                      - string
+                      - 'null'
+                      examples:
+                      - success
+                    paymentId:
+                      description: Payment gateway transaction ID
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d290f1ee-6c54-4b01-90e6-d701748f0851
+                    requestId:
+                      description: Unique identifier for an API call
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - a2406639-8692-4e1c-978d-1805eb13efdf
+                  required:
+                  - accountResponseData
+                  - amountApproved
+                  - authResponse
+                  - batchNumber
+                  - customerId
+                  - fee
+                  - isPartial
+                  - orderId
+                  - paymentId
+                  - requestId
+                  - responseCode
+                  - responseMessage
+                  - subscriptionId
+                  - token
+                - description: Object to hold the refund response
+                  type: object
+                  properties:
+                    isPartial:
+                      description: Indicates if partial payment
+                      type: boolean
+                      examples:
+                      - false
+                    orderId:
+                      description: Merchant order ID
+                      type: string
+                      examples:
+                      - Order123
+                    customerId:
+                      description: Unique identifier for a customer
+                      type: number
+                      examples:
+                      - 4321
+                    batchNumber:
+                      description: Indicated batch number in which the transaction will be settled
+                      type: number
+                      examples:
+                      - 1234
+                    subscriptionId:
+                      description: Unique identifier for a recurring payment
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                    fee:
+                      description: Object to hold fee details
+                      type: object
+                      properties:
+                        feeAmount:
+                          description: Amount of fee applied
+                          type: number
+                          examples:
+                          - 1.99
+                        feeAuthResponse:
+                          description: Authorizer's response code for fee payment
+                          type:
+                          - string
+                          - 'null'
+                          examples:
+                          - '441248'
+                      required:
+                      - feeAmount
+                      - feeAuthResponse
+                    token:
+                      description: Payment token used
+                      type: string
+                      examples:
+                      - '1556778677451110'
+                    accountResponseData:
+                      description: Object to hold account response details
+                      type: object
+                      properties:
+                        avs:
+                          description: Address verification response
+                          type: string
+                          maxLength: 1
+                          examples:
+                          - Y
+                        cvv:
+                          description: CVV verification response
+                          type: string
+                          examples:
+                          - Y
+                      required:
+                      - avs
+                      - cvv
+                    amountApproved:
+                      description: Approved payment amount
+                      type: number
+                      examples:
+                      - 99.95
+                    authResponse:
+                      description: Authorization code from issuer
+                      type: string
+                      examples:
+                      - ABC123
+                    responseCode:
+                      description: Authorizer response code
+                      type: number
+                      examples:
+                      - 0
+                    responseMessage:
+                      description: Description of any code returned
+                      type:
+                      - string
+                      - 'null'
+                      examples:
+                      - success
+                    paymentId:
+                      description: Payment gateway transaction ID
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d290f1ee-6c54-4b01-90e6-d701748f0851
+                    requestId:
+                      description: Unique identifier for an API call
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - a2406639-8692-4e1c-978d-1805eb13efdf
+                  required:
+                  - accountResponseData
+                  - amountApproved
+                  - authResponse
+                  - batchNumber
+                  - customerId
+                  - fee
+                  - isPartial
+                  - orderId
+                  - paymentId
+                  - requestId
+                  - responseCode
+                  - responseMessage
+                  - subscriptionId
+                  - token
+              example:
+                amountApproved: 99.95
+                authResponse: ABC123
+                batchNumber: 1234
+                responseCode: 0
+                orderId: '471292130777329807'
+                parentPaymentId: 1cb354f8-e7fb-44b5-a1d2-084625d208a6
+                responseMessage: null
+                paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /refunds/batch:
+    post:
+      operationId: createBatchRefunds
+      summary: Create Batch Refunds
+      tags:
+      - refunds
+      description: The Batch refund end point allows you to send multiple refund or credit transctions in a single API call. This feature is useful when processing multiple refunds in one batch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request DataType
+              type: object
+              properties:
+                startDate:
+                  description: Date at which the batch processing should start for processing.
+                  type: string
+                  pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+                  examples:
+                  - 04/14/2021
+                transactions:
+                  description: Array to hold refund and standalone refund transaction details
+                  type: array
+                  items:
+                    description: Union of Refund and StandaloneRefund
+                    oneOf:
+                    - description: Object to hold refund request
+                      type: object
+                      properties:
+                        paymentId:
+                          description: Payment gateway transaction ID
+                          type: string
+                          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                          examples:
+                          - d290f1ee-6c54-4b01-90e6-d701748f0851
+                        amount:
+                          description: Object to hold amount details
+                          type: object
+                          properties:
+                            amount:
+                              description: Amount of the transaction
+                              type: number
+                              examples:
+                              - 150
+                            currency:
+                              description: Currency of transaction
+                              type: string
+                              enum:
+                              - USD
+                              - CAD
+                              examples:
+                              - USD
+                          required:
+                          - amount
+                      required:
+                      - amount
+                      - paymentId
+                    - description: Object to hold standalone refund request
+                      type: object
+                      properties:
+                        amount:
+                          description: Object to hold amount details
+                          type: object
+                          properties:
+                            amount:
+                              description: Amount of the transaction
+                              type: number
+                              examples:
+                              - 150
+                            currency:
+                              description: Currency of transaction
+                              type: string
+                              enum:
+                              - USD
+                              - CAD
+                              examples:
+                              - USD
+                          required:
+                          - amount
+                        paymentMethod:
+                          description: Card details
+                          type: object
+                          properties:
+                            card:
+                              type: object
+                              properties:
+                                card:
+                                  description: Card Number
+                                  type: string
+                                  minLength: 12
+                                  maxLength: 19
+                                  examples:
+                                  - '4111111111111110'
+                                expiry:
+                                  description: Card Expiration Month and Year
+                                  type: string
+                                  pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                                  examples:
+                                  - 11/26
+                                cvv:
+                                  description: Card CVV/Security Code
+                                  type: string
+                                  minLength: 3
+                                  maxLength: 4
+                                  examples:
+                                  - '245'
+                              required:
+                              - card
+                              - expiry
+                          additionalProperties: false
+                      required:
+                      - amount
+                      - paymentMethod
+                  minItems: 1
+              required:
+              - startDate
+              - transactions
+            example:
+              startDate: 09/25/2025
+              transactions:
+              - paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                amount:
+                  amount: 9.6
+                  currency: USD
+              - paymentId: f08c5b03-e175-4fba-a03e-d8e4c0ba0f64
+                amount:
+                  amount: 23.6
+                  currency: USD
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response DataType
+                type: array
+                items:
+                  type: object
+                  properties:
+                    batchNumber:
+                      description: Unique identifier to identify the batch. All transactions with the same batch number will be processed together
+                      type: number
+                      examples:
+                      - 12345
+                    amountApproved:
+                      description: Approved payment amount
+                      type: number
+                      examples:
+                      - 99.95
+                    authResponse:
+                      description: Authorization code from issuer
+                      type: string
+                      examples:
+                      - ABC123
+                    responseCode:
+                      description: Authorizer response code
+                      type: number
+                      examples:
+                      - 0
+                    responseMessage:
+                      description: Description of response code
+                      type:
+                      - string
+                      - 'null'
+                      examples:
+                      - Transaction successful.
+                    paymentId:
+                      description: Payment gateway transaction ID
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d290f1ee-6c54-4b01-90e6-d701748f0851
+                    requestId:
+                      description: Unique identifier for an API call
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - a2406639-8692-4e1c-978d-1805eb13efdf
+                  required:
+                  - amountApproved
+                  - authResponse
+                  - batchNumber
+                  - paymentId
+                  - requestId
+                  - responseCode
+                  - responseMessage
+              example:
+              - batchNumber: 12345
+                amountApproved: 99.95
+                authResponse: '10'
+                responseCode: 0
+                responseMessage: Amount Approved
+                paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+              - batchNumber: 45321
+                amountApproved: 21.95
+                authResponse: '10'
+                responseCode: 0
+                responseMessage: Amount Approved
+                paymentId: e290f1ee-6c54-4b01-90e6-d701748f0851
+                requestId: b4406639-8692-4e1c-878d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

@@ -1,0 +1,582 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Events API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: events
+paths:
+  /events/subscribe:
+    post:
+      operationId: subscribeEvent
+      summary: Subscribe Event
+      tags:
+      - events
+      description: This endpoint allows you to subscribe to specific events by providing a URL where event notifications will be sent. Upon successful subscription, you will receive notifications based on the specified event types at the provided webhook URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  description: Username for the developer account. Note- Submitting Username will result in a subscription for all accounts available under that user’s portfolio. Submitting Access Token will result in a subscription for that merchant account only.
+                  type: string
+                  examples:
+                  - johndoe
+                events:
+                  description: Array to hold event details
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      eventUri:
+                        description: The URL where the webhook will send data
+                        type: string
+                        pattern: ^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-_]+)*(\/)?
+                        examples:
+                        - https://www.yourwebhookurl.com
+                      eventType:
+                        description: 'Type of webhook event to subscribe
+
+                          1. **MERCHANT BOARDED** – Triggered when a new merchant account is successfully created (boarded) into the system
+
+                          2. **MERCHANT UPDATED** – Sent when an existing merchant’s information (e.g., address, contact, banking details) has been modified.
+
+                          3. **CC BATCH** – Sent when a credit card batch is processed, summarizing a group of card transactions settled together.
+
+                          4. **ACH BATCH** – Fires when an ACH (Automated Clearing House) batch is processed, indicating grouped electronic payments or transfers.
+
+                          5. **ACH REJECT** – Triggered when an ACH transaction fails or is rejected (e.g., due to insufficient funds, closed account, or invalid details).
+
+                          6. **TRANSACTION** – A real-time webhook for individual transaction activity (e.g., authorization, capture, refund, void).
+
+                          7. **VAULT** – Fires when there are updates to the customer vault (e.g., customer profile or stored payment methods are added, updated, or deleted).
+
+                          8. **CC CHARGEBACK** – Triggered when a cardholder disputes a transaction, and a chargeback request is initiated by the issuing bank.'
+                        type: string
+                        enum:
+                        - MERCHANT BOARDED
+                        - MERCHANT UPDATED
+                        - CC BATCH
+                        - ACH BATCH
+                        - ACH REJECT
+                        - TRANSACTION
+                        - VAULT
+                        - CC CHARGEBACK
+                        examples:
+                        - MERCHANT BOARDED
+                    required:
+                    - eventType
+                    - eventUri
+              required:
+              - userName
+            example:
+              userName: test@first-american.net
+              events:
+              - eventUri: https://apitran2.deluxe.com/listener/api/logging/PluginError
+                eventType: TRANSACTION
+              - eventUri: https://apitran2.deluxe.com/listener/api/logging/PluginError
+                eventType: ACH REJECT
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    description: Array to hold event details
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        eventSubscriptionId:
+                          description: Identifier for the webhook subscription
+                          type: string
+                          examples:
+                          - '101'
+                        eventType:
+                          description: 'Type of webhook event to subscribe
+
+                            1. **MERCHANT BOARDED** – Triggered when a new merchant account is successfully created (boarded) into the system
+
+                            2. **MERCHANT UPDATED** – Sent when an existing merchant’s information (e.g., address, contact, banking details) has been modified.
+
+                            3. **CC BATCH** – Sent when a credit card batch is processed, summarizing a group of card transactions settled together.
+
+                            4. **ACH BATCH** – Fires when an ACH (Automated Clearing House) batch is processed, indicating grouped electronic payments or transfers.
+
+                            5. **ACH REJECT** – Triggered when an ACH transaction fails or is rejected (e.g., due to insufficient funds, closed account, or invalid details).
+
+                            6. **TRANSACTION** – A real-time webhook for individual transaction activity (e.g., authorization, capture, refund, void).
+
+                            7. **VAULT** – Fires when there are updates to the customer vault (e.g., customer profile or stored payment methods are added, updated, or deleted).
+
+                            8. **CC CHARGEBACK** – Triggered when a cardholder disputes a transaction, and a chargeback request is initiated by the issuing bank.'
+                          type: string
+                          enum:
+                          - MERCHANT BOARDED
+                          - MERCHANT UPDATED
+                          - CC BATCH
+                          - ACH BATCH
+                          - ACH REJECT
+                          - TRANSACTION
+                          - VAULT
+                          - CC CHARGEBACK
+                          examples:
+                          - MERCHANT BOARDED
+                        success:
+                          description: Status of the operation
+                          type: boolean
+                          examples:
+                          - true
+                        message:
+                          description: Descriptive message about the response
+                          type: array
+                          items: {}
+                          examples:
+                          - - Subscribed successfully
+                      required:
+                      - eventSubscriptionId
+                      - eventType
+                      - message
+                      - success
+              example:
+                events:
+                - eventSubscriptionId: '1319'
+                  eventType: TRANSACTION
+                  success: true
+                  message:
+                  - Subscribed successfully.
+                - eventSubscriptionId: '1320'
+                  eventType: ACH REJECT
+                  success: true
+                  message:
+                  - Subscribed successfully.
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /events/unsubscribe:
+    post:
+      operationId: unsubscribeEvent
+      summary: Unsubscribe Event
+      tags:
+      - events
+      description: This endpoint allows you to unsubscribe from specific events by providing the associated subscription details, including the email address and eventSubscriptionId. Upon successful unsubscription, you will no longer receive notifications for the specified events.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                events:
+                  description: Array to hold event details
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      email:
+                        description: Email address to send the webhook notification
+                        type: string
+                        pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                        examples:
+                        - sample@email.com
+                      eventSubscriptionId:
+                        description: Identifier for the webhook subscription
+                        type: number
+                        examples:
+                        - 101
+                    required:
+                    - email
+                    - eventSubscriptionId
+            example:
+              events:
+              - email: anusha.test@deluxe.com
+                eventSubscriptionId: 1319
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    description: Array to hold event details
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        eventSubscriptionId:
+                          description: Identifier for the webhook subscription
+                          type: string
+                          examples:
+                          - '101'
+                        success:
+                          description: Status of the operation
+                          type: boolean
+                          examples:
+                          - true
+                        message:
+                          description: Descriptive message about the response
+                          type: array
+                          items: {}
+                          examples:
+                          - - subscribed succesfully
+                      required:
+                      - eventSubscriptionId
+                      - message
+                      - success
+              example:
+                events:
+                - eventSubscriptionId: '1319'
+                  success: true
+                  message:
+                  - Unsubscribed successfully.
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /events/resend:
+    post:
+      operationId: resendEvent
+      summary: Resend Event
+      tags:
+      - events
+      description: The Resend Event API endpoint allows you to resend a previously triggered event, enabling the system to reprocess the event's associated actions or notifications. This is useful for scenarios where the original event processing may have failed or needs to be re-triggered for verification purposes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventId:
+                  description: Identifier for the webhook subscription
+                  type: number
+                  examples:
+                  - 1787191
+              required:
+              - eventId
+            example:
+              eventId: 1320
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventId:
+                    description: Identifier for the webhook subscription
+                    type: string
+                    examples:
+                    - '1787191'
+                  eventType:
+                    description: Type of webhook event
+                    type: string
+                    enum:
+                    - MERCHANT BOARDED
+                    - MERCHANT UPDATED
+                    - CC BATCH
+                    - ACH BATCH
+                    - ACH REJECT
+                    - TRANSACTION
+                    examples:
+                    - MERCHANT BOARDED
+                  success:
+                    description: Status of the operation
+                    type: boolean
+                    examples:
+                    - true
+                  message:
+                    description: Descriptive message about the response
+                    type: array
+                    items: {}
+                    examples:
+                    - - Resend successfully.
+                  partnerToken:
+                    description: Unique Merchant Identifier for API Calls
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+                required:
+                - eventId
+                - eventType
+                - message
+                - partnerToken
+                - success
+              example:
+                eventId: '2952690'
+                eventType: MERCHANT BOARDED
+                success: true
+                message:
+                - Resend successfully.
+                partnerToken: B3D50B55-65CE-4B7B-8FE5-AB1B4F5CEDA7
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /events/report:
+    post:
+      operationId: retrieveEventsReports
+      summary: Retrieve Events Reports
+      tags:
+      - events
+      description: This call is related to reports for different kinds of webhooks such as Merchant Boarded, Merchant Updated, CC Batch, ACH Batch, ACH Reject, Vault, CC chargeback. The result has all kinds of webhooks requests and responses along with their report statuses.
+      parameters:
+      - name: pageNumber
+        in: query
+        required: false
+        schema:
+          type: number
+          examples:
+          - 1
+        description: Specifies the page of results to retrieve. This is useful for navigating large datasets by retrieving data in manageable chunks.
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: number
+          examples:
+          - 1
+        description: Defines the number of records to be returned in a single response. This helps control response size and optimize performance.
+        example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Object to hold search parameters like date range and event type.
+              type: object
+              properties:
+                eventType:
+                  description: This indicates the type of event report for which you can see the requests and responses triggered in a specified date range
+                  type: string
+                  examples:
+                  - TRANSACTION
+                reportStartDate:
+                  description: The start date from which user wants to see the event report.
+                  type: string
+                  pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+                  examples:
+                  - 01/31/2025
+                reportEndDate:
+                  description: The end date from which user wants to see the event report.
+                  type: string
+                  pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+                  examples:
+                  - 01/31/2025
+              required:
+              - eventType
+              - reportEndDate
+              - reportStartDate
+            example:
+              eventType: TRANSACTION
+              reportStartDate: 08/25/2024
+              reportEndDate: 08/24/2025
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Object to hold the event report that contains event type, event id, event uri and its respective requests and responses.
+                type: object
+              example:
+                response:
+                  recordCount: 1
+                  report:
+                  - webhookType: Transaction
+                    webhookId: 3586311
+                    webhookUri: https://webhook.site/bb9bb726-ad5b-4214-9125-abf826d7931f
+                    webhookRequest:
+                      EventType: Transaction
+                      TransactionType: AUTHORIZE
+                      PaymentType: CREDITCARD
+                      AccessToken: F0D79985-E3AC-48D4-AF72-F999518B1ADA
+                      DbaName: 6/15 ZENTRO TEST FOR ROBERT OPT BLUE
+                      Currency: USD
+                      MID: '6280490007617210'
+                      MerNo: '6280490007617210'
+                      TerminalId: '001'
+                      TransactionId: B4A3D923-8A3E-423D-B698-5F340698CED3
+                      DateTime: '2026-04-30 07:34:59'
+                      TransactionAmount: '16.00'
+                      InvoiceNumber: '269894454946778227'
+                      CardType: VISA
+                      CardNumber: 411111****1111
+                      CardExpiration: '**33'
+                      AchAccountNumber: ''
+                      AchRoutingNumber: ''
+                      AchAccountType: ''
+                      Discount: '0.00'
+                      ProcessingFee: '0.00'
+                      Tip: '0.00'
+                      Tax: '2.33'
+                      Surcharge: '0.00'
+                      BatchNumber: '20260430731'
+                      Status: APPROVED
+                      AuthCode: 24414A
+                      AuthResponse: ''
+                      AvsResponse: Y
+                      CvvResponse: M
+                      CustomerId: ''
+                      RecurringId: ''
+                      RecurringType: ''
+                      RecurringAmount: '0.00'
+                      RecurringStartDate: ''
+                      RecurringEndDate: ''
+                      RecurringDayDetail: ''
+                      RecurringMonthDetail: ''
+                      VaultId: ''
+                      VaultKey: ''
+                      Customer:
+                        Name: SyedMuleTest AuthorizewithCard
+                        Address: 123 Main St
+                        City: San Francisco
+                        State: CA
+                        PostalCode: '94111'
+                        Country: USA
+                        EmailAddress: jane@email.com
+                        Phone: 650-555-1234
+                        CompanyName: ''
+                      Shipping:
+                        Name: Jane Doe
+                        Address: 123 Main St
+                        City: San Francisco
+                        State: CA
+                        PostalCode: '94111'
+                        Country: USA
+                        EmailAddress: ''
+                        Phone: 650-555-1234
+                        CompanyName: ''
+                      Level2Data:
+                        CustomerRefNo: '7898654'
+                        Level2TaxAmount: ''
+                        LocalTaxFlag: '0'
+                        PurchaseCard: 'false'
+                        ShippingZip: '94002'
+                        TaxAmount: '2.33'
+                      SaleItems:
+                      - Name: Banana
+                        Sku: SKU1234
+                        Price: '0.0'
+                        Quantity: '2'
+                        Total: '2.0'
+                        TaxAmount: '0.0'
+                        CommodityCode: ''
+                        UnitOfMeasure: Dozen
+                        FreightAmount: '0.0'
+                        DutyAmount: '0.0'
+                        ItemDiscountAmount: '0.99'
+                        ItemDiscountRate: '0.1'
+                      CustomFields:
+                      - Name: Invoice Number
+                        Value: inv123423
+                      - Name: Invoice Number
+                        Value: inv1234
+                      SubmissionMethod: DPP API
+                    webhookResponse: 429
+                    webhookStatus: Failed
+                    webhooksentDateTime: '2026-04-30T07:35:11.497'
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /events/performTest:
+    post:
+      operationId: performTestEvent
+      summary: Perform Test Event
+      tags:
+      - events
+      description: This API endpoint allows you to test the webhook endpoint. This endpoint posts a sample/test data as payload based on the webhook type to the URL provided in the request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                eventType:
+                  description: Type of webhook event to subscribe
+                  type: string
+                  maxLength: 50
+                  examples:
+                  - Transaction
+                testEndPoint:
+                  description: Test end point to receive on the listening/target URL
+                  type: string
+                  pattern: ^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9\-_]+)*(\/)?
+                  maxLength: 500
+                  examples:
+                  - https://webhook.site/acc3f0bb-27d9-4a19-98ec-33af9c56741b
+              required:
+              - eventType
+              - testEndPoint
+            example:
+              eventType: Transaction
+              testEndPoint: https://webhook.site/acc3f0bb-27d9-4a19-98ec-33af9c56741b
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    description: response of webhook event to subscribe
+                    type: string
+                    examples:
+                    - This URL has no default content configured. <a href="https://webhook.site/#!/view/625063d2-fc62-4a3e-8033-8f5c60b7f566">View in Webhook.site</a>.
+                  statusCode:
+                    description: statusCode to receive on the listening/target URL
+                    type: number
+                    examples:
+                    - 200
+                required:
+                - response
+                - statusCode
+              example:
+                response: This URL has no default content configured. <a href="https://webhook.site/#!/view/625063d2-fc62-4a3e-8033-8f5c60b7f566">View in Webhook.site</a>.
+                statusCode: 200
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

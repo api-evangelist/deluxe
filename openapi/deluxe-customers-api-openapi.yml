@@ -1,0 +1,1877 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Customers API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: customers
+paths:
+  /customers:
+    post:
+      operationId: createCustomer
+      summary: Create Customer
+      tags:
+      - customers
+      description: The Create Customer API allows you to add a new customer to the system by providing their personal and contact information, including name, address, phone number, and email. Additionally, you can also crate a payment method using card, ACH, token, ACHToken and Cryptograms while creating customer with optional billing address details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Object to hold customer's information
+              type: object
+              properties:
+                firstName:
+                  description: Customer's first name
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Jane
+                lastName:
+                  description: Customer's last name
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Doe
+                address:
+                  description: Customer's address
+                  type: string
+                  maxLength: 250
+                  examples:
+                  - 123 Main St
+                address2:
+                  description: Customer's address line 2
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Apt 5
+                postalCode:
+                  description: Customer's postal/zip code
+                  type: string
+                  maxLength: 10
+                  examples:
+                  - '94111'
+                city:
+                  description: Customer's city
+                  type: string
+                  maxLength: 50
+                  examples:
+                  - San Francisco
+                state:
+                  description: Customer's state/province
+                  type: string
+                  maxLength: 25
+                  examples:
+                  - CA
+                country:
+                  description: Customer's country
+                  type: string
+                  maxLength: 25
+                  examples:
+                  - USA
+                phone:
+                  description: Customer's phone number
+                  type: string
+                  pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                  maxLength: 17
+                  examples:
+                  - +1-212-456-7890
+                email:
+                  description: Customer's email address
+                  type: string
+                  maxLength: 250
+                  examples:
+                  - john@email.com
+                companyName:
+                  description: Customer's company or organization name.
+                  type: string
+                  maxLength: 75
+                  examples:
+                  - Deluxe Corp
+                paymentMethods:
+                  description: Payment Methods
+                  type: array
+                  items:
+                    description: Payment method details such as Card, ACH, Token, ACHToken and Cryptogram.
+                    oneOf:
+                    - description: Object to hold card details
+                      type: object
+                      properties:
+                        card:
+                          type: object
+                          properties:
+                            card:
+                              description: Card Number
+                              type: string
+                              minLength: 12
+                              maxLength: 19
+                              examples:
+                              - '4111111111111110'
+                            expiry:
+                              description: Card Expiration Month and Year
+                              type: string
+                              pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                              examples:
+                              - 11/26
+                          required:
+                          - card
+                          - expiry
+                          additionalProperties: false
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - Visa-Debit
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                        billingAddress:
+                          description: Billing Information
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                    - description: Object to hold ACH payment information
+                      type: object
+                      properties:
+                        ach:
+                          type: object
+                          properties:
+                            accountNumber:
+                              description: Bank account number
+                              type: string
+                              minLength: 1
+                              maxLength: 20
+                              examples:
+                              - '987654321'
+                            routingNumber:
+                              description: Bank Routing Number
+                              type: string
+                              minLength: 8
+                              maxLength: 9
+                              examples:
+                              - '123456789'
+                            accountType:
+                              description: Account Type - Checking/Savings
+                              type: string
+                              enum:
+                              - Checking
+                              - Savings
+                              examples:
+                              - Checking
+                          required:
+                          - accountNumber
+                          - accountType
+                          - routingNumber
+                          additionalProperties: false
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - Visa-Debit
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                        billingAddress:
+                          description: Billing Information
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                    - description: Object to hold tokenized card details
+                      type: object
+                      properties:
+                        token:
+                          type: object
+                          properties:
+                            token:
+                              description: Tokenized string for Card details
+                              type: string
+                              maxLength: 20
+                              examples:
+                              - '1234567890123450'
+                            expiry:
+                              description: Card Expiration Month and Year
+                              type: string
+                              examples:
+                              - 10/25
+                          required:
+                          - expiry
+                          - token
+                          additionalProperties: false
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - token
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                        billingAddress:
+                          description: Billing Information
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                    - description: Object to hold ACH Token details
+                      type: object
+                      properties:
+                        achToken:
+                          description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                          type: object
+                          properties:
+                            token:
+                              description: Tokenized string for ACH details
+                              type: string
+                              maxLength: 40
+                              examples:
+                              - k|1235673473|4567890123450
+                          required:
+                          - token
+                        billingAddress:
+                          description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - ach token
+                    - description: Object to hold Cryptogram details
+                      type: object
+                      properties:
+                        cryptogram:
+                          description: Object to hold cryptogram data such as tokenized transaction values and billing address. It supports secure transmission of card or bank details using encrypted strings, enabling safe, compliant digital payments across banking and e-commerce environments. Ideal for tokenization workflows requiring enhanced data protection and minimal exposure of sensitive financial information.
+                          type: object
+                          properties:
+                            cryptogram:
+                              description: Tokenized string that passes Card or Bank details for transaction
+                              type: string
+                              examples:
+                              - 6cd3ef836ce141b789b5755ca3f353f1
+                          required:
+                          - cryptogram
+                        billingAddress:
+                          description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - cryptogram
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                    - description: Object to hold fleet card details
+                      type: object
+                      properties:
+                        fleetCard:
+                          type: object
+                          properties:
+                            card:
+                              description: Card Number
+                              type: string
+                              minLength: 12
+                              maxLength: 19
+                              examples:
+                              - '869420240004455'
+                            expiry:
+                              description: Card Expiration Month and Year
+                              type: string
+                              pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                              examples:
+                              - 11/26
+                          required:
+                          - card
+                          - expiry
+                          additionalProperties: false
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - Wex Card
+                        isActive:
+                          description: Flag to tell if customer vault is active
+                          type: boolean
+                          examples:
+                          - true
+                        sequenceNumber:
+                          description: Sequence number of the  fleet card transaction
+                          type: string
+                          minLength: 5
+                          maxLength: 5
+                          examples:
+                          - '56432'
+                        odometer:
+                          description: Odometer reading of the  fleet card transaction
+                          type: string
+                          minLength: 1
+                          maxLength: 9
+                          examples:
+                          - '4354235'
+                        driversLicenseNumber:
+                          description: Driving Licence number of the  fleet card transaction
+                          type: string
+                          minLength: 1
+                          maxLength: 15
+                          examples:
+                          - '2346'
+                        billingAddress:
+                          description: Billing Information
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                      required:
+                      - driversLicenseNumber
+                      - odometer
+                      - sequenceNumber
+                  minItems: 1
+              required:
+              - firstName
+            example:
+              firstName: Narayana
+              lastName: Konuri
+              address: 123 east Main St
+              postalCode: '94111'
+              city: San Francisco
+              state: CA
+              country: USA
+              phone: '9866812622'
+              email: narayana.konuri@email.com
+              companyName: Deluxe Corp
+              paymentMethods:
+              - accNickName: Shopping Account
+                isActive: true
+                ach:
+                  accountNumber: '987654321'
+                  routingNumber: '123456789'
+                  accountType: Checking
+                billingAddress:
+                  firstName: Jane
+                  lastName: Doe
+                  address: 123 Main St
+                  address2: Apt 5
+                  postalCode: '94111'
+                  city: San Francisco
+                  state: CA
+                  country: USA
+                  phone: 650-555-1234
+                  email: jane@email.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response parameters for the API
+                type: object
+                properties:
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 4321
+                  paymentMethodId:
+                    type:
+                    - array
+                    - 'null'
+                    items:
+                      type: string
+                    description: Unique identifier for a payment methods (ACH or Card)
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - customerId
+                - paymentMethodId
+                - requestId
+              example:
+                customerId: 24582
+                paymentMethodId:
+                - dc4017fd-5b14-1496-3274-298337c01289
+                requestId: 3a1a75ce-00b0-4c87-bed5-fc97007ebef6
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+    get:
+      operationId: getAllCustomers
+      summary: Get All Customers
+      tags:
+      - customers
+      description: The Get Customers API retrieves a list of all customers along with their associated details. Each customer record includes basic information such as name, address, contact details, and email. Additionally, the response provides information about the customer’s shipping address, payment methods stored in the vault, and any active subscriptions. Payment methods include details like card type, masked PAN, and account information, while subscription details include the start and end dates, frequency, and status.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+              example:
+              - customerId: 27573
+                phone: +1-8973452344
+                city: New York
+                address2: ''
+                postalCode: '10022'
+                state: NY
+                address: 9011 1234 Block
+                lastName: TestOFLHM
+                firstName: Automation
+                country: US
+                email: DPPAutomationTestUser@gmail.com
+                companyName: Deluxe Corp
+                shippingAddress:
+                  state: ''
+                  address: ''
+                  lastName: ''
+                  firstName: ''
+                  email: test@gmail.com
+                  country: ''
+                  phone: '1234567890'
+                  city: ''
+                  address2: ''
+                  postalCode: ''
+                vaults:
+                - vaultCreated: '2024-04-22T00:20:44.757'
+                  accNickName: Visa-Debit
+                  isActive: true
+                  sequenceNumber: '34521'
+                  odometer: '675437'
+                  driversLicenseNumber: '87654'
+                  paymentMethodId: 474a4400-9114-4950-957d-4da198c307ed
+                  cardType: Mastercard
+                  maskedPan: 555555******4444
+                  expiry: 12/35
+                  token: '2632418387214444'
+                  accountNumber: ''
+                  routingNumber: ''
+                  accountType: Checking
+                  billingAddress:
+                    firstName: Jane
+                    lastName: Doe
+                    address: 123 Main St26
+                    address2: Apt 5
+                    city: San Francisco
+                    state: CA
+                    country: USA
+                    postalCode: '94111'
+                    phone: 650-555-1234
+                    email: jane@email.com
+                  subscription:
+                  - frequency: null
+                    amount: '0'
+                    paymentDay: null
+                    endDate: '0001-01-01T00:00:00'
+                    paymentMonth: null
+                    startDate: '0001-01-01T00:00:00'
+                    active: false
+                    subscriptionId: 00000000-0000-0000-0000-000000000000
+              - customerId: 27583
+                phone: +1-8973452344
+                city: New York
+                address2: ''
+                postalCode: '10022'
+                state: NY
+                address: 1922 1234 Block
+                lastName: TestLEEGY
+                firstName: Automation
+                country: US
+                email: DPPAutomationTestUser@gmail.com
+                shippingAddress:
+                  state: ''
+                  address: ''
+                  lastName: ''
+                  firstName: ''
+                  email: test@gmail.com
+                  country: ''
+                  phone: '1234567890'
+                  city: ''
+                  address2: ''
+                  postalCode: ''
+                vaults:
+                - vaultCreated: '2024-04-22T00:38:41.8'
+                  accNickName: Account-Debit
+                  isActive: false
+                  sequenceNumber: '77653'
+                  odometer: '987645'
+                  driversLicenseNumber: '123454'
+                  paymentMethodId: a61103cb-934d-4855-97cb-5fc913460bdd
+                  cardType: Mastercard
+                  maskedPan: 555555******4444
+                  expiry: 12/35
+                  token: '2632418387214444'
+                  accountNumber: ''
+                  routingNumber: ''
+                  accountType: Checking
+                  billingAddress:
+                    firstName: Jane
+                    lastName: Doe
+                    address: 123 Main St26
+                    address2: Apt 5
+                    city: San Francisco
+                    state: CA
+                    country: USA
+                    postalCode: '94111'
+                    phone: 650-555-1234
+                    email: jane@email.com
+                  subscription:
+                  - frequency: null
+                    amount: '0'
+                    paymentDay: null
+                    endDate: '0001-01-01T00:00:00'
+                    paymentMonth: null
+                    startDate: '0001-01-01T00:00:00'
+                    active: false
+                    subscriptionId: 00000000-0000-0000-0000-000000000000
+              - customerId: 27589
+                phone: +1-8973452344
+                city: New York
+                address2: ''
+                postalCode: '10022'
+                state: NY
+                address: 9653 1234 Block
+                lastName: TestGLCEJ
+                firstName: Automation
+                country: US
+                email: DPPAutomationTestUser@gmail.com
+                shippingAddress:
+                  state: ''
+                  address: ''
+                  lastName: ''
+                  firstName: ''
+                  email: test@gmail.com
+                  country: ''
+                  phone: '1234567890'
+                  city: ''
+                  address2: ''
+                  postalCode: ''
+                vaults:
+                - vaultCreated: '2024-04-22T00:46:34.227'
+                  accNickName: Visa-Debit
+                  isActive: true
+                  sequenceNumber: '64563'
+                  odometer: '987654'
+                  driversLicenseNumber: '134576'
+                  paymentMethodId: 631c3879-e006-49f0-9a11-6ebf6a721f7c
+                  cardType: ACH Checking
+                  maskedPan: '**8654'
+                  expiry: ''
+                  token: ''
+                  accountNumber: ''
+                  routingNumber: '122105155'
+                  accountType: Checking
+                  billingAddress:
+                    firstName: Jane
+                    lastName: Doe
+                    address: 123 Main St26
+                    address2: Apt 5
+                    city: San Francisco
+                    state: CA
+                    country: USA
+                    postalCode: '94111'
+                    phone: 650-555-1234
+                    email: jane@email.com
+                  subscription:
+                  - frequency: null
+                    amount: '0'
+                    paymentDay: null
+                    endDate: '0001-01-01T00:00:00'
+                    paymentMonth: null
+                    startDate: '0001-01-01T00:00:00'
+                    active: false
+                    subscriptionId: 00000000-0000-0000-0000-000000000000
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /customers/{customerId}:
+    patch:
+      operationId: modifySpecificCustomer
+      summary: Modify Specific Customer
+      tags:
+      - customers
+      description: The Modify Customer API allows you to update the details of an existing customer. You can modify the customer’s personal information, such as their first and last name, address, phone number, and email. This ensures that all customer records remain accurate and up-to-date.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter customerId.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Object to hold customer's information
+              type: object
+              properties:
+                firstName:
+                  description: Customer's first name
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Jane
+                lastName:
+                  description: Customer's last name
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Doe
+                address:
+                  description: Customer's address
+                  type: string
+                  maxLength: 250
+                  examples:
+                  - 123 Main St
+                address2:
+                  description: Customer's address line 2
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - Apt 5
+                postalCode:
+                  description: Customer's postal/zip code
+                  type: string
+                  maxLength: 10
+                  examples:
+                  - '94111'
+                city:
+                  description: Customer's city
+                  type: string
+                  maxLength: 50
+                  examples:
+                  - San Francisco
+                state:
+                  description: Customer's state/province
+                  type: string
+                  maxLength: 25
+                  examples:
+                  - CA
+                country:
+                  description: Customer's country
+                  type: string
+                  maxLength: 25
+                  examples:
+                  - USA
+                phone:
+                  description: Customer's phone number
+                  type: string
+                  pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                  maxLength: 17
+                  examples:
+                  - +1-212-456-7890
+                email:
+                  description: Customer's email address
+                  type: string
+                  maxLength: 250
+                  examples:
+                  - john@email.com
+                companyName:
+                  type: string
+                  maxLength: 75
+                  examples:
+                  - Deluxe Corp
+              required:
+              - firstName
+            example:
+              firstName: Jane
+              lastName: Doe
+              address: 123 Main St
+              address2: 123 Main St
+              city: San Francisco
+              state: CA
+              country: USA
+              postalCode: '94111'
+              email: john@email.com
+              companyName: Deluxe Corp
+              phone: +1-212-456-7890
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response parameters for the API
+                type: object
+                properties:
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 4321
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - customerId
+                - requestId
+              example:
+                customerId: 24582
+                requestId: fe4e03ad-b047-4bbd-a7ba-b8a136785b58
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+    get:
+      operationId: getSpecificCustomer
+      summary: Get Specific Customer
+      tags:
+      - customers
+      description: This API retrieves the details of a specific customer using their unique identifier, including name, address, contact details, and email. It also returns the customer's shipping address, stored payment methods, and any active subscriptions. Payment methods include details such as card type, masked PAN, and account information, while subscription details cover start and end dates, frequency, and status.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter customerId.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: number
+                    examples:
+                    - 4321
+                  firstName:
+                    type: string
+                    maxLength: 100
+                    examples:
+                    - John
+                  lastName:
+                    type: string
+                    maxLength: 100
+                    examples:
+                    - Doe
+                  address:
+                    type: string
+                    maxLength: 250
+                    examples:
+                    - 123 Main St
+                  address2:
+                    type: string
+                    maxLength: 100
+                    examples:
+                    - Apt 5
+                  city:
+                    type: string
+                    maxLength: 50
+                    examples:
+                    - San Francisco
+                  postalCode:
+                    type: string
+                    maxLength: 10
+                    examples:
+                    - '94111'
+                  state:
+                    type: string
+                    maxLength: 25
+                    examples:
+                    - CA
+                  country:
+                    type: string
+                    maxLength: 25
+                    examples:
+                    - USA
+                  phone:
+                    type: string
+                    maxLength: 50
+                    examples:
+                    - +1-650-555-1234
+                  email:
+                    type: string
+                    maxLength: 250
+                    examples:
+                    - john@email.com
+                  companyName:
+                    type: string
+                    maxLength: 75
+                    examples:
+                    - Deluxe Corp
+                  shippingAddress:
+                    description: Object to hold the shipping address.
+                    type: object
+                    properties:
+                      firstName:
+                        description: Customer's first name
+                        type: string
+                        maxLength: 100
+                        examples:
+                        - Jane
+                      lastName:
+                        description: Customer's last name
+                        type: string
+                        maxLength: 100
+                        examples:
+                        - Doe
+                      address:
+                        description: Customer's address
+                        type: string
+                        maxLength: 250
+                        examples:
+                        - 123 Main St
+                      address2:
+                        description: Customer's address line 2
+                        type: string
+                        maxLength: 100
+                        examples:
+                        - Apt 5
+                      postalCode:
+                        description: Customer's postal/zip code
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - '94111'
+                      city:
+                        description: Customer's city
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - San Francisco
+                      state:
+                        description: Customer's state/province
+                        type: string
+                        maxLength: 25
+                        examples:
+                        - CA
+                      country:
+                        description: Customer's country
+                        type: string
+                        maxLength: 25
+                        examples:
+                        - USA
+                      phone:
+                        description: Customer's phone number
+                        type: string
+                        pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                        maxLength: 17
+                        examples:
+                        - 650-555-1234
+                      email:
+                        description: Customer's email address
+                        type: string
+                        pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                        maxLength: 250
+                        examples:
+                        - jane@email.com
+                  vaults:
+                    description: Vault(s) details associated to this cutomer.
+                    type: array
+                    items:
+                      description: Vault details
+                      type: object
+                      properties:
+                        accNickName:
+                          description: Convenient name for stored payment method
+                          type: string
+                          examples:
+                          - Visa-Debit
+                        vaultCreated:
+                          type: string
+                          examples:
+                          - '2021-11-26T00:00:00'
+                        isActive:
+                          type: boolean
+                          examples:
+                          - true
+                        sequenceNumber:
+                          description: Sequence number of the  fleet card transaction
+                          type: string
+                          examples:
+                          - '12345'
+                        odometer:
+                          description: Odometer reading of the  fleet card transaction
+                          type: string
+                          examples:
+                          - '4354235'
+                        driversLicenseNumber:
+                          description: Driving Licence number of the  fleet card transaction
+                          type: string
+                          examples:
+                          - '2346'
+                        paymentMethodId:
+                          type: string
+                          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                          examples:
+                          - d10f860c-ab05-4002-86b3-b4a707d9a999
+                        cardType:
+                          type: string
+                          examples:
+                          - Visa
+                        maskedPan:
+                          type: string
+                          examples:
+                          - 4111********4321
+                        expiry:
+                          type: string
+                          examples:
+                          - 11/25
+                        token:
+                          type: string
+                          maxLength: 16
+                          examples:
+                          - '8791230000000000'
+                        accountNumber:
+                          type: string
+                          examples:
+                          - '987654321'
+                        routingNumber:
+                          type: string
+                          examples:
+                          - '123456789'
+                        accountType:
+                          type: string
+                          enum:
+                          - Checking
+                          - Savings
+                          examples:
+                          - Checking
+                        billingAddress:
+                          description: Billing address details associated to this vault.
+                          type: object
+                          properties:
+                            firstName:
+                              description: Customer's first name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Jane
+                            lastName:
+                              description: Customer's last name
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Doe
+                            address:
+                              description: Customer's address
+                              type: string
+                              maxLength: 250
+                              examples:
+                              - 123 Main St
+                            address2:
+                              description: Customer's address line 2
+                              type: string
+                              maxLength: 100
+                              examples:
+                              - Apt 5
+                            postalCode:
+                              description: Customer's postal/zip code
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - '94111'
+                            city:
+                              description: Customer's city
+                              type: string
+                              maxLength: 50
+                              examples:
+                              - San Francisco
+                            state:
+                              description: Customer's state/province
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - CA
+                            country:
+                              description: Customer's country
+                              type: string
+                              maxLength: 25
+                              examples:
+                              - USA
+                            phone:
+                              description: Customer's phone number
+                              type: string
+                              pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                              maxLength: 17
+                              examples:
+                              - 650-555-1234
+                            email:
+                              description: Customer's email address
+                              type: string
+                              pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                              maxLength: 250
+                              examples:
+                              - jane@email.com
+                        subscriptions:
+                          description: Subscription(s) details associated to this vault.
+                          type: array
+                          items:
+                            description: Subscription details
+                            type: object
+                            properties:
+                              subscriptionId:
+                                description: Unique identifier for a recurring payment
+                                type: string
+                                pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                                examples:
+                                - 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                              startDate:
+                                type: string
+                                examples:
+                                - 10/25/2023
+                              endDate:
+                                type: string
+                                examples:
+                                - 10/25/2025
+                              frequency:
+                                type: string
+                                enum:
+                                - Daily
+                                - Weekly
+                                - BiWeekly
+                                - TriWeekly
+                                - Monthly
+                                - BiMonthly
+                                - Quarterly
+                                - Annually
+                                examples:
+                                - Monthly
+                              active:
+                                type: boolean
+                                default: true
+                                examples:
+                                - true
+                              paymentDay:
+                                type: string
+                                enum:
+                                - Monday
+                                - Tuesday
+                                - Wednesday
+                                - Thursday
+                                - Friday
+                                - Saturday
+                                - Sunday
+                                examples:
+                                - Sunday
+                              paymentMonth:
+                                type: integer
+                                minimum: 1
+                                maximum: 12
+                                examples:
+                                - 10
+                            required:
+                            - subscriptionId
+                      required:
+                      - accNickName
+                required:
+                - customerId
+                - firstName
+              example:
+                customerId: 24582
+                phone: '9866812622'
+                city: San Francisco
+                address2: ''
+                postalCode: ''
+                state: CA
+                address: 123 east Main St
+                lastName: name
+                firstName: test
+                country: USA
+                email: sowndarrajan@email.com
+                companyName: Deluxe Corp
+                shippingAddress:
+                  state: ''
+                  address: ''
+                  lastName: ''
+                  firstName: ''
+                  email: test123@gmail.com
+                  country: ''
+                  phone: '1234567890'
+                  city: ''
+                  address2: ''
+                  postalCode: ''
+                vaults:
+                - vaultCreated: '2024-03-15T01:32:45.653'
+                  accNickName: Visa-Debit
+                  isActive: true
+                  sequenceNumber: '65486'
+                  odometer: '2456546'
+                  driversLicenseNumber: '98766'
+                  paymentMethodId: ee0b82f2-5682-ec0c-f75a-12270d6a1f78
+                  cardType: ''
+                  maskedPan: ''
+                  expiry: ''
+                  token: ''
+                  accountNumber: ''
+                  routingNumber: ''
+                  accountType: Checking
+                  billingAddress:
+                    firstName: Jane
+                    lastName: Doe
+                    address: 123 Main St26
+                    address2: Apt 5
+                    city: San Francisco
+                    state: CA
+                    country: USA
+                    postalCode: '94111'
+                    phone: 650-555-1234
+                    email: jane@email.com
+                  subscription:
+                  - frequency: null
+                    amount: '0'
+                    paymentDay: null
+                    endDate: '0001-01-01T00:00:00'
+                    paymentMonth: null
+                    startDate: '0001-01-01T00:00:00'
+                    active: false
+                    subscriptionId: 00000000-0000-0000-0000-000000000000
+                - vaultCreated: '2024-04-11T10:09:46.193'
+                  accNickName: Account-Debit
+                  isActive: false
+                  sequenceNumber: '87657'
+                  odometer: '9875587'
+                  dlNumber: '45345'
+                  paymentMethodId: 10fdca6f-a446-1e18-0a24-219c6c1ff0e6
+                  cardType: ''
+                  maskedPan: ''
+                  expiry: ''
+                  token: ''
+                  accountNumber: ''
+                  routingNumber: ''
+                  accountType: Savings
+                  billingAddress:
+                    firstName: Jane
+                    lastName: Doe
+                    address: 123 Main St26
+                    address2: Apt 5
+                    city: San Francisco
+                    state: CA
+                    country: USA
+                    postalCode: '94111'
+                    phone: 650-555-1234
+                    email: jane@email.com
+                  subscription:
+                  - frequency: null
+                    amount: '0'
+                    paymentDay: null
+                    endDate: '0001-01-01T00:00:00'
+                    paymentMonth: null
+                    startDate: '0001-01-01T00:00:00'
+                    active: false
+                    subscriptionId: 00000000-0000-0000-0000-000000000000
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+    delete:
+      operationId: deleteSpecificCustomer
+      summary: Delete Specific Customer
+      tags:
+      - customers
+      description: 'Deletes the customer identified by the given customer ID and permanently removes all associated records, including personal details,contact information,email,payment methods and subscriptions.
+
+        >**Note:**
+
+        > - The customer will be permanently removed from the Vault.
+
+        > - All upcoming payments will be cancelled.
+
+        > - All associated transactions will no longer be linked to the customer.
+
+        > - Perform an impact or dependency check before deletion using the endpoint:"https://api.deluxe.com/dpp/v1/customers/{customerId}"'
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter customerId.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response details
+                type: object
+                properties:
+                  customerId:
+                    type: number
+                    examples:
+                    - 4321
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - Customer deleted successfully
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - customerId
+                - requestId
+                - responseMessage
+              example:
+                customerId: 12345
+                responseMessage: Customer deleted successfully
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /customers/{customerId}/paymentmethods/{paymentMethodId}:
+    get:
+      operationId: getCustomerSPaymentMethod
+      summary: Get Customer's Payment Method
+      tags:
+      - customers
+      description: This API endpoint allows you to get an existing payment method for a customer. The payment details such as orderId, batchNumber, SubscriptionId (if applicable), fee, token details, account response data, paymentId etc details can be seen as part of this response.
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter customerId.
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter paymentMethodId.
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response parameters for the API
+                type: object
+                properties:
+                  accNickName:
+                    description: Convenient name for stored payment method
+                    type: string
+                    examples:
+                    - Visa-Debit
+                  vaultCreated:
+                    description: The date and time when the vault record was first created.
+                    type: string
+                    examples:
+                    - '2021-11-26T00:00:00'
+                  vaultUpdated:
+                    description: The date and time when the vault record was last updated.
+                    type: string
+                    examples:
+                    - '2021-11-26T00:00:00'
+                  vaultExpires:
+                    description: The date on which the vault record is scheduled to expire.
+                    type: string
+                    examples:
+                    - '2021-11-26T00:00:00'
+                  isActive:
+                    description: Indicates whether the vault record is currently active.
+                    type: boolean
+                    examples:
+                    - true
+                  paymentMethodId:
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d10f860c-ab05-4002-86b3-b4a707d9a999
+                  accountResponseData:
+                    description: Object to hold account verification responses such as AVS (Address Verification Service) and CVV check results. These fields indicate the outcome of address and card security code validations, typically returned by the payment processor.
+                    type: object
+                    properties:
+                      avs:
+                        description: Address verification response
+                        type: string
+                        maxLength: 1
+                        examples:
+                        - Y
+                      avsDate:
+                        description: Date that verify address ran on specific payment method
+                        type: string
+                        examples:
+                        - '2021-11-26T00:00:00'
+                  cardType:
+                    description: Specifies the type of card being used for the transaction (e.g., credit, debit, prepaid).
+                    type: string
+                    examples:
+                    - Visa
+                  maskedPan:
+                    description: Masked Primary Account Number (PAN) used for display and logging. Only the last few digits are visible for security purposes.
+                    type: string
+                    examples:
+                    - 4111********4321
+                  expiry:
+                    description: Card expiration date (in MMYY format).
+                    type: string
+                    examples:
+                    - 11/25
+                  token:
+                    description: Used for processing transactions without exposing the actual PAN.
+                    type: string
+                    maxLength: 16
+                    examples:
+                    - '8791230000000000'
+                  accountNumber:
+                    description: The full Primary Account Number (PAN) associated with the card.
+                    type: string
+                    examples:
+                    - '987654321'
+                  routingNumber:
+                    description: Bank routing number used to identify the financial institution for ACH or domestic fund transfers.
+                    type: string
+                    examples:
+                    - '123456789'
+                  accountType:
+                    type: string
+                    enum:
+                    - Checking
+                    - Savings
+                    examples:
+                    - Checking
+                  sequenceNumber:
+                    description: Sequence number of the  fleet card transaction
+                    type: string
+                    examples:
+                    - '12345'
+                  odometer:
+                    description: Odometer reading of the  fleet card transaction
+                    type: string
+                    examples:
+                    - '4354235'
+                  driversLicenseNumber:
+                    description: Driving Licence number of the  fleet card transaction
+                    type: string
+                    examples:
+                    - '2346'
+                required:
+                - accNickName
+              example:
+                paymentMethodId: ee0b82f2-5682-ec0c-f75a-12270d6a1f78
+                accNickName: Visa-Debit
+                isActive: true
+                cardType: Discover
+                maskedPan: 601178******7242
+                expiry: 12/30
+                token: '8791230000000000'
+                accountResponseData:
+                  avs: Y
+                  avsDate: '2001-01-01T00:00:00'
+                accountNumber: '12345678'
+                routingNumber: '123123123'
+                accountType: Checking
+                createdDate: '2024-03-15T01:32:45.653'
+                updatedDate: '2024-04-15T01:32:45.653'
+                sequenceNumber: '65486'
+                odometer: '2456546'
+                driversLicenseNumber: '98766'
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+    delete:
+      operationId: deleteCustomerSPaymentMethod
+      summary: Delete Customer's Payment Method
+      tags:
+      - customers
+      description: "Delete an existing payment method for a customer.All upcoming payments linked to this payment method will also be deleted.\n> **Note:** \n> - Once a payment method is deleted, all the upcoming payments linked to that payment method will be deleted. \n> - To modify a payment method use \"https://api.deluxe.com/dpp/v1/paymentmethods/{paymentMethodId}\""
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter customerId.
+      - name: paymentMethodId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter paymentMethodId.
+      - name: forceDelete
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          examples:
+          - true
+        description: Indicates whether the payment method should be deleted forcefully. When set to true, the payment method will be deleted even if there are associated upcoming or recurring payments.
+        example: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response details
+                type: object
+                properties:
+                  paymentMethodId:
+                    description: Unique identifier for the payment done.
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 63748a11-312d-456e-b55d-2008f8deea90
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - Payment Method deleted successfully
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - requestId
+                - responseMessage
+              example:
+                paymentMethodId: E23EAC1B-FB07-4A2B-916A-FAA6E57EF440
+                responseMessage: Payment Method deleted successfully
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

@@ -1,0 +1,165 @@
+openapi: 3.2.0
+info:
+  title: Deluxe Postman-Sandbox Secservices API
+  version: '1'
+servers:
+- url: https://sandbox.api.deluxe.com
+security:
+- oauth2Auth: []
+tags:
+- name: Secservices
+paths:
+  /secservices/oauth2/v2/token:
+    post:
+      summary: BearerToken
+      parameters:
+      - schema:
+          type: string
+          example: application/x-www-form-urlencoded
+          default: application/x-www-form-urlencoded
+        in: header
+        name: Content-Type
+        required: true
+      - schema:
+          type: string
+          example: Basic REDACTED_CLIENT_ID_COLON_SECRET_BASE64
+        in: header
+        name: Authorization
+        example: Basic {Base64Encoded}
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    access_token: eyJraWQiOiJKNGRWRlUtSkNrUGpFdEN2aFpwdE0ybHNHVW9yNUUyQmE2QXFYdk1NcVZjIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmdFbjBPYnRKRnI3X2VDeXpHYksyVHdienRlc1Ffc3JOcndFNVpaUlZGYmciLCJpc3MiOiJodHRwczovL2NpYW0tcHJldmlldy5kZWx1eGUuY29tL29hdXRoMi9tdWxlIiwiYXVkIjoiYXBpOi8vbXVsZSIsImlhdCI6MTY3NjM0NTM2OSwiZXhwIjoxNjc2MzQ4OTY5LCJjaWQiOiIwb2EzbWJxcWg1ZUg0dWJORjFkNyIsInNjcCI6WyJtdWxlc29mdF9zY29wZSJdLCJzdWIiOiIwb2EzbWJxcWg1ZUg0dWJORjFkNyIsImZpX2lkX2FsbHkiOjMzMzM3Nzc3fQ.gEd9-RrQCcFnx8j1RK7py86MSEgzplZlvDEcN7_w6sxFes1-ON9bX1nMHq7tmcktAEl0R1SgHV1ly387mnIEQ5LnrKjcLyaJkjyWVAdXwPhKvyLK9M15el7sX64PHxtBLScG3_l96X4kk5Oo29dmosGs1Heodqzmtvi20Id-H12Zcyg4ZopjVgCwqA_BPWz19Rvgr0MjUTeXsUoX00WyY_WHbrjVG16tOLugAAr4JfW1ML1xkFeCNAmkwDm67DC2I9yEF8KIakMtanxTBE5kDBB20G9Vwx3Sinv7wAW602IDH_wgfun4sPnoa2Fdk0PJJLfYvuKkjOUO4XKq6KPe7A
+                    tokenExpiry_time: '2023-02-14T04:29:29Z'
+                    expires_in: '3600'
+                properties:
+                  access_token:
+                    type: string
+                    description: This is the value that will be used with the required "Bearer" authorization header for making API calls to all Deluxe API endpoints.
+                  tokenExpiry_time:
+                    type: string
+                    description: This is the date and time the "access_token" received will expire. This will need to be converted to your local date time.
+                  expires_in:
+                    type: string
+                    description: The amount of time in seconds the token will expire
+                required:
+                - access_token
+                - tokenExpiry_time
+                - expires_in
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  default: client_credentials
+                  description: Grant type being requested
+                scope:
+                  type: string
+                  default: mulesoft_scope
+                  description: Scope for which the token is being request
+              required:
+              - grant_type
+              - scope
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              properties: {}
+          text/html:
+            schema:
+              type: object
+              properties: {}
+          text/plain:
+            schema:
+              type: object
+              properties: {}
+          application/EDI-X12:
+            schema:
+              type: object
+              properties: {}
+          application/EDIFACT:
+            schema:
+              type: object
+              properties: {}
+          application/atom+xml:
+            schema:
+              type: object
+              properties: {}
+          application/font-woff:
+            schema:
+              type: object
+              properties: {}
+          application/gzip:
+            schema:
+              type: object
+              properties: {}
+          application/javascript:
+            schema:
+              type: object
+              properties: {}
+          application/octet-stream:
+            schema:
+              type: object
+              properties: {}
+          application/ogg:
+            schema:
+              type: object
+              properties: {}
+          application/pdf:
+            schema:
+              type: object
+              properties: {}
+          application/postscript:
+            schema:
+              type: object
+              properties: {}
+          application/soap+xml:
+            schema:
+              type: object
+              properties: {}
+          application/x-bittorrent:
+            schema:
+              type: object
+              properties: {}
+          application/x-tex:
+            schema:
+              type: object
+              properties: {}
+          application/xhtml+xml:
+            schema:
+              type: object
+              properties: {}
+          application/xml-dtd:
+            schema:
+              type: object
+              properties: {}
+          application/xop+xml:
+            schema:
+              type: object
+              properties: {}
+          application/zip:
+            schema:
+              type: object
+              properties: {}
+        description: ''
+      description: Use this call to authenticate and receive a bearer token. Bearer token is valid for 59 minutes only and required on all API calls.
+      tags:
+      - Secservices
+components:
+  securitySchemes:
+    oauth2Auth:
+      type: http
+      scheme: basic

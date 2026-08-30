@@ -1,0 +1,940 @@
+openapi: 3.2.0
+info:
+  title: Deluxe Postman-Sandbox American API
+  version: '1'
+servers:
+- url: https://sandbox.api.deluxe.com
+security:
+- oauth2Auth: []
+tags:
+- name: American
+paths:
+  /american/v1/family/transactions:
+    post:
+      summary: Transaction Processing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                RequestId:
+                  type: string
+                  format: uuid
+                  description: Identifier used by the caller to identify the request. Returned in response
+                versionNum:
+                  type: integer
+                  default: 1
+                  description: Reserved for future use
+                webhookInfo:
+                  type: string
+                  description: Reserved for future use
+                RequestType:
+                  type: string
+                  default: Sale
+                  example: Sale
+                  description: Sale,Authorize,Close Batch,Credit,Debit,Generate Token,Refund,Settle,Standalone Refund,Tip Adjust,Void
+                TransactionSource:
+                  type: string
+                  description: Source of the initial request
+                  default: Deluxe API
+                IpAddress:
+                  type: string
+                  description: Reserved for future use
+                Amount:
+                  type: object
+                  description: 'Required for : Sale,Refund,TipAdjust,Debit(ACH),Credit(ACH)'
+                  properties:
+                    Amount:
+                      type: integer
+                      description: Amount of the transaction
+                    Currency:
+                      type: string
+                      example: USD,CDN
+                      description: Currency, generally merchant specific
+                PaymentMethod:
+                  description: 'Required for : Sale,.Authorization,Debit(ACH),Credit(ACH). PaymentMethod''s can only contain one form of payment (CreditCard,ACH,Token,Vault,Cryptogram)'
+                  oneOf:
+                  - properties:
+                      CreditCard:
+                        type: object
+                        description: Cardholder creditcard information
+                        properties:
+                          ccNumber:
+                            type: string
+                          expMonthYear:
+                            type: string
+                          cvv:
+                            type: string
+                      BillingAddress:
+                        type: object
+                        description: Cardholder billing information (Can be used with all available PaymentMethods)
+                        properties:
+                          FirstName:
+                            type: string
+                          LastName:
+                            type: string
+                          Address:
+                            type: string
+                          Address2:
+                            type: string
+                          City:
+                            type: string
+                          State:
+                            type: string
+                          PostalCode:
+                            type: string
+                          Country:
+                            type: string
+                          Telephone:
+                            type: string
+                          EmailAddress:
+                            type: string
+                      AchInfo:
+                        type: object
+                        description: Cardholder ACH information
+                        properties:
+                          RoutingNumber:
+                            type: string
+                          AccountNumber:
+                            type: string
+                          AccountType:
+                            type: string
+                            example: C,S
+                          AchCategory:
+                            type: string
+                      Cryptogram:
+                        type: string
+                        description: Cryptogram sting can be used in place of Creditcard and ACH info when required.
+                      VaultId:
+                        type: string
+                        description: VaultID that corresponds to cardholder data
+                      VaultKey:
+                        type: string
+                        description: Reserved for future use (Required if using Vault as PaymentMethod).
+                      CVV2:
+                        type: string
+                        description: CVV data (Required when using Vault or Token as PaymentMethod)
+                      Token:
+                        type: string
+                        description: Token that corresponds to cardholder data previously stored.
+                      ExpMonthYear:
+                        type: string
+                        description: Expiration month and year for token (Required if Token used in PamentMethod)
+                  type: object
+                TipAmount:
+                  type: object
+                  description: Required when submitting TipAdjust request type
+                  properties:
+                    Amount:
+                      type: integer
+                      example: 14
+                    Currency:
+                      type: string
+                TransactionId:
+                  type: string
+                  format: uuid
+                  description: This should be the TransactionId returned in the initial transaction request. Required for Refund,Void,Tip Adjust
+                ReccuringData:
+                  type: object
+                  description: Used to setup a recurring payment. Amount and PaymentMethod objects are required when setting up a recurring payment.
+                  properties:
+                    RecurringType:
+                      type: string
+                      example: Daily
+                      description: Daily, Weekly, Biweekly, Monthly, Quarterly, Semiannually, Annually, Bimonthly, Triweekly
+                    RecurringStartDate:
+                      type: string
+                      format: date
+                      description: Date the recurring payment will start
+                    RecurringEndDate:
+                      type: string
+                      format: date
+                      description: Date the recurring payment will end
+                    RecurringScheduleDayDetail:
+                      type: string
+                      x-stoplight:
+                        id: atektphqtgn5e
+                      description: Indicates the day of week to process recurring transaction (Used only with Weekly/Monthly/Annual)
+                    RecurringScheduleMonth:
+                      type: integer
+                      x-stoplight:
+                        id: yg5ct810ildmn
+                      description: Indicates the month to process the recurring transaction (Used only with Annually)
+              required:
+              - RequestId
+              - versionNum
+              - RequestType
+              - TransactionSource
+        description: ''
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+        example: bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9
+        required: true
+        description: This is the API authorization and is required on all API calls
+      - name: ApplicationId
+        in: header
+        schema:
+          type: string
+          example: B5sz2SL6RhwJGUvZAKn7S7SeJQbvAckU
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        description: Reserved for future use, please use the default value
+        required: true
+      - name: AccessToken
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        required: true
+        description: This is your merchant specific identifier when making API calls to the transaction processing endpoint.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Tue, 10 May 2022 16:47:34 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=UTF-8
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    IsPartial: false
+                    OrderId: '521818404607950883'
+                    CustomerToken: null
+                    RecurringId: null
+                    Fee: null
+                    Token: '1556778677451111'
+                    TransactionRecordID: 61863
+                    AmountApproved: 1
+                    AuthResponse: 009129
+                    RequestId: 6a45c9cf-30a1-4850-850b-ca73f9dddeae
+                    ErrorCode: 0
+                    Errors: null
+                    TransactionId: 6279f114-aeff-4e78-9bba-ec3bee044a03
+                properties:
+                  IsPartial:
+                    type: boolean
+                    description: Indicates if this was a partial payment
+                  OrderId:
+                    type: string
+                    description: OrderId that was sent with the request
+                  RecurringId:
+                    type:
+                    - string
+                    - 'null'
+                    description: RecurringId if recurring was setup at time of processing
+                  AmountApproved:
+                    type: integer
+                    description: Amount approved by the appropriate card vendor
+                  AuthResponse:
+                    type: string
+                    description: Authorization code
+                  RequestId:
+                    type: string
+                    description: RequestID sent with initial request
+                  ErrorCode:
+                    type: integer
+                    description: Indicates if the transaction was successful 0 = success, 1 = Decline/Error
+                  Errors:
+                    type:
+                    - array
+                    - 'null'
+                    description: List of errors encountered during processing
+                    items: {}
+                  TransactionId:
+                    type: string
+                    description: Transaction identifier
+              example:
+                IsPartial: false
+                OrderId: '12345'
+                AmountApproved: 10
+                AuthResponse: '012345'
+                RequestId: a85a8e6b-348b-4011-a1ec-1e78e9620788
+                ErrorCode: 0
+                TransactionId: 9d5a3e8b-2396-422f-a0a0-c8d187db0f23
+      tags:
+      - American
+  /american/v1/family/reports:
+    post:
+      summary: Report Processing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  RequestId: '{{$guid}}'
+                  VersionNum: 1
+                  WebhookInfo: n/a
+                  RequestType: Custom Report
+                  TransactionSource: Deluxe API
+                  ReportTitle: Journal - CC  - Approval Current Month
+                  StartDate: 02/01/2023
+                  EndDate: 02/01/2023
+                  Page: 1
+                  PageSize: 2
+              properties:
+                RequestId:
+                  type: string
+                  description: Identifier used by the caller to identify the request. Returned in response
+                VersionNum:
+                  type: integer
+                  description: Reserved for future use
+                WebhookInfo:
+                  type: string
+                  description: Reserved for future use
+                RequestType:
+                  type: string
+                  description: Custom Report
+                TransactionSource:
+                  type: string
+                  description: Source of the initial request
+                ReportTitle:
+                  type: string
+                  description: Name of the report being run
+                StartDate:
+                  type: string
+                  description: Start date for report request
+                EndDate:
+                  type: string
+                  description: End date for report request
+                Page:
+                  type: integer
+                  description: Used for report pagination if number of records return in result needs to be controlled.
+                PageSize:
+                  type: integer
+                  description: Used for report pagination if number of records return in result needs to be controlled.
+              required:
+              - RequestId
+              - VersionNum
+              - WebhookInfo
+              - RequestType
+              - TransactionSource
+              - ReportTitle
+              - StartDate
+              - EndDate
+        description: ''
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Authorization
+        description: This is the API authorization and is required on all API calls
+        required: true
+      - schema:
+          type: string
+        in: header
+        name: ApplicationId
+        description: Reserved for future use
+        required: true
+      - schema:
+          type: string
+        in: header
+        name: AccessToken
+        description: This is your merchant specific identifier when making API calls to the transaction processing endpoint.
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    ErrorCode: 0
+                    Data:
+                    - Submission Type: VirtualTerminal
+                      Date: 02/01/2023
+                      Merchant ID: '6280780007557770'
+                      DBA Name: IATS ZENTRO
+                      Card Type: VISA
+                      Cardholder Name: Deluxe Plugin
+                      Cardholder Address: 101 West Main St.
+                      Cardholder City: Plano
+                      Cardholder State: IL
+                      Cardholder Country: US
+                      Cardholder Zip: '60545'
+                      Cardholder Phone: '1234567890'
+                      Cardholder email: jsmith@mail.com
+                      'Card #': 411111******1111
+                      'Trans info: Processing Fee': $0.00
+                      Exp date: 01/24
+                      Total: $2.14
+                      Apvl Code: 003944
+                      Currency: USD
+                      Payment ID: b975d70e-70d4-4b7d-a917-872beec89fd3
+                      Vault ID: null
+                      Recurring ID: null
+                    - Submission Type: VirtualTerminal
+                      Date: 02/01/2023
+                      Merchant ID: '6280780007557770'
+                      DBA Name: IATS ZENTRO
+                      Card Type: VISA
+                      Cardholder Name: Deluxe Plugin
+                      Cardholder Address: 101 West Main St.
+                      Cardholder City: Plano
+                      Cardholder State: IL
+                      Cardholder Country: US
+                      Cardholder Zip: '60545'
+                      Cardholder Phone: '1234567890'
+                      Cardholder email: jsmith@mail.com
+                      'Card #': 411111******1111
+                      'Trans info: Processing Fee': $0.00
+                      Exp date: 01/24
+                      Total: $2.14
+                      Apvl Code: 003944
+                      Currency: USD
+                      Payment ID: b975d70e-70d4-4b7d-a917-872beec89fd3
+                      Vault ID: null
+                      Recurring ID: null
+              example:
+                ErrorCode: 0
+                Data:
+                - Merchant ID: 5IAU
+                  DBA name: IATS ZENTRO
+                  '# Sales': 8
+                  '# Refunds': 2
+                  '# Rejects (bank)': 2
+                  '# Rejects (internal)': 2
+                  '# Batches': 0
+      description: The reporting endpoint is used to get transaction information based on specific search criteria.
+      tags:
+      - American
+  /american/v1/family/vault:
+    parameters: []
+    post:
+      summary: Vault / Customer Processing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  VersionNum: 5
+                  WebhookInfo: string
+                  TransactionSource: Deluxe API
+                  ApplicationID: '123'
+                  Requestid: '{{$guid}}'
+                  vaultJson:
+                    customer:
+                      firstName: Andrey
+                      lastName: Bee
+                      address: 76 Bad Boy Street
+                      phone: 800-456-1789
+                      email: test.test@first-american.net
+                    paymentMethod:
+                      cardNumber: '4111111111111111'
+                      exp: '1030'
+                      accNickName: Test Card
+              properties:
+                VersionNum:
+                  type: integer
+                  description: Reserved for future use
+                  default: 1
+                WebhookInfo:
+                  type: string
+                  description: Reserved for future use
+                  default: N/A
+                TransactionSource:
+                  type: string
+                  description: Request being processed from
+                  default: Deluxe API
+                Requestid:
+                  type: string
+                  format: uuid
+                  description: Identifier used by the caller to identify the request. Returned in response
+                vaultJson:
+                  type: object
+                  description: JSON object containing customer and vault specific data
+                  properties:
+                    customer:
+                      type: object
+                      properties:
+                        firstName:
+                          type: string
+                          description: Cardholder first name
+                        lastName:
+                          type: string
+                          description: Cardholder last name
+                        address:
+                          type: string
+                          description: Cardholder address
+                        phone:
+                          type: string
+                          description: Cardholder phone
+                        email:
+                          type: string
+                          description: Cardholder email address
+                    paymentMethod:
+                      type: object
+                      properties:
+                        accountType:
+                          type: string
+                          description: Indicator if ACH account is checking or savings. (C or S)
+                        routingNumber:
+                          type: string
+                          description: Routing/Transit number
+                        accountNumber:
+                          type: string
+                          description: ACH Account number
+                    Recurring:
+                      type: object
+                      description: Optional
+                      properties:
+                        RecurringStartDate:
+                          type: string
+                          format: date
+                          description: Date recurring will start
+                        RecurringEndDate:
+                          type: string
+                          format: date
+                          description: Date recurring will end
+                        RecurringType:
+                          type: string
+                          description: Recurring type (Daily,Weekly,Monthly,Annually)
+                        Amount:
+                          type: integer
+                          description: Amount of the recurring transaction
+                        RecurringScheduleDayDetail:
+                          type: string
+                          description: Indicates the day of week to process the recurring transaction (Used only with Weekly/Monthly/Annually)
+                        RecurringScheduleMonth:
+                          type: integer
+                          description: Indicates the month to process the recurring transaction (Used only with Annually)
+              required:
+              - TransactionSource
+              - Requestid
+      parameters:
+      - name: ms2-authorization
+        in: header
+        schema:
+          type: string
+        example: bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9
+        required: true
+        description: This is the API authorization and is required on all API calls
+      - name: ApplicationId
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        description: Reserved for future use
+        required: true
+      - name: AccessToken
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        required: true
+        description: This is your merchant specific identifier when making API calls to the transaction processing endpoint.
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    ErrorCode: 0
+                    Data:
+                      errorCode: 0
+                      response:
+                      - target: Customer
+                        id: '10881'
+                        status: 1
+                      - target: Vault
+                        id: 56142bcf-c83a-486a-808d-553a5fd41ae5
+                        status: 1
+                      - target: Recurring
+                        id: ''
+                        status: 0
+                properties:
+                  ErrorCode:
+                    type: integer
+                    description: Indicates if the overall request was processed sucessfully. 0 = success, 1 = not successful
+                  Data:
+                    type: object
+                    properties:
+                      errorCode:
+                        type: integer
+                      response:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            target:
+                              type: string
+                              description: Specific operation being updated (Customer,Vault,Recurring)
+                            id:
+                              type: string
+                              description: Unique identifier for the corresponding target
+                            status:
+                              type: integer
+                              description: Indicates if the specific target update was successful. 1 = success, 0 = not success
+      tags:
+      - American
+    patch:
+      summary: Vault / Customer Processing
+      parameters:
+      - name: ms2-authorization
+        in: header
+        schema:
+          type: string
+        example: bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9
+        required: true
+        description: This is the API authorization and is required on all API calls
+      - name: ApplicationId
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        description: Reserved for future use
+      - name: AccessToken
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        required: true
+        description: This is your merchant specific identifier when making API calls to the transaction processing endpoint.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  VersionNum: 5
+                  WebhookInfo: string
+                  TransactionSource: Deluxe API
+                  ApplicationID: '123'
+                  Requestid: '{{$guid}}'
+                  vaultJson:
+                    customer:
+                      firstName: Andrey
+                      lastName: Bee
+                      address: 76 Bad Boy Street
+                      phone: 800-456-1789
+                      email: test.test@first-american.net
+                    paymentMethod:
+                      cardNumber: '4111111111111111'
+                      exp: '1030'
+                      accNickName: Test Card
+              properties:
+                VersionNum:
+                  type: integer
+                  description: Reserved for future use
+                  default: 1
+                WebhookInfo:
+                  type: string
+                  description: Reserved for future use
+                  default: N/A
+                TransactionSource:
+                  type: string
+                  description: Request being processed from
+                  default: Deluxe API
+                Requestid:
+                  type: string
+                  format: uuid
+                  description: Identifier used by the caller to identify the request. Returned in response
+                vaultJson:
+                  type: object
+                  description: JSON object containing customer and vault specific data
+                  properties:
+                    customer:
+                      type: object
+                      properties:
+                        customerId:
+                          type: integer
+                        firstName:
+                          type: string
+                          description: Cardholder first name
+                        lastName:
+                          type: string
+                          description: Cardholder last name
+                        address:
+                          type: string
+                          description: Cardholder address
+                        phone:
+                          type: string
+                          description: Cardholder phone
+                        email:
+                          type: string
+                          description: Cardholder email address
+                    paymentMethod:
+                      type: object
+                      description: Payment details for the customer credit card or ach info
+                      properties:
+                        cardNumber:
+                          type: string
+                        exp:
+                          type: string
+                        accNickName:
+                          type: string
+              required:
+              - TransactionSource
+              - Requestid
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    ErrorCode: 0
+                    Data:
+                      errorCode: 0
+                      response:
+                      - target: Customer
+                        id: '10881'
+                        status: 1
+                      - target: Vault
+                        id: 56142bcf-c83a-486a-808d-553a5fd41ae5
+                        status: 1
+                      - target: Recurring
+                        id: ''
+                        status: 0
+                properties:
+                  ErrorCode:
+                    type: integer
+                    description: Indicates if the overall request was processed sucessfully. 0 = success, 1 = not successful
+                  Data:
+                    type: object
+                    properties:
+                      errorCode:
+                        type: integer
+                      response:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            target:
+                              type: string
+                              description: Specific operation being updated (Customer,Vault,Recurring)
+                            id:
+                              type: string
+                              description: Unique identifier for the corresponding target
+                            status:
+                              type: integer
+                              description: Indicates if the specific target update was successful. 1 = success, 0 = not success
+      tags:
+      - American
+    get:
+      summary: Vault / Customer Processing
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+        example: bearer aeb8907d-bf84-462a-afe0-ae996dda3ab9
+        required: true
+        description: This is the API authorization and is required on all API calls
+      - name: ApplicationId
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        description: Reserved for future use
+        required: true
+      - name: AccessToken
+        in: header
+        schema:
+          type: string
+        example: 7775AD1E-AA25-4ED3-812F-21C966D97C26
+        required: true
+        description: This is your merchant specific identifier when making API calls to the transaction processing endpoint.
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    ErrorCode: 0
+                    Data:
+                    - accNickName: ''
+                      customerId: '10424'
+                      firstName: Raul
+                      lastName: Zorro
+                      address: 1404 Unit Test Str
+                      city: ''
+                      state: ''
+                      postalCode: ''
+                      country: ''
+                      email: test.test@first-american.net
+                      phone: 800-456-1789
+                      vaultCreated: '2023-02-01T13:22:48.827'
+                      vaultExpires: '2028-02-01T13:22:48.827'
+                      vaultID: d10f860c-ab05-4002-86b3-b4a707d9a999
+                      vaultKey: AndreyBee76BadBoyStreet
+                      paymentType: VISA
+                      enabled: true
+                      accountNumber: ''
+                      bankRouting: ''
+                      accountType: ''
+                      token: '1556778677451111'
+                      maskedPan: 411111******1111
+                      exp: 12/36
+                      recurringType: Annually
+                      recurringAmount: '1.2800'
+                      recurringEndDate: '2029-03-16T00:00:00'
+                      recurringID: a48ee792-985e-460f-919a-cb77e90ea014
+                      recurringStartDate: '2023-02-16T00:00:00'
+                      recurringScheduleMonth: 4
+                      recurringScheduleDayDetail: 17
+                properties:
+                  ErrorCode:
+                    type: integer
+                    description: Indicates if request was successful. 0 = Success / 1 = Failure
+                  Data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        accNickName:
+                          type: string
+                          description: Nickname for the customer account
+                        customerId:
+                          type: string
+                          description: Unique identifier for a customer record
+                        firstName:
+                          type: string
+                          description: First name of the customer record
+                        lastName:
+                          type: string
+                          description: Last name of the customer record
+                        address:
+                          type: string
+                          description: Address of the customer record
+                        city:
+                          type: string
+                          description: City of the customer record
+                        state:
+                          type: string
+                          description: State of the customer record
+                        postalCode:
+                          type: string
+                          description: Zip/Postal Code of the customer record
+                        country:
+                          type: string
+                          description: Country of the customer record
+                        email:
+                          type: string
+                          description: Email of the customer record
+                        phone:
+                          type: string
+                          description: Phone number of the customer record
+                        vaultCreated:
+                          type: string
+                          description: Date vault record was created
+                        vaultExpires:
+                          type: string
+                          description: Date the customer vault expires
+                        vaultID:
+                          type: string
+                          description: Unique Identifier that identifies the corresponding vault record
+                        vaultKey:
+                          type: string
+                        paymentType:
+                          type: string
+                          description: Indicates if the vault record is "ACH" or "CreditCard"
+                        enabled:
+                          type: boolean
+                          description: Indicates if the vault is inabled
+                        accountNumber:
+                          type: string
+                          description: ACH/EFT customer account number
+                        bankRouting:
+                          type: string
+                          description: ACH/EFT customer routing/transit number
+                        accountType:
+                          type: string
+                          description: Checking or Savings
+                        token:
+                          type: string
+                          description: Token string that corresponds to the payment record.
+                        maskedPan:
+                          type: string
+                          description: Masked Cardnumber
+                        exp:
+                          type: string
+                          description: Expiration date of customer card.
+                        recurringType:
+                          type: string
+                          description: Recurring type (Daily,Monthly,etc..)
+                        recurringAmount:
+                          type: string
+                          description: Recurring amount charged each recurring cycle
+                        recurringEndDate:
+                          type: string
+                          description: Date recurring setup will expire
+                        recurringID:
+                          type: string
+                          description: Unique Identifier that coresponds to the recurring setup.
+                        recurringStartDate:
+                          type: string
+                          description: Date the recurring record starts
+                        recurringScheduleMonth:
+                          type: integer
+                          description: Specific month recurring transaction will process (Annual recurring type only)
+                        recurringScheduleDayDetail:
+                          type: integer
+                          description: Specific day in month a recurring transaction will process.
+              example:
+                ErrorCode: 0
+                Data:
+                - accNickName: ''
+                  customerId: ''
+                  firstName: ''
+                  lastName: ''
+                  address: ''
+                  city: ''
+                  state: ''
+                  postalCode: ''
+                  country: ''
+                  email: ''
+                  phone: ''
+                  vaultCreated: '0001-01-01T00:00:00'
+                  vaultExpires: '0001-01-01T00:00:00'
+                  vaultID: 6db41331-d2de-4b05-a740-e60e96c18497
+                  vaultKey: ''
+                  paymentType: ''
+                  enabled: true
+                  accountNumber: ''
+                  bankRouting: ''
+                  accountType: ''
+                  token: ''
+                  maskedPan: ''
+                  exp: ''
+                  recurringType: Biweekly
+                  recurringAmount: '4.0000'
+                  recurringEndDate: '2022-07-31T00:00:00'
+                  recurringID: ac72f257-55fa-4a4d-b7cb-008fcb40f193
+                  recurringStartDate: '2022-07-13T00:00:00'
+      tags:
+      - American
+components:
+  securitySchemes:
+    oauth2Auth:
+      type: http
+      scheme: basic

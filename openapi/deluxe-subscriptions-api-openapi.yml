@@ -1,0 +1,1528 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Subscriptions API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: subscriptions
+paths:
+  /subscriptions:
+    post:
+      operationId: createSubscription
+      summary: Create Subscription
+      tags:
+      - subscriptions
+      description: This API endpoint creates a new subscription for a customer with the specified payment and billing details. You need to provide the following information payment type, amount (including currency), payment method (such as credit card details and billing address), and subscription details (such as start and end dates, frequency, and payment schedule). Additionally, you can specify shipping address, tax information, itemized details (Level 2 and Level 3 data), custom data, merchant category, and any alternate fees. Upon successful subscription creation, a unique subscription identifier and order details will be generated, and the subscription will be scheduled according to the provided parameters.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request object to hold details to create a subscription, including payment method, subscription specifics, billing and shipping addresses, and tax information. It supports Level 2 and Level 3 processing for sale items and fleet products, and also includes optional customer data, order information, and alternate fees to handle surcharges.
+              type: object
+              properties:
+                paymentType:
+                  description: Identifies if the payment method is Credit (ACH Refund) or Debit for ACH Payments, or Sale for Card payment.
+                  type: string
+                  enum:
+                  - Sale
+                  - Debit
+                  - Credit
+                  examples:
+                  - Sale
+                amount:
+                  description: Object to hold the total transaction amount and currency. Make sure the amount matches the sum of sale items or products in Level 3 transactions, and includes any applicable fees.
+                  type: object
+                  properties:
+                    amount:
+                      description: Amount of the transaction
+                      type: number
+                      examples:
+                      - 150
+                    currency:
+                      description: Currency of transaction
+                      type: string
+                      enum:
+                      - USD
+                      - CAD
+                      examples:
+                      - USD
+                  required:
+                  - amount
+                paymentMethod:
+                  description: Object to hold payment method details
+                  oneOf:
+                  - description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                    type: object
+                    properties:
+                      card:
+                        description: Object to hold card details such as card number, expiration date, and CVV. Includes billing address for verification purposes. Supports secure, PCI-compliant card-based transactions while reducing exposure of sensitive payment data across digital checkout and payment authorization flows.
+                        type: object
+                        properties:
+                          card:
+                            description: Card Number
+                            type: string
+                            minLength: 12
+                            maxLength: 19
+                            examples:
+                            - '4111111111111110'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            pattern: ^(0[1-9]|1[0-2])\/\d{2}$
+                            examples:
+                            - 11/26
+                          cvv:
+                            description: Card CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - card
+                        - expiry
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.
+                    type: object
+                    properties:
+                      ach:
+                        description: Object to hold ACH information such as bank account number, routing number, and account type (e.g., Checking or Savings). Includes optional billing address to support verification and regulatory compliance. Enables secure account-based transactions for direct debit payments.
+                        type: object
+                        properties:
+                          accountNumber:
+                            description: Bank account number
+                            type: string
+                            minLength: 1
+                            maxLength: 20
+                            examples:
+                            - '987654321'
+                          routingNumber:
+                            description: Bank Routing Number
+                            type: string
+                            minLength: 8
+                            maxLength: 9
+                            examples:
+                            - '123456789'
+                          accountType:
+                            description: Account Type - Checking/Savings
+                            type: string
+                            enum:
+                            - Checking
+                            - Savings
+                            examples:
+                            - Checking
+                        required:
+                        - accountNumber
+                        - routingNumber
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.
+                    type: object
+                    properties:
+                      token:
+                        description: Object to hold tokenized card information such as card number, expiration date, and CVV. Includes billing address for validation. Supports secure, PCI-compliant digital transactions with minimal exposure of sensitive data, enabling efficient payment processing across web, mobile, and in-store environments.
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for Card details
+                            type: string
+                            maxLength: 20
+                            examples:
+                            - '1234567890123450'
+                          expiry:
+                            description: Card Expiration Month and Year
+                            type: string
+                            examples:
+                            - 10/25
+                          cvv:
+                            description: Card CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - expiry
+                        - token
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.
+                    type: object
+                    properties:
+                      vault:
+                        description: Object to hold payment method details such as stored payment ID and optional CVV. It enables secure retrieval of tokenized payment credentials for recurring billing or one-click checkout scenarios. Includes billing address to support verification, fraud prevention, and transaction accuracy while aligning with compliance requirements in digital payment flows.
+                        type: object
+                        properties:
+                          paymentMethodId:
+                            description: Unique identifier for stored payment method
+                            type: string
+                            pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                            examples:
+                            - 99c33585-a62f-45bb-a733-5720dd69ab1e
+                          cvv:
+                            description: CVV/Security Code
+                            type: string
+                            minLength: 3
+                            maxLength: 4
+                            examples:
+                            - '245'
+                        required:
+                        - paymentMethodId
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                  - description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                    type: object
+                    properties:
+                      achToken:
+                        description: Object to hold ACH token information such as a tokenized string representing bank details. Includes billing address for validation and compliance support. Useful for secure ACH transactions in digital payment workflows, enabling reduced exposure of sensitive banking information and streamlined account-based processing.
+                        type: object
+                        properties:
+                          token:
+                            description: Tokenized string for ACH details
+                            type: string
+                            maxLength: 40
+                            examples:
+                            - k|1235673473|4567890123450
+                        required:
+                        - token
+                      billingAddress:
+                        description: Billing Address details includes name, street address, city, postal code, country, and optional contact information like phone and email. These fields support payment verification, fraud prevention, and customer record enrichment, making it easier to integrate with billing, invoicing, compliance systems.
+                        type: object
+                        properties:
+                          firstName:
+                            description: Customer's first name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Jane
+                          lastName:
+                            description: Customer's last name
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Doe
+                          address:
+                            description: Customer's address
+                            type: string
+                            maxLength: 250
+                            examples:
+                            - 123 Main St
+                          address2:
+                            description: Customer's address line 2
+                            type: string
+                            maxLength: 100
+                            examples:
+                            - Apt 5
+                          postalCode:
+                            description: Customer's postal/zip code
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - '94111'
+                          city:
+                            description: Customer's city
+                            type: string
+                            maxLength: 50
+                            examples:
+                            - San Francisco
+                          state:
+                            description: Customer's state/province
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - CA
+                          country:
+                            description: Customer's country
+                            type: string
+                            maxLength: 25
+                            examples:
+                            - USA
+                          phone:
+                            description: Customer's phone number
+                            type: string
+                            pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                            maxLength: 17
+                            examples:
+                            - 650-555-1234
+                          email:
+                            description: Customer's email address
+                            type: string
+                            pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                            maxLength: 250
+                            examples:
+                            - jane@email.com
+                    additionalProperties: false
+                subscription:
+                  description: Object to hold subscription details
+                  type: object
+                  properties:
+                    startDate:
+                      description: Specifies the starting date from which recurring billing begins. The startDate must either match the subscription transaction date or be set to a future date.
+                      type: string
+                      examples:
+                      - 10/25/2023
+                    endDate:
+                      description: Defines the termination date of the subscription period.
+                      type: string
+                      examples:
+                      - 10/25/2025
+                    frequency:
+                      description: Indicates how often billing occurs e.g., Monthly, Quarterly, or Annually
+                      type: string
+                      enum:
+                      - Daily
+                      - Weekly
+                      - BiWeekly
+                      - TriWeekly
+                      - Monthly
+                      - BiMonthly
+                      - Quarterly
+                      - Annually
+                      - Custom
+                      - SemiAnnually
+                      examples:
+                      - Monthly
+                    active:
+                      description: Boolean flag to reflect whether the subscription is currently active or not
+                      type: boolean
+                      default: true
+                      examples:
+                      - true
+                    paymentDay:
+                      description: Specifies the designated day of the week (e.g., Sunday) when payment is scheduled to process; useful for weekly plans.
+                      type: string
+                      enum:
+                      - Monday
+                      - Tuesday
+                      - Wednesday
+                      - Thursday
+                      - Friday
+                      - Saturday
+                      - Sunday
+                      examples:
+                      - Sunday
+                    paymentMonth:
+                      description: Defines the month (1 to 12) when payment is intended to occur, relevant for annual billing cycles.
+                      type: integer
+                      minimum: 1
+                      maximum: 12
+                      examples:
+                      - 10
+                    custom:
+                      description: Object to hold the custom subscription details.
+                      type: object
+                      properties:
+                        interval:
+                          description: Specifies the frequency of the billing cycle based on the defined interval type.
+                          type: number
+                          minimum: 1
+                          examples:
+                          - 5
+                        intervalType:
+                          description: Defines the unit of time used for the billing interval (for example, daily, weekly, monthly, or yearly).
+                          type: string
+                          enum:
+                          - DAY
+                          - WEEK
+                          - MONTH
+                          - YEAR
+                          examples:
+                          - DAY
+                        duration:
+                          description: 'Specifies how long the subscription will continue.
+
+                            - **FIXED_PAYMENTS:** Runs for a limited number of payments.
+
+                            - **UNTIL_END_DATE:** The subscription continues indefinitely until end date.
+
+                            - **UNTIL_CANCELLED:** The subscription continues indefinitely until manually cancelled.'
+                          type: string
+                          enum:
+                          - UNTIL_CANCELLED
+                          - UNTIL_END_DATE
+                          - FIXED_PAYMENTS
+                          examples:
+                          - FIXED_PAYMENTS
+                        numberOfPayments:
+                          description: Specifies the total number of billing cycles for the subscription. This field is required when duration is set to FIXED and is ignored when duration is UNTIL_CANCELLED.
+                          type: number
+                          minimum: 1
+                          examples:
+                          - 5
+                  required:
+                  - endDate
+                  - frequency
+                  - startDate
+                shippingAddress:
+                  description: Shipping Information object
+                  type: object
+                  properties:
+                    firstName:
+                      description: Customer's first name
+                      type: string
+                      maxLength: 100
+                      examples:
+                      - Jane
+                    lastName:
+                      description: Customer's last name
+                      type: string
+                      maxLength: 100
+                      examples:
+                      - Doe
+                    address:
+                      description: Customer's address
+                      type: string
+                      maxLength: 250
+                      examples:
+                      - 123 Main St
+                    address2:
+                      description: Customer's address line 2
+                      type: string
+                      maxLength: 100
+                      examples:
+                      - Apt 5
+                    postalCode:
+                      description: Customer's postal/zip code
+                      type: string
+                      maxLength: 50
+                      examples:
+                      - '94111'
+                    city:
+                      description: Customer's city
+                      type: string
+                      maxLength: 50
+                      examples:
+                      - San Francisco
+                    state:
+                      description: Customer's state/province
+                      type: string
+                      maxLength: 25
+                      examples:
+                      - CA
+                    country:
+                      description: Customer's country
+                      type: string
+                      maxLength: 25
+                      examples:
+                      - USA
+                    phone:
+                      description: Customer's phone number
+                      type: string
+                      pattern: ^(\+\d{1,3}[\s-]?)?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$
+                      maxLength: 17
+                      examples:
+                      - 650-555-1234
+                    email:
+                      description: Customer's email address
+                      type: string
+                      pattern: ^([a-zA-Z0-9.!#$\%&'*+-=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$
+                      maxLength: 250
+                      examples:
+                      - jane@email.com
+                level2:
+                  description: Level 2 data enhances transactions by adding contextual fields like customer reference numbers, tax indicators, shipping ZIP codes, and purchase card flags. This additional metadata improves reporting accuracy, simplifies reconciliation, and supports compliance and audit readiness while offering better visibility into spending behavior.
+                  type: object
+                  properties:
+                    customerRefNumber:
+                      description: Reference number for customer
+                      type: string
+                      examples:
+                      - '7898654'
+                    localTaxFlag:
+                      description: "Indicator, if local taxes apply.\n> Note: On `localTaxFlag` behavior, user can send the acceptable values 1 and 2.\n- If `taxAmount = 0.00`, set **`localTaxFlag = 2`**, which indicates it is an tax exempted item.  \n- If `taxAmount > 0.00`, set **`localTaxFlag = 1`**."
+                      type: integer
+                      examples:
+                      - 1
+                    purchaseCard:
+                      description: Indicates if purchase card
+                      type: boolean
+                      examples:
+                      - false
+                    shippingZip:
+                      description: Zip/Postal code of the shipping address
+                      type: string
+                      examples:
+                      - '94002'
+                    taxAmount:
+                      description: Total Tax Amount is the sum of all individual tax amounts applied to each sale item in a transaction. It represents the overall tax charged on the entire purchase.
+                      type: number
+                      examples:
+                      - 2
+                level3:
+                  description: 'Level 3 data provides detailed line-item information for each sale item in a transaction, including descriptions, quantities, pricing, and discounts. This level of detail enhances transparency, improves financial reporting and reconciliation, and supports compliance with procurement policies. It also enables more efficient processing for corporate and government transactions, often resulting in lower interchange fees and stronger vendor relationships.
+
+
+                    Recommendations for Level 3 Transactions:
+
+                    - Use a Level 3-enabled card and provide detailed line-item data.
+
+                    - Ensure a non-zero tax amount is included for Level 2 and Level 3 transactions.'
+                  type: array
+                  items:
+                    description: 'Level 3 data provides detailed line-item information for each sale item in a transaction, including descriptions, quantities, pricing, and discounts. This level of detail enhances transparency, improves financial reporting and reconciliation, and supports compliance with procurement policies. It also enables more efficient processing for corporate and government transactions, often resulting in lower interchange fees and stronger vendor relationships.
+
+
+                      Recommendations for Level 3 Transactions:
+
+                      - Use a Level 3-enabled card and provide detailed line-item data.
+
+                      - Ensure a non-zero tax amount is included for Level 2 and Level 3 transactions.'
+                    type: object
+                    properties:
+                      description:
+                        description: Description or name of the sale item
+                        type: string
+                        maxLength: 250
+                        examples:
+                        - Apple
+                      skuCode:
+                        description: Stock Keeping Unit Code
+                        type: string
+                        maxLength: 100
+                        examples:
+                        - SKU1234
+                      unitCost:
+                        description: The cost per single unit of the item being purchased.
+                        type: number
+                        examples:
+                        - 5
+                      price:
+                        description: Represents the total price of the item sold.
+                        type: number
+                        examples:
+                        - 5
+                      quantity:
+                        description: Quantity of item sold
+                        type: number
+                        examples:
+                        - 4
+                      commodityCode:
+                        description: Code used to classify the type of goods or services involved in transaction. DPP APIs do not enforce validations for commodity codes. It is recommended to use standardized lists by referring the [link](https://www.mpiprocessing.com/level-3-and-level-2-credit-card-processing-commodity-codes/)
+                        type: string
+                        maxLength: 12
+                        examples:
+                        - '39028'
+                      unitOfMeasure:
+                        description: Unit of measuring the item. The API do not enforce validations for units of measure, it is recommended to use standardized lists by referring the [link](https://help.usaepay.info/developer/reference/umcodes/)
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - Dozen
+                      freightAmount:
+                        description: The cost of shipping or transportation for the item.
+                        type: number
+                        examples:
+                        - 0
+                      dutyAmount:
+                        description: The cost of customs duties or import taxes (especially for international purchases).
+                        type: number
+                        examples:
+                        - 0
+                      itemDiscountAmount:
+                        description: Discount amount applied on sale item
+                        type: number
+                        examples:
+                        - 0
+                      itemDiscountRate:
+                        description: Discount rate of the sale item
+                        type: number
+                        examples:
+                        - 0
+                      taxAmount:
+                        description: Tax amount applied on the sale item.
+                        type: number
+                        examples:
+                        - 2
+                customData:
+                  description: Custom data allows integrators to pass additional, customizable information related to a transaction when it does not fit into any predefined fields. This feature supports sending data as name–value pairs (e.g., Invoice Number and its corresponding value).
+                  type: array
+                  items:
+                    description: Custom data allows integrators to pass additional, customizable information related to a transaction when it does not fit into any predefined fields. This feature supports sending data as name–value pairs (e.g., Invoice Number and its corresponding value).
+                    type: object
+                    properties:
+                      name:
+                        description: Custom Data field name or key
+                        type: string
+                        examples:
+                        - Invoice Number
+                      value:
+                        description: Custom Data field value
+                        type: string
+                        examples:
+                        - inv1234
+                merchantCategory:
+                  description: Industry in which merchant operates
+                  type: string
+                  maxLength: 100
+                  examples:
+                  - E-Commerce
+                paymentCompleteDate:
+                  description: Date on which payment has to be captured/completed. Format MM/dd/yyyy
+                  type: string
+                  examples:
+                  - 09/25/2023
+                orderData:
+                  description: Object to hold order details
+                  type: object
+                  properties:
+                    autoGenerateOrderId:
+                      description: Flag to tell if Order Id is to be automatically generated
+                      type: boolean
+                      examples:
+                      - true
+                    orderId:
+                      description: Unique identifier of Order
+                      type: string
+                      examples:
+                      - abc12345
+                    orderIdIsUnique:
+                      description: Flag to tell if Order Id is unique
+                      type: boolean
+                      examples:
+                      - true
+                alternateFee:
+                  description: Object to hold additional fee passed by integrator
+                  type: object
+                  properties:
+                    feeType:
+                      description: Alternate fee description
+                      type: string
+                      examples:
+                      - Surcharge
+                    feePercent:
+                      description: Percentage of surcharge to be charged
+                      type: number
+                      examples:
+                      - 3
+                    amount:
+                      description: Amount of surcharge calculated based on
+                      type: number
+                      examples:
+                      - 4.5
+                    waived:
+                      description: Flag to tell if the fee is to be waived or not
+                      type: boolean
+                      examples:
+                      - true
+                    addedToTotalAmount:
+                      description: Flag to tell if the fee is to be added to the total amount
+                      type: boolean
+                      examples:
+                      - true
+                productData:
+                  description: Product data contains key details about the products or services involved in a fleet transaction. This information supports accurate billing, expense tracking, and reporting. However, product data fields do not enforce validations by themselves. Therefore, always refer to the product master data before initiating any transaction to ensure accuracy and consistency.
+                  type: array
+                  items:
+                    description: Product data contains key details about the products or services involved in a fleet transaction. This information supports accurate billing, expense tracking, and reporting. However, product data fields do not enforce validations by themselves. Therefore, always refer to the product master data before initiating any transaction to ensure accuracy and consistency.
+                    type: object
+                    properties:
+                      productCode:
+                        description: Unique code used to identify the product.
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - '036'
+                      serviceCode:
+                        description: Code that represents the service associated with the product.
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - S
+                      unitMeasurement:
+                        description: The unit in which the product is measured.
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - K
+                      unitQuantity:
+                        description: The number of smaller units contained within the product.
+                        type: number
+                        examples:
+                        - 2
+                      unitPrice:
+                        description: The price per single unit of the product.
+                        type: number
+                        examples:
+                        - 3
+                      price:
+                        description: The total value of the single product.
+                        type: number
+                        examples:
+                        - 6
+                      quantity:
+                        description: The total number of products.
+                        type: number
+                        examples:
+                        - 5
+                      cost:
+                        description: The cost for the product.
+                        type: number
+                        examples:
+                        - 30
+                    required:
+                    - cost
+                    - price
+                    - productCode
+                    - quantity
+                    - serviceCode
+                    - unitMeasurement
+                    - unitPrice
+                    - unitQuantity
+                customerData:
+                  description: Customer data includes critical details such as odometer readings, sequence numbers, and driver license information. Capturing this data during fleet transactions ensures accuracy and accountability. It also provides valuable context on vehicle usage and driver activity, supporting improved tracking, reporting, and regulatory compliance.
+                  type: object
+                  properties:
+                    sequenceNumber:
+                      description: Sequence number of the fleet card transaction
+                      type: string
+                      minLength: 5
+                      maxLength: 5
+                      examples:
+                      - '56432'
+                    odometer:
+                      description: Odometer reading of the vehicle captured during transaction
+                      type: string
+                      minLength: 1
+                      maxLength: 9
+                      examples:
+                      - '4354235'
+                    driversLicenseNumber:
+                      description: Driving Licence number of the driver captured during transaction
+                      type: string
+                      minLength: 1
+                      maxLength: 15
+                      examples:
+                      - '934564354235'
+                  required:
+                  - driversLicenseNumber
+                  - odometer
+                  - sequenceNumber
+                deviceId:
+                  description: Fleet data capturing deviceId
+                  type: string
+                  maxLength: 50
+                  examples:
+                  - '1'
+              required:
+              - amount
+              - paymentMethod
+              - paymentType
+              - subscription
+            example:
+              paymentType: Sale
+              amount:
+                amount: 99.99
+                currency: USD
+              paymentMethod:
+                card:
+                  card: '4111111111111110'
+                  expiry: 11/26
+                  cvv: '245'
+                billingAddress:
+                  firstName: Jane
+                  lastName: Doe
+                  address: 123 Main St
+                  address2: Apt 5
+                  postalCode: '94111'
+                  city: San Francisco
+                  state: CA
+                  country: USA
+                  phone: 650-555-1234
+                  email: jane@email.com
+              subscription:
+                startDate: 10/25/2023
+                endDate: 10/25/2025
+                frequency: Monthly
+                active: true
+                paymentDay: Sunday
+                paymentMonth: 10
+                custom:
+                  interval: 1
+                  intervalType: MONTH
+                  duration: UNTIL_CANCELLED
+                  numberOfPayments: 5
+              shippingAddress:
+                firstName: Jane
+                lastName: Doe
+                address: 123 Main St
+                address2: Apt 5
+                postalCode: '94111'
+                city: San Francisco
+                state: CA
+                country: USA
+                phone: 650-555-1234
+                email: jane@email.com
+              level2:
+                customerRefNumber: '7898654'
+                localTaxFlag: 2
+                purchaseCard: false
+                shippingZip: '94002'
+                taxAmount: 4.5
+              level3:
+              - description: Apple
+                skuCode: SKU1234
+                commodityCode: '39028'
+                unitOfMeasure: Dozen
+                quantity: 4
+                unitCost: 11
+                itemDiscountRate: 10
+                itemDiscountAmount: 4
+                price: 40
+                taxAmount: 2
+                freightAmount: 1.5
+                dutyAmount: 0.3
+              - description: Banana
+                skuCode: SKU4321
+                commodityCode: '39028'
+                unitOfMeasure: Dozen
+                quantity: 10
+                unitCost: 5
+                itemDiscountRate: 0
+                itemDiscountAmount: 0
+                price: 50
+                taxAmount: 2.5
+                freightAmount: 1.5
+                dutyAmount: 0.3
+              productData:
+              - productCode: '001'
+                serviceCode: S
+                unitMeasurement: G
+                unitQuantity: 2
+                unitPrice: 3
+                price: 6
+                quantity: 5
+                cost: 30
+              - productCode: '036'
+                serviceCode: S
+                unitMeasurement: G
+                unitQuantity: 5
+                unitPrice: 4
+                price: 20
+                quantity: 3
+                cost: 60
+              customerData:
+                sequenceNumber: '56432'
+                odometer: '4354235'
+                driversLicenseNumber: '9875612345'
+              customData:
+              - name: Invoice Number
+                value: inv1234
+              merchantCategory: E-Commerce
+              deviceId: '1'
+              paymentCompleteDate: 09/25/2023
+              orderData:
+                autoGenerateOrderId: true
+                orderId: abc12345
+                orderIdIsUnique: true
+              alternateFee:
+                amount: 10
+                feePercent: 80
+                feeType: Surcharge
+                waived: true
+                addedToTotalAmount: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Object to hold the subscription response
+                type: object
+                properties:
+                  isPartial:
+                    description: Indicates if partial payment
+                    type: boolean
+                    examples:
+                    - false
+                  orderId:
+                    description: Merchant order ID
+                    type: string
+                    examples:
+                    - Order123
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 4321
+                  batchNumber:
+                    description: Indicated batch number in which the transaction will be settled
+                    type: number
+                    examples:
+                    - 1234
+                  subscriptionId:
+                    description: Unique identifier for a recurring payment
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                  paymentMethodId:
+                    description: Unique identifier for a payment method (ACH or Card)
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d10f860c-ab05-4002-86b3-b4a707d9a999
+                  fee:
+                    description: Object to hold fee details
+                    type: object
+                    properties:
+                      feeAmount:
+                        description: Amount of fee applied
+                        type: number
+                        examples:
+                        - 1.99
+                      feeAuthResponse:
+                        description: Authorizer's response code for fee payment
+                        type:
+                        - string
+                        - 'null'
+                        examples:
+                        - '441248'
+                    required:
+                    - feeAmount
+                    - feeAuthResponse
+                  token:
+                    description: Payment token used
+                    type: string
+                    examples:
+                    - '1556778677451110'
+                  accountResponseData:
+                    description: Object to hold account response details
+                    type: object
+                    properties:
+                      avs:
+                        description: Address verification response
+                        type: string
+                        maxLength: 1
+                        examples:
+                        - Y
+                      cvv:
+                        description: CVV verification response
+                        type: string
+                        examples:
+                        - Y
+                    required:
+                    - avs
+                    - cvv
+                  amountApproved:
+                    description: Approved payment amount
+                    type: number
+                    examples:
+                    - 99.95
+                  authResponse:
+                    description: Authorization code from issuer
+                    type: string
+                    examples:
+                    - ABC123
+                  responseCode:
+                    description: Authorizer response code
+                    type: number
+                    examples:
+                    - 0
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - success
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                required:
+                - accountResponseData
+                - amountApproved
+                - authResponse
+                - batchNumber
+                - customerId
+                - fee
+                - isPartial
+                - orderId
+                - paymentId
+                - paymentMethodId
+                - requestId
+                - responseMessage
+                - subscriptionId
+                - token
+              example:
+                isPartial: false
+                orderId: Order123
+                customerId: 7896
+                batchNumber: 1234
+                subscriptionId: 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                paymentMethodId: d10f860c-ab05-4002-86b3-b4a707d9a999
+                fee:
+                  feeAuthResponse: ''
+                  feeAmount: 1.99
+                token: '1556778677451110'
+                accountResponseData:
+                  avs: Y
+                  cvv: Y
+                amountApproved: 99.95
+                authResponse: ABC123
+                responseCode: 0
+                responseMessage: null
+                paymentId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /subscriptions/{subscriptionId}:
+    patch:
+      operationId: modifySubscription
+      summary: Modify Subscription
+      tags:
+      - subscriptions
+      description: This API endpoint modifies an existing subscription identified by the subscriptionId passed in the URL. You must provide the customer’s ID, the payment method ID, and updated subscription details including frequency, paymentDay, startDate, endDate, paymentMonth, amount, and active. Upon successful modification, the subscription is updated accordingly, and a confirmation with the updated details is returned.
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter subscriptionId.
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request DataType
+              type: object
+              properties:
+                customer:
+                  description: Object to hold customer details
+                  type: object
+                  properties:
+                    customerId:
+                      description: Unique identifier for a customer
+                      type: number
+                      examples:
+                      - 5687
+                  required:
+                  - customerId
+                paymentMethod:
+                  description: Object to hold payment details
+                  type: object
+                  properties:
+                    paymentMethodId:
+                      description: Unique identifier for a payment method (ACH or Card)
+                      type: string
+                      pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                      examples:
+                      - d10f860c-ab05-4002-86b3-b4a707d9a999
+                  required:
+                  - paymentMethodId
+                subscription:
+                  description: Subscription details
+                  type: object
+                  properties:
+                    startDate:
+                      description: Specifies the starting date from which recurring billing begins. The startDate must either match the subscription transaction date or be set to a future date.
+                      type: string
+                      examples:
+                      - 10/25/2023
+                    endDate:
+                      description: Defines the termination date of the subscription period.
+                      type: string
+                      examples:
+                      - 10/25/2025
+                    frequency:
+                      description: Indicates how often billing occurs e.g., Monthly, Quarterly, or Annually
+                      type: string
+                      enum:
+                      - Daily
+                      - Weekly
+                      - BiWeekly
+                      - TriWeekly
+                      - Monthly
+                      - BiMonthly
+                      - Quarterly
+                      - Annually
+                      - Custom
+                      - SemiAnnually
+                      examples:
+                      - Monthly
+                    active:
+                      description: Boolean flag to reflect whether the subscription is currently active or not
+                      type: boolean
+                      default: true
+                      examples:
+                      - true
+                    paymentDay:
+                      description: Specifies the designated day of the week (e.g., Sunday) when payment is scheduled to process; useful for weekly plans.
+                      type: string
+                      enum:
+                      - Monday
+                      - Tuesday
+                      - Wednesday
+                      - Thursday
+                      - Friday
+                      - Saturday
+                      - Sunday
+                      examples:
+                      - Sunday
+                    paymentMonth:
+                      description: Defines the month (1 to 12) when payment is intended to occur, relevant for annual billing cycles.
+                      type: integer
+                      minimum: 1
+                      maximum: 12
+                      examples:
+                      - 10
+                    custom:
+                      description: Object to hold the custom subscription details.
+                      type: object
+                      properties:
+                        interval:
+                          description: Specifies the frequency of the billing cycle based on the defined interval type.
+                          type: number
+                          minimum: 1
+                          examples:
+                          - 5
+                        intervalType:
+                          description: Defines the unit of time used for the billing interval (for example, daily, weekly, monthly, or yearly).
+                          type: string
+                          enum:
+                          - DAY
+                          - WEEK
+                          - MONTH
+                          - YEAR
+                          examples:
+                          - DAY
+                        duration:
+                          description: 'Specifies how long the subscription will continue.
+
+                            - **FIXED_PAYMENTS:** Runs for a limited number of payments.
+
+                            - **UNTIL_END_DATE:** The subscription continues indefinitely until end date.
+
+                            - **UNTIL_CANCELLED:** The subscription continues indefinitely until manually cancelled.'
+                          type: string
+                          enum:
+                          - UNTIL_CANCELLED
+                          - UNTIL_END_DATE
+                          - FIXED_PAYMENTS
+                          examples:
+                          - FIXED_PAYMENTS
+                        numberOfPayments:
+                          description: Specifies the total number of billing cycles for the subscription. This field is required when duration is set to FIXED and is ignored when duration is UNTIL_CANCELLED.
+                          type: number
+                          minimum: 1
+                          examples:
+                          - 5
+                    amount:
+                      description: Amount of the subscription
+                      type: number
+                      examples:
+                      - 19.99
+                  required:
+                  - amount
+                  - endDate
+                  - frequency
+                  - startDate
+            example:
+              customer:
+                customerId: 5687
+              paymentMethod:
+                paymentMethodId: d10f860c-ab05-4002-86b3-b4a707d9a999
+              subscription:
+                amount: 19.99
+                startDate: 10/25/2023
+                endDate: 10/25/2025
+                frequency: Monthly
+                active: true
+                paymentDay: Sunday
+                paymentMonth: 10
+                custom:
+                  interval: 1
+                  intervalType: MONTH
+                  duration: UNTIL_CANCELLED
+                  numberOfPayments: 5
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Subscription response.
+                type: object
+                properties:
+                  subscriptionId:
+                    description: Unique identifier for a recurring payment
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                  authResponse:
+                    description: Authorization code from issuer
+                    type: string
+                    examples:
+                    - ABC123
+                  responseCode:
+                    description: Authorizer response code
+                    type: number
+                    examples:
+                    - 0
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - null
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                  paymentMethodId:
+                    description: Unique identifier for a payment method (ACH or Card)
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                  customerId:
+                    description: Unique identifier for a customer
+                    type: number
+                    examples:
+                    - 5678
+                required:
+                - authResponse
+                - customerId
+                - paymentMethodId
+                - requestId
+                - responseCode
+                - responseMessage
+                - subscriptionId
+              example:
+                subscriptionId: 9a2cb7fe-119c-48ef-973e-8299246df7c2
+                authResponse: ABC123
+                responseCode: 0
+                responseMessage: null
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+                paymentMethodId: d290f1ee-6c54-4b01-90e6-d701748f0851
+                customerId: 5678
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

@@ -1,0 +1,420 @@
+openapi: 3.2.0
+info:
+  title: DPP Gateway Experience Paymentlinks API
+  version: '1'
+  description: This application will be useful to perform payments with multiple payment methods, Creating customers with in DPP
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://api.deluxe.com/dpp/v1/gateway
+  description: Production (legacy routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: paymentlinks
+paths:
+  /paymentlinks:
+    post:
+      operationId: createPaymentLink
+      summary: Create Payment Link
+      tags:
+      - paymentlinks
+      description: The Create Payment Link API endpoint generates a customized URL that can be shared with customers to accept online payments. It allows the specification of payment details, customer information, order data, itemized purchases, and additional custom data. The generated payment link can be configured with various options like payment method acceptance, billing, and contact requirements. The link can be sent to the customer via email and includes a personalized confirmation message. Upon successful creation, the API returns a unique payment link ID, the URL for the payment link, and a payment ID for tracking.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details to create payment link
+              type: object
+              properties:
+                amount:
+                  description: Object to hold the total transaction amount and currency. Make sure the amount matches the sum of sale items or products in Level 3 transactions, and includes any applicable fees.
+                  type: object
+                  properties:
+                    amount:
+                      description: Amount of the transaction
+                      type: number
+                      examples:
+                      - 150
+                    currency:
+                      description: Currency of transaction
+                      type: string
+                      enum:
+                      - USD
+                      - CAD
+                      examples:
+                      - USD
+                  required:
+                  - amount
+                firstName:
+                  description: The first name of the customer for whom the payment link is generated.
+                  type: string
+                  examples:
+                  - Jane
+                lastName:
+                  description: The last name of the customer for whom the payment link is generated.
+                  type: string
+                  examples:
+                  - Doe
+                orderData:
+                  description: Object to hold order details
+                  type: object
+                  properties:
+                    orderId:
+                      description: Unique identifier of Order
+                      type: string
+                      examples:
+                      - abc12345
+                  required:
+                  - orderId
+                level2:
+                  description: Level 2 data enhances transactions by adding contextual fields like customer reference numbers, tax indicators, shipping ZIP codes, and purchase card flags. This additional metadata improves reporting accuracy, simplifies reconciliation, and supports compliance and audit readiness while offering better visibility into spending behavior.
+                  type: object
+                  properties:
+                    customerRefNumber:
+                      description: Reference number for customer
+                      type: string
+                      examples:
+                      - '7898654'
+                    localTaxFlag:
+                      description: "Indicator, if local taxes apply.\n> Note: On `localTaxFlag` behavior, user can send the acceptable values 1 and 2.\n- If `taxAmount = 0.00`, set **`localTaxFlag = 2`**, which indicates it is an tax exempted item.  \n- If `taxAmount > 0.00`, set **`localTaxFlag = 1`**."
+                      type: integer
+                      examples:
+                      - 1
+                    purchaseCard:
+                      description: Indicates if purchase card
+                      type: boolean
+                      examples:
+                      - false
+                    shippingZip:
+                      description: Zip/Postal code of the shipping address
+                      type: string
+                      examples:
+                      - '94002'
+                    taxAmount:
+                      description: Total Tax Amount is the sum of all individual tax amounts applied to each sale item in a transaction. It represents the overall tax charged on the entire purchase.
+                      type: number
+                      examples:
+                      - 2
+                level3:
+                  description: 'Level 3 data provides detailed line-item information for each sale item in a transaction, including descriptions, quantities, pricing, and discounts. This level of detail enhances transparency, improves financial reporting and reconciliation, and supports compliance with procurement policies. It also enables more efficient processing for corporate and government transactions, often resulting in lower interchange fees and stronger vendor relationships.
+
+
+                    Recommendations for Level 3 Transactions:
+
+                    - Use a Level 3-enabled card and provide detailed sale items (level 3) data.
+
+                    - Ensure a non-zero tax amount is included for Level 2/Level 3 transactions.'
+                  type: array
+                  items:
+                    description: 'Level 3 data provides detailed line-item information for each sale item in a transaction, including descriptions, quantities, pricing, and discounts. This level of detail enhances transparency, improves financial reporting and reconciliation, and supports compliance with procurement policies. It also enables more efficient processing for corporate and government transactions, often resulting in lower interchange fees and stronger vendor relationships.
+
+
+                      Recommendations for Level 3 Transactions:
+
+                      - Use a Level 3-enabled card and provide detailed line-item data.
+
+                      - Ensure a non-zero tax amount is included for Level 2 and Level 3 transactions.'
+                    type: object
+                    properties:
+                      description:
+                        description: Description or name of the sale item
+                        type: string
+                        maxLength: 250
+                        examples:
+                        - Apple
+                      skuCode:
+                        description: Stock Keeping Unit Code
+                        type: string
+                        maxLength: 100
+                        examples:
+                        - SKU1234
+                      unitCost:
+                        description: The cost per single unit of the item being purchased.
+                        type: number
+                        examples:
+                        - 5
+                      price:
+                        description: Represents the total price of the item sold.
+                        type: number
+                        examples:
+                        - 5
+                      quantity:
+                        description: Quantity of item sold
+                        type: number
+                        examples:
+                        - 4
+                      commodityCode:
+                        description: Code used to classify the type of goods or services involved in transaction. DPP APIs do not enforce validations for commodity codes. It is recommended to use standardized lists by referring the [link](https://www.mpiprocessing.com/level-3-and-level-2-credit-card-processing-commodity-codes/)
+                        type: string
+                        maxLength: 12
+                        examples:
+                        - '39028'
+                      unitOfMeasure:
+                        description: Unit of measuring the item. The API do not enforce validations for units of measure, it is recommended to use standardized lists by referring the [link](https://help.usaepay.info/developer/reference/umcodes/)
+                        type: string
+                        maxLength: 50
+                        examples:
+                        - Dozen
+                      freightAmount:
+                        description: The cost of shipping or transportation for the item.
+                        type: number
+                        examples:
+                        - 0
+                      dutyAmount:
+                        description: The cost of customs duties or import taxes (especially for international purchases).
+                        type: number
+                        examples:
+                        - 0
+                      itemDiscountAmount:
+                        description: Discount amount applied on sale item
+                        type: number
+                        examples:
+                        - 0
+                      itemDiscountRate:
+                        description: Discount rate of the sale item
+                        type: number
+                        examples:
+                        - 0
+                      taxAmount:
+                        description: Tax amount applied on the sale item.
+                        type: number
+                        examples:
+                        - 2
+                customData:
+                  description: Custom fields and values specified for the payment link, allowing for additional transaction details.
+                  type: array
+                  items:
+                    description: Custom data allows integrators to pass additional, customizable information related to a transaction when it does not fit into any predefined fields. This feature supports sending data as name–value pairs (e.g., Invoice Number and its corresponding value).
+                    type: object
+                    properties:
+                      name:
+                        description: Custom Data field name or key
+                        type: string
+                        examples:
+                        - Invoice Number
+                      value:
+                        description: Custom Data field value
+                        type: string
+                        examples:
+                        - inv1234
+                paymentLinkExpiry:
+                  description: Specifies how long the payment link remains valid before expiring.
+                  type: string
+                  pattern: ^([0-9]{1,3} ([Dd][Aa][Yy][Ss]?|[Mm][Oo][Nn][Tt][Hh][Ss]?|[Ww][Ee][Ee][Kk][Ss]?|[Yy][Ee][Aa][Rr][Ss]?)|[Nn][Oo] [Ee][Xx][Pp][Ii][Rr][Aa][Tt][Ii][Oo][Nn])$
+                  examples:
+                  - 2 Months
+                acceptPaymentMethod:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - Card
+                      - ACH
+                  description: Indicates whether card payments,ACH (Automated Clearing House) are accepted via this payment link.
+                  enum:
+                  - Card
+                  - ACH
+                  minItems: 1
+                  examples:
+                  - - Card
+                acceptBillingAddress:
+                  description: Whether the payment form will display a field for the billing address.
+                  type: boolean
+                  examples:
+                  - false
+                requiredBillingAddress:
+                  description: Whether providing a billing address is mandatory for completing the payment.
+                  type: boolean
+                  examples:
+                  - false
+                acceptPhone:
+                  description: If set to true, the payment form will include a field for the customer's phone number.
+                  type: boolean
+                  examples:
+                  - false
+                requiredPhone:
+                  description: Determines if entering a phone number is compulsory for the customer.
+                  type: boolean
+                  examples:
+                  - false
+                deliveryMethod:
+                  description: The method by which the payment link will be delivered to the customer (e.g., EMAIL or SMS).
+                  oneOf:
+                  - description: The email address to which the payment link will be sent, if delivery via email is selected.
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        examples:
+                        - customer@test.com
+                  - description: The mobile number to which the payment link will be sent, if delivery via sms is selected.
+                    type: object
+                    properties:
+                      sms:
+                        type: string
+                        examples:
+                        - +1 1234567890
+                confirmationMessage:
+                  description: An optional message to display on the payment link page upon completion of the form by the customer.
+                  type: string
+                  examples:
+                  - Thank you for your payment!
+              required:
+              - acceptPaymentMethod
+              - amount
+              - deliveryMethod
+              - firstName
+              - lastName
+              - paymentLinkExpiry
+            example:
+              amount:
+                amount: 19.99
+                currency: USD
+              firstName: Jane
+              lastName: Doe
+              orderData:
+                orderId: abc12345
+              level2:
+                shippingZip: '94002'
+                taxAmount: 2
+                purchaseCard: false
+                customerRefNumber: '7898654'
+                localTaxFlag: 2
+              level3:
+              - description: Apple
+                skuCode: SKU1234
+                quantity: 4
+                commodityCode: '39028'
+                unitCost: 11
+                freightAmount: 1.5
+                dutyAmount: 0.3
+                price: 40
+                unitOfMeasure: Dozen
+                itemDiscountAmount: 4
+                itemDiscountRate: 10
+                taxAmount: 2
+              customData:
+              - name: Invoice Number
+                value: inv1234
+              paymentLinkExpiry: 9 DAYS
+              acceptPaymentMethod:
+              - Card
+              acceptBillingAddress: false
+              requiredBillingAddress: false
+              acceptPhone: false
+              requiredPhone: false
+              deliveryMethod:
+                email: customer@test.com
+              confirmationMessage: Thank you for your payment!
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response details
+                type: object
+                properties:
+                  paymentLinkId:
+                    description: Unique identifier for the newly created payment link.
+                    type: string
+                    examples:
+                    - 75C99BAE-E843-412F-89A5-AC6177A101D7
+                  paymentLinkURL:
+                    description: URL to the payment link that can be sent to the customer for payment.
+                    type: string
+                    examples:
+                    - https://payments.deluxe.com/gateway/paymentlink/75C99BAE-E843-412F-89A5-AC6177A101D7
+                  paymentId:
+                    description: Payment gateway transaction ID
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - d290f1ee-6c54-4b01-90e6-d701748f0851
+                required:
+                - paymentLinkId
+                - paymentLinkURL
+              example:
+                paymentLinkId: E23EAC1B-FB07-4A2B-916A-FAA6E57EF440
+                paymentLinkURL: https://payments2.deluxe.com/gateway/paymentlink/E23EAC1B-FB07-4A2B-916A-FAA6E57EF440
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /paymentlinks/{paymentLinkId}:
+    delete:
+      operationId: deletePaymentLink
+      summary: Delete Payment Link
+      tags:
+      - paymentlinks
+      description: The Delete Payment Link operation allows you to remove an existing payment link that is no longer needed. This action permanently deletes the specified payment link.
+      parameters:
+      - name: paymentLinkId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Path parameter paymentLinkId.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                description: Response details
+                type: object
+                properties:
+                  paymentLinkId:
+                    description: Unique identifier for the newly created payment link.
+                    type: string
+                    examples:
+                    - 75C99BAE-E843-412F-89A5-AC6177A101D7
+                  requestId:
+                    description: Unique identifier for an API call
+                    type: string
+                    pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+                    examples:
+                    - a2406639-8692-4e1c-978d-1805eb13efdf
+                  responseMessage:
+                    description: Description of response code
+                    type:
+                    - string
+                    - 'null'
+                    examples:
+                    - Successfully Deleted PaymentLink
+                required:
+                - paymentLinkId
+                - requestId
+                - responseMessage
+              example:
+                paymentLinkId: E23EAC1B-FB07-4A2B-916A-FAA6E57EF440
+                responseMessage: PaymentLink deleted successfully
+                requestId: a2406639-8692-4e1c-978d-1805eb13efdf
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.

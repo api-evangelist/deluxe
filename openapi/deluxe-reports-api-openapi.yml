@@ -1,0 +1,1130 @@
+openapi: 3.2.0
+info:
+  title: DPP Experience Reports API
+  version: '1'
+  description: This application will be useful to retrieve multiple reports.
+  x-provenance:
+    method: derived
+    derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
+    derived_on: '2026-08-13'
+    note: Faithful mechanical conversion of the provider-published RAML 1.0 definition and its rendered request/response parameter and example documents. No operation, field, schema or example in this file was authored by API Evangelist.
+servers:
+- url: https://api.deluxe.com/dpp/v1
+  description: Production (default routing path)
+- url: https://sandbox.api.deluxe.com/dpp/v1
+  description: Sandbox / test environment
+security:
+- bearerAuth: []
+tags:
+- name: reports
+paths:
+  /reports:
+    post:
+      operationId: customReports
+      summary: Custom Reports
+      tags:
+      - reports
+      description: The Custom Report API endpoint allows users to fetch a report based on a specified title and date range. Query parameters page and pageSize enable pagination of the report results for efficient data retrieval.
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: number
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: number
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Request details of the report to be retrieved
+              type: object
+              properties:
+                reportTitle:
+                  description: Title of the report to be retrieved. Refer report title table for list of tables that can be fetched.
+                  type: string
+                  enum:
+                  - ccReconciliation
+                  - ccMethodOfPayment
+                  - ccChannelFees
+                  - ccTransaction
+                  - achBankReconciliation
+                  - achChannelFees
+                  - ccListBatches
+                  - ccApproval
+                  - achBatchTotal
+                  - achSettlement
+                  - ccReject
+                  - achReturn
+                  - achReject
+                  - salesItems
+                  - customFields
+                  - lockBox
+                  examples:
+                  - ccReconciliation
+                reportStartDate:
+                  description: Start date for the report
+                  type: string
+                  examples:
+                  - 2/13/2023
+                reportEndDate:
+                  description: End date for the report
+                  type: string
+                  examples:
+                  - 2/14/2023
+              required:
+              - reportEndDate
+              - reportStartDate
+              - reportTitle
+            example:
+              reportTitle: ccReconciliation
+              reportStartDate: 2/13/2023
+              reportEndDate: 2/14/2023
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorcode:
+                    description: Error code while retrieving report
+                    type: number
+                    examples:
+                    - 0
+                  data:
+                    description: Authorizer response code and BatchID
+                    type: array
+                    items:
+                      type: object
+                required:
+                - errorcode
+              example:
+                errorcode: 0
+                data:
+                - merchantId: '6280490007617210'
+                  transInfo:CaptureDate: '2024-02-01 05:00:13'
+                  transInfo:TransactionType: SALE
+                  totalsSummary:Sales(sum): $67.26
+                - merchantId: '6280490007617210'
+                  transInfo:CaptureDate: '2024-02-01 05:00:13'
+                  transInfo:TransactionType: STANDALONE REFUND
+                  totalsSummary:Sales(sum): $-0.62
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/ccdailysettlement:
+    get:
+      operationId: retrieveCreditCardDailySettlementReport
+      summary: Retrieve Credit Card Daily Settlement Report
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the Credit Card Settlement Reports on daily basis
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/achdailysettlement:
+    get:
+      operationId: retrieveAchDailySettlementReport
+      summary: Retrieve ACH Daily Settlement Report
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the ACH Settlement Reports on daily basis
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/ccmonthlystatement:
+    get:
+      operationId: retrieveCreditCardMonthlyFeesStatement
+      summary: Retrieve Credit Card Monthly Fees Statement
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the  Credit Card Fees Statment on Monthly basis
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/achmonthlystatement:
+    get:
+      operationId: retrieveAchMonthlyFeesStatment
+      summary: Retrieve ACH Monthly Fees Statment
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the ACH Fees Statment on Monthly basis
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/transauth:
+    get:
+      operationId: retrieveAuthorizedTransactions
+      summary: Retrieve Authorized Transactions
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the Authorized Transactions on given date range
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    importDate:
+                      description: Date the transaction was imported (ISO 8601 format)
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-04T00:00:00'
+                    terminalId:
+                      description: Identifier for the terminal used in the transaction
+                      type: string
+                      examples:
+                      - '270007012107001'
+                    authorizationAmount:
+                      description: Amount authorized for the transaction
+                      type: number
+                      examples:
+                      - 450
+                    entryMode:
+                      description: Method of entry (e.g., MANUAL, SWIPE)
+                      type: string
+                      examples:
+                      - MANUAL
+                    voidFlag:
+                      description: Indicates if the transaction was voided (blank if not)
+                      type: string
+                      examples:
+                      - YE
+                    declineCode:
+                      description: Code indicating reason for decline or approval
+                      type: string
+                      examples:
+                      - V000
+                    declineDescription:
+                      description: Description for decline code (blank if none)
+                      type: string
+                      examples:
+                      - APPROVED
+                    batchNumber:
+                      description: Number identifying the batch the transaction belongs to
+                      type: string
+                      examples:
+                      - '184001'
+                    authorizationTime:
+                      description: Time the transaction was authorized (HHMMSS format)
+                      type: string
+                      examples:
+                      - 093708
+                    authorizationDate:
+                      description: Date the transaction was authorized (ISO 8601 format)
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-03T00:00:00'
+                    merchantNumber:
+                      description: Unique identifier for the merchant
+                      type: string
+                      examples:
+                      - '6281270007012107'
+                    cardType:
+                      description: Type of card used (e.g., VS for Visa)
+                      type: string
+                      examples:
+                      - VS
+                    cardNumber:
+                      description: Masked card number
+                      type: string
+                      examples:
+                      - 464018******8465
+                    authorizationCode:
+                      description: Code returned for authorization (may be blank)
+                      type: string
+                      examples:
+                      - 01262D
+                    transactionType:
+                      description: Code indicating the type of transaction
+                      type: string
+                      examples:
+                      - '52'
+                    traceNumber:
+                      description: Trace number for tracking the transaction
+                      type: string
+                      examples:
+                      - '465184526286508'
+                  required:
+                  - authorizationAmount
+                  - authorizationDate
+                  - authorizationTime
+                  - batchNumber
+                  - cardNumber
+                  - cardType
+                  - declineCode
+                  - entryMode
+                  - importDate
+                  - merchantNumber
+                  - terminalId
+                  - traceNumber
+                  - transactionType
+              example:
+              - importDate: '2025-07-04T00:00:00'
+                terminalId: '270007012107001'
+                authorizationAmount: 450
+                entryMode: MANUAL
+                voidFlag: 'yes'
+                declineCode: V215
+                declineDescription: declined
+                batchNumber: '184001'
+                authorizationTime: 093633
+                authorizationDate: '2025-07-03T00:00:00'
+                merchantNumber: '6281270007012107'
+                cardType: VS
+                cardNumber: 464018******8465
+                authorizationCode: '1000'
+                transactionType: '52'
+                traceNumber: '305184525932608'
+              - importDate: '2025-07-04T00:00:00'
+                terminalId: '270007012107001'
+                authorizationAmount: 450
+                entryMode: MANUAL
+                voidFlag: 'yes'
+                declineCode: V000
+                declineDescription: APPROVED
+                batchNumber: '184001'
+                authorizationTime: 093708
+                authorizationDate: '2025-07-03T00:00:00'
+                merchantNumber: '6281270007012107'
+                cardType: VS
+                cardNumber: 464018******8465
+                authorizationCode: 01262D
+                transactionType: '52'
+                traceNumber: '465184526286508'
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/transcaptured:
+    get:
+      operationId: retrieveCapturedTransactions
+      summary: Retrieve Captured Transactions
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the Captured Transactions on given date range
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    importDate:
+                      description: Date the transaction was imported
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-04T00:00:00'
+                    terminalId:
+                      description: Identifier for the terminal used in the transaction
+                      type: string
+                      examples:
+                      - '270007012107001'
+                    authorizationAmount:
+                      description: Amount authorized for the transaction
+                      type: number
+                      examples:
+                      - 450
+                    entryMode:
+                      description: Method of entry (e.g., manual entry, chip)
+                      type: string
+                      examples:
+                      - PAN ENTRY, ELECTRONIC COMMERCE W/ CHIP
+                    voidFlag:
+                      description: Indicates if the transaction was voided (blank if not)
+                      type: string
+                      examples:
+                      - ''
+                    item:
+                      description: Internal item identifier
+                      type: string
+                      examples:
+                      - '002312'
+                    batchNumber:
+                      description: Batch number associated with the transaction
+                      type: string
+                      examples:
+                      - '184001'
+                    authorizationTime:
+                      description: Time of authorization (HHMMSS format)
+                      type: string
+                      examples:
+                      - 093711
+                    authorizationDate:
+                      description: Date the transaction was authorized
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-03T00:00:00'
+                    merchantNumber:
+                      description: Unique identifier for the merchant
+                      type: string
+                      examples:
+                      - '6281270007012107'
+                    cardType:
+                      description: Type of card used (e.g., VS for Visa, MC for Mastercard)
+                      type: string
+                      examples:
+                      - MC
+                    cardNumber:
+                      description: Masked card number
+                      type: string
+                      examples:
+                      - 518752******1918
+                    authorizationCode:
+                      description: Code returned from the authorization process
+                      type: string
+                      examples:
+                      - 00322B
+                    transactionType:
+                      description: Code representing the type of transaction
+                      type: string
+                      examples:
+                      - '52'
+                    traceNumber:
+                      description: Unique trace number for tracking the transaction
+                      type: string
+                      examples:
+                      - MPLGZ5B6I
+                  required:
+                  - authorizationAmount
+                  - authorizationDate
+                  - authorizationTime
+                  - batchNumber
+                  - cardNumber
+                  - cardType
+                  - entryMode
+                  - importDate
+                  - item
+                  - merchantNumber
+                  - terminalId
+                  - traceNumber
+                  - transactionType
+              example:
+              - importDate: '2025-07-04T00:00:00'
+                terminalId: '270007012107001'
+                authorizationAmount: 450
+                entryMode: MANUAL
+                voidFlag: ''
+                item: '002312'
+                batchNumber: '184001'
+                authorizationTime: 093708
+                authorizationDate: '2025-07-03T00:00:00'
+                merchantNumber: '6281270007012107'
+                cardType: VS
+                cardNumber: 464018******8465
+                authorizationCode: 01262D
+                transactionType: '52'
+                traceNumber: '465184526286508'
+              - importDate: '2025-07-04T00:00:00'
+                terminalId: '270007012107001'
+                authorizationAmount: 350
+                entryMode: PAN ENTRY, ELECTRONIC COMMERCE W/ CHIP
+                voidFlag: ''
+                item: '002313'
+                batchNumber: '184001'
+                authorizationTime: 093711
+                authorizationDate: '2025-07-03T00:00:00'
+                merchantNumber: '6281270007012107'
+                cardType: MC
+                cardNumber: 518752******1918
+                authorizationCode: 00322B
+                transactionType: '52'
+                traceNumber: MPLGZ5B6I
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+  /reports/transsettled:
+    get:
+      operationId: retrieveSettledTransactions
+      summary: Retrieve Settled Transactions
+      tags:
+      - reports
+      description: This endpoint allows you to retrieve the settled transactions on given date range
+      parameters:
+      - name: partnerToken
+        in: header
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+        description: Unique Merchant Identifier for API Calls
+        example: 80ae9a4a-5efd-412e-89b9-532f2ab2f817
+      - name: requestId
+        in: header
+        required: false
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$
+          examples:
+          - 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+        description: 'Unique request identifier in GUID format included in the header, used to trace and correlate API calls across systems.
+
+          > **Note:** We strongly recommend including the `requestId` header in every API request. This unique GUID helps trace and correlate API calls across systems, ensuring better observability and troubleshooting.'
+        example: 56ae9a4a-5efd-412e-89b9-532f2ab2f275
+      - name: reportStartDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 05/01/2025
+        description: Start date for the report to retrieve the report data.
+        example: 05/01/2025
+      - name: reportEndDate
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/[0-9]{4}$
+          examples:
+          - 06/01/2025
+        description: End date for the report to retrieve the report data
+        example: 06/01/2025
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 1
+        description: Page number for pagination
+        example: 1
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          examples:
+          - 2
+        description: Number of results per page
+        example: 2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    workAsOfDate:
+                      description: The date this transaction was processed as of
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-07T00:00:00'
+                    transactionDate:
+                      description: The date the transaction occurred
+                      type: string
+                      format: date-time
+                      examples:
+                      - '2025-07-06T00:00:00'
+                    transactionTime:
+                      description: Time the transaction occurred (HHMMSS format)
+                      type: string
+                      examples:
+                      - 034911
+                    cardNumber:
+                      description: Masked card number used in the transaction
+                      type: string
+                      examples:
+                      - 440066******6811
+                    transactionAmount:
+                      description: Amount of the transaction
+                      type: number
+                      examples:
+                      - 100
+                    referenceNumber:
+                      description: Unique reference number for the transaction
+                      type: string
+                      examples:
+                      - '24207855188162200772341'
+                    packageDescription:
+                      description: Description of the transaction's fee package
+                      type: string
+                      examples:
+                      - VISA NON QUALIFIED
+                    planDescription:
+                      description: Plan description associated with the transaction
+                      type: string
+                      examples:
+                      - SMB PRD1 SIG PREF
+                    fapsEntryMode:
+                      description: Entry mode for the transaction
+                      type: string
+                      examples:
+                      - K
+                    invoiceNumber:
+                      description: Associated invoice number (blank if not present)
+                      type: string
+                      examples:
+                      - ''
+                    cardUsage:
+                      description: Indicates how the card was used (e.g., Credit)
+                      type: string
+                      examples:
+                      - Credit
+                    petTransactionId:
+                      description: Internal transaction ID from PET system
+                      type: string
+                      examples:
+                      - '465187317512002'
+                    merchantNumber:
+                      description: Unique identifier for the merchant
+                      type: string
+                      examples:
+                      - '6281270007012107'
+                    cardType:
+                      description: Type of card (e.g., VS for Visa)
+                      type: string
+                      examples:
+                      - VS
+                    authorizationCode:
+                      description: Code provided upon authorization
+                      type: string
+                      examples:
+                      - 03254D
+                    transactionType:
+                      description: The type of transaction (e.g., PURCHASE)
+                      type: string
+                      examples:
+                      - PURCHASE
+                    traceNumber:
+                      description: Trace number for internal tracking
+                      type: string
+                      examples:
+                      - '465187317512002'
+                  required:
+                  - authorizationCode
+                  - cardNumber
+                  - cardType
+                  - cardUsage
+                  - fapsEntryMode
+                  - merchantNumber
+                  - packageDescription
+                  - petTransactionId
+                  - planDescription
+                  - referenceNumber
+                  - traceNumber
+                  - transactionAmount
+                  - transactionDate
+                  - transactionTime
+                  - transactionType
+                  - workAsOfDate
+              example:
+              - workAsOfDate: '2025-07-07T00:00:00'
+                transactionDate: '2025-07-06T00:00:00'
+                transactionTime: 034911
+                cardNumber: 440066******6811
+                transactionAmount: 100
+                referenceNumber: '24207855188162200772341'
+                packageDescription: VISA NON QUALIFIED
+                planDescription: SMB PRD1 SIG PREF
+                fapsEntryMode: K
+                invoiceNumber: ''
+                cardUsage: Credit
+                petTransactionId: '465187317512002'
+                merchantNumber: '6281270007012107'
+                cardType: VS
+                authorizationCode: 03254D
+                transactionType: PURCHASE
+                traceNumber: '465187317512002'
+              - workAsOfDate: '2025-07-06T00:00:00'
+                transactionDate: '2025-07-05T00:00:00'
+                transactionTime: '140710'
+                cardNumber: 426690******7051
+                transactionAmount: 100
+                referenceNumber: '24207855187169800884955'
+                packageDescription: VISA NON QUALIFIED
+                planDescription: SMB PRD1 SIG PREF
+                fapsEntryMode: K
+                invoiceNumber: ''
+                cardUsage: Credit
+                petTransactionId: '465186688311488'
+                merchantNumber: '6281270007012107'
+                cardType: VS
+                authorizationCode: 01334D
+                transactionType: PURCHASE
+                traceNumber: '465186688311488'
+        '401':
+          description: 'Unauthorized: invalid token, expired token, or connection error when connecting to the authorization server.'
+        '403':
+          description: 'Forbidden: invalid client application credentials.'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'This API supports OpenID Connect OAuth 2.0 for authenticating all API requests.
+
+        Bearer tokens are obtained from the Deluxe security service token endpoint using client credentials and expire after 60 minutes.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: This API supports Anypoint's Client ID Enforcement authentication policy.
