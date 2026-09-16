@@ -28,47 +28,45 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/deluxe.png
 tags:
-  - Payments
-  - Merchant Services
-  - Card Processing
-  - ACH
-  - Invoicing
-  - Subscription
-  - Tokenization
-  - Webhook
-  - Reporting
-  - Data Analytics
-  - Marketing
-  - Small Business
+- Payments
+- Merchant Services
+- Card Processing
+- ACH
+- Invoicing
+- Subscription
+- Tokenization
+- Webhook
+- Reporting
+- Data Analytics
+- Marketing
+- Small Business
 tags_raw:
-  - Payments
-  - Merchant Services
-  - Card Processing
-  - ACH
-  - Invoicing
-  - Subscriptions
-  - Tokenization
-  - Webhooks
-  - Reporting
-  - Data Analytics
-  - Marketing
-  - Small Business
-description: >-
-  Deluxe Corporation (NYSE: DLX) is a US payments and data company that has moved from its origin as a
-  check printer into merchant services, treasury management, payroll and marketing data. Its developer
-  surface is the Deluxe Payments Platform (DPP), a gateway sold to independent software vendors and
-  merchants and documented at developer.deluxe.com. DPP publishes three RAML 1.0 APIs covering 56
-  operations: a Gateway Experience API for card and ACH/EFT sales, authorizations, captures, voids,
-  refunds, batches, EMV card-present processing on Ingenico terminals, customer vault and tokenization,
-  subscriptions, payment links and an eight-event webhook surface; a Reports Experience API for daily
-  card and ACH settlement, monthly fee statements and authorized/captured/settled transaction reports;
-  and an Invoice Experience API for drafting, editing, sharing, cloning and downloading invoices. Deluxe
-  also ships two browser-embeddable payment surfaces — a Hosted Payment Form and an Embedded Payments
-  JavaScript SDK — both of which keep the integrator out of PCI DSS scope. Access is not self-serve:
-  credentials are issued by the Deluxe integrations team after an email request, and no pricing is
-  published.
+- Payments
+- Merchant Services
+- Card Processing
+- ACH
+- Invoicing
+- Subscriptions
+- Tokenization
+- Webhooks
+- Reporting
+- Data Analytics
+- Marketing
+- Small Business
+description: 'Deluxe Corporation (NYSE: DLX) is a US payments and data company that has moved from its
+  origin as a check printer into merchant services, treasury management, payroll and marketing data. Its
+  developer surface is the Deluxe Payments Platform (DPP), a gateway sold to independent software vendors
+  and merchants and documented at developer.deluxe.com. DPP publishes three RAML 1.0 APIs covering 56
+  operations: a Gateway Experience API for card and ACH/EFT sales, authorizations, captures, voids, refunds,
+  batches, EMV card-present processing on Ingenico terminals, customer vault and tokenization, subscriptions,
+  payment links and an eight-event webhook surface; a Reports Experience API for daily card and ACH settlement,
+  monthly fee statements and authorized/captured/settled transaction reports; and an Invoice Experience
+  API for drafting, editing, sharing, cloning and downloading invoices. Deluxe also ships two browser-embeddable
+  payment surfaces — a Hosted Payment Form and an Embedded Payments JavaScript SDK — both of which keep
+  the integrator out of PCI DSS scope. Access is not self-serve: credentials are issued by the Deluxe
+  integrations team after an email request, and no pricing is published.'
 created: '2026-04-19'
-modified: '2026-08-13'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 apis:
 - aid: deluxe:deluxe-american-api
@@ -98,8 +96,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-batches-api
   name: Deluxe Corporation Batches API
   description: The batches API from Deluxe Corporation — 1 operation(s) for batches.
@@ -129,8 +126,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-customers-api
   name: Deluxe Corporation Customers API
   description: The customers API from Deluxe Corporation — 3 operation(s) for customers.
@@ -160,8 +156,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-emv-api
   name: Deluxe Corporation Emv API
   description: The emv API from Deluxe Corporation — 5 operation(s) for emv.
@@ -191,8 +186,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-events-api
   name: Deluxe Corporation Events API
   description: The events API from Deluxe Corporation — 5 operation(s) for events.
@@ -222,8 +216,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-invoices-api
   name: Deluxe Corporation Invoices API
   description: The invoices API from Deluxe Corporation — 8 operation(s) for invoices.
@@ -253,8 +246,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-paymentlinks-api
   name: Deluxe Corporation Paymentlinks API
   description: The paymentlinks API from Deluxe Corporation — 2 operation(s) for paymentlinks.
@@ -284,8 +276,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-paymentmethods-api
   name: Deluxe Corporation Paymentmethods API
   description: The paymentmethods API from Deluxe Corporation — 7 operation(s) for paymentmethods.
@@ -315,8 +306,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-payments-api
   name: Deluxe Corporation Payments API
   description: The payments API from Deluxe Corporation — 6 operation(s) for payments.
@@ -346,8 +336,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-refunds-api
   name: Deluxe Corporation Refunds API
   description: The refunds API from Deluxe Corporation — 2 operation(s) for refunds.
@@ -377,8 +366,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-reports-api
   name: Deluxe Corporation Reports API
   description: The reports API from Deluxe Corporation — 8 operation(s) for reports.
@@ -408,8 +396,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-secservices-api
   name: Deluxe Corporation Secservices API
   description: The Secservices API from Deluxe Corporation — 1 operation(s) for secservices.
@@ -437,8 +424,7 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-subscriptions-api
   name: Deluxe Corporation Subscriptions API
   description: The subscriptions API from Deluxe Corporation — 2 operation(s) for subscriptions.
@@ -468,83 +454,85 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: >-
-      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 common:
-  - type: Overlay
-    url: overlays/deluxe-dpp-gateway-overlay.yaml
-  - type: Overlay
-    url: overlays/deluxe-dpp-reports-overlay.yaml
-  - type: Overlay
-    url: overlays/deluxe-dpp-invoices-overlay.yaml
-  - type: Overlay
-    url: overlays/deluxe-postman-sandbox-overlay.yaml
-  - type: OpenAPI
-    url: openapi/deluxe-dpp-gateway-openapi.yml
-  - type: Authentication
-    url: authentication/deluxe-authentication.yml
-  - type: Conventions
-    url: conventions/deluxe-conventions.yml
-  - type: DataModel
-    url: data-model/deluxe-data-model.yml
-  - type: ErrorCatalog
-    url: errors/deluxe-problem-types.yml
-  - type: DeclineCodes
-    url: errors/deluxe-decline-codes.yml
-  - type: Lifecycle
-    url: lifecycle/deluxe-lifecycle.yml
-  - type: Conformance
-    url: conformance/deluxe-conformance.yml
-  - type: Sandbox
-    url: sandbox/deluxe-sandbox.yml
-  - type: Components
-    url: components/deluxe-components.yml
-  - type: Packages
-    url: packages/deluxe-packages.yml
-  - type: X-MCPServerCandidate
-    url: mcp/deluxe-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
-  - type: AgentSkill
-    url: skills/_index.yml
-  - type: LLMsTxt
-    url: llms/deluxe-llms.txt
-  - type: Webhooks
-    url: asyncapi/deluxe-webhooks.yml
-  - type: Plans
-    url: plans/deluxe-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/deluxe-rate-limits.yml
-  - type: FinOps
-    url: finops/deluxe-finops.yml
-  - type: DomainSecurity
-    url: security/deluxe-domain-security.yml
-  - type: DeveloperPortal
-    url: https://developer.deluxe.com/
-  - type: Documentation
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/payments
-  - type: GettingStarted
-    url: https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
-  - type: Support
-    url: https://www.deluxe.com/about/contact-us/
-  - type: Blog
-    url: https://www.deluxe.com/blog/
-  - type: TermsOfService
-    url: https://www.deluxe.com/policy/terms-of-use/
-  - type: PrivacyPolicy
-    url: https://www.deluxe.com/policy/privacy/
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/deluxe-corporation
-  - type: X
-    url: https://twitter.com/Deluxe
-  - type: YouTube
-    url: https://www.youtube.com/@deluxe
-  - type: Website
-    url: https://www.deluxe.com
+- type: Overlay
+  url: overlays/deluxe-dpp-gateway-overlay.yaml
+- type: Overlay
+  url: overlays/deluxe-dpp-reports-overlay.yaml
+- type: Overlay
+  url: overlays/deluxe-dpp-invoices-overlay.yaml
+- type: Overlay
+  url: overlays/deluxe-postman-sandbox-overlay.yaml
+- type: OpenAPI
+  url: openapi/_original/deluxe-dpp-gateway-openapi.yml
+- type: Authentication
+  url: authentication/deluxe-authentication.yml
+- type: Conventions
+  url: conventions/deluxe-conventions.yml
+- type: DataModel
+  url: data-model/deluxe-data-model.yml
+- type: ErrorCatalog
+  url: errors/deluxe-problem-types.yml
+- type: DeclineCodes
+  url: errors/deluxe-decline-codes.yml
+- type: Lifecycle
+  url: lifecycle/deluxe-lifecycle.yml
+- type: Conformance
+  url: conformance/deluxe-conformance.yml
+- type: Sandbox
+  url: sandbox/deluxe-sandbox.yml
+- type: Components
+  url: components/deluxe-components.yml
+- type: Packages
+  url: packages/deluxe-packages.yml
+- type: X-MCPServerCandidate
+  url: mcp/deluxe-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/deluxe-llms.txt
+- type: Webhooks
+  url: asyncapi/deluxe-webhooks.yml
+- type: Plans
+  url: plans/deluxe-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/deluxe-rate-limits.yml
+- type: FinOps
+  url: finops/deluxe-finops.yml
+- type: DomainSecurity
+  url: security/deluxe-domain-security.yml
+- type: DeveloperPortal
+  url: https://developer.deluxe.com/
+- type: Documentation
+  url: https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform
+- type: APIReference
+  url: https://developer.deluxe.com/api-ref/merchant-services/payments
+- type: GettingStarted
+  url: https://developer.deluxe.com/docs-content/payments/merchant-services/get-started
+- type: Support
+  url: https://www.deluxe.com/about/contact-us/
+- type: Blog
+  url: https://www.deluxe.com/blog/
+- type: TermsOfService
+  url: https://www.deluxe.com/policy/terms-of-use/
+- type: PrivacyPolicy
+  url: https://www.deluxe.com/policy/privacy/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/deluxe-corporation
+- type: X
+  url: https://twitter.com/Deluxe
+- type: YouTube
+  url: https://www.youtube.com/@deluxe
+- type: Website
+  url: https://www.deluxe.com
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
 x-enrichment:
   date: '2026-08-13'
   status: enriched
