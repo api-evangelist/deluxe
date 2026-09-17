@@ -96,7 +96,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-batches-api
   name: Deluxe Corporation Batches API
   description: The batches API from Deluxe Corporation — 1 operation(s) for batches.
@@ -126,7 +127,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-customers-api
   name: Deluxe Corporation Customers API
   description: The customers API from Deluxe Corporation — 3 operation(s) for customers.
@@ -156,7 +158,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-emv-api
   name: Deluxe Corporation Emv API
   description: The emv API from Deluxe Corporation — 5 operation(s) for emv.
@@ -186,7 +189,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-events-api
   name: Deluxe Corporation Events API
   description: The events API from Deluxe Corporation — 5 operation(s) for events.
@@ -216,7 +220,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-invoices-api
   name: Deluxe Corporation Invoices API
   description: The invoices API from Deluxe Corporation — 8 operation(s) for invoices.
@@ -246,67 +251,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
-- aid: deluxe:deluxe-paymentlinks-api
-  name: Deluxe Corporation Paymentlinks API
-  description: The paymentlinks API from Deluxe Corporation — 2 operation(s) for paymentlinks.
-  humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
-  baseURL: https://api.deluxe.com/dpp/v1
-  tags:
-  - Payment Links
-  tags_raw:
-  - paymentlinks
-  properties:
-  - type: OpenAPI
-    url: openapi/deluxe-paymentlinks-api-openapi.yml
-  - type: RAML
-    url: raml/deluxe-dpp-gateway.raml.json
-  - type: Webhooks
-    url: asyncapi/deluxe-webhooks.yml
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/payments
-  - type: Documentation
-    url: https://developer.deluxe.com/docs-content/payments/merchant-services/overview
-  - type: RAML
-    url: raml/deluxe-dpp-reports.raml.json
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/reports
-  - type: RAML
-    url: raml/deluxe-dpp-invoices.raml.json
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/invoices
-  - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
-- aid: deluxe:deluxe-paymentmethods-api
-  name: Deluxe Corporation Paymentmethods API
-  description: The paymentmethods API from Deluxe Corporation — 7 operation(s) for paymentmethods.
-  humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
-  baseURL: https://api.deluxe.com/dpp/v1
-  tags:
-  - Payment Methods
-  tags_raw:
-  - paymentmethods
-  properties:
-  - type: OpenAPI
-    url: openapi/deluxe-paymentmethods-api-openapi.yml
-  - type: RAML
-    url: raml/deluxe-dpp-gateway.raml.json
-  - type: Webhooks
-    url: asyncapi/deluxe-webhooks.yml
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/payments
-  - type: Documentation
-    url: https://developer.deluxe.com/docs-content/payments/merchant-services/overview
-  - type: RAML
-    url: raml/deluxe-dpp-reports.raml.json
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/reports
-  - type: RAML
-    url: raml/deluxe-dpp-invoices.raml.json
-  - type: APIReference
-    url: https://developer.deluxe.com/api-ref/merchant-services/invoices
-  - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-payments-api
   name: Deluxe Corporation Payments API
   description: The payments API from Deluxe Corporation — 6 operation(s) for payments.
@@ -336,7 +282,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-refunds-api
   name: Deluxe Corporation Refunds API
   description: The refunds API from Deluxe Corporation — 2 operation(s) for refunds.
@@ -366,7 +313,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-reports-api
   name: Deluxe Corporation Reports API
   description: The reports API from Deluxe Corporation — 8 operation(s) for reports.
@@ -396,7 +344,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-secservices-api
   name: Deluxe Corporation Secservices API
   description: The Secservices API from Deluxe Corporation — 1 operation(s) for secservices.
@@ -424,7 +373,8 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-subscriptions-api
   name: Deluxe Corporation Subscriptions API
   description: The subscriptions API from Deluxe Corporation — 2 operation(s) for subscriptions.
@@ -454,7 +404,66 @@ apis:
   - type: APIReference
     url: https://developer.deluxe.com/api-ref/merchant-services/invoices
   - type: APIReference
-    url: https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+- aid: deluxe:deluxe-payment-links-api
+  name: Deluxe Corporation Payment Links API
+  description: The Payment Links API from Deluxe Corporation — 2 operation(s) for payment links.
+  humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
+  baseURL: https://api.deluxe.com/dpp/v1
+  tags:
+  - Payment Links
+  properties:
+  - type: OpenAPI
+    url: openapi/deluxe-payment-links-api-openapi.yml
+  - type: RAML
+    url: raml/deluxe-dpp-gateway.raml.json
+  - type: Webhooks
+    url: asyncapi/deluxe-webhooks.yml
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/payments
+  - type: Documentation
+    url: https://developer.deluxe.com/docs-content/payments/merchant-services/overview
+  - type: RAML
+    url: raml/deluxe-dpp-reports.raml.json
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/reports
+  - type: RAML
+    url: raml/deluxe-dpp-invoices.raml.json
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/invoices
+  - type: APIReference
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
+- aid: deluxe:deluxe-payment-methods-api
+  name: Deluxe Corporation Payment Methods API
+  description: The Payment Methods API from Deluxe Corporation — 7 operation(s) for payment methods.
+  humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
+  baseURL: https://api.deluxe.com/dpp/v1
+  tags:
+  - Payment Methods
+  properties:
+  - type: OpenAPI
+    url: openapi/deluxe-payment-methods-api-openapi.yml
+  - type: RAML
+    url: raml/deluxe-dpp-gateway.raml.json
+  - type: Webhooks
+    url: asyncapi/deluxe-webhooks.yml
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/payments
+  - type: Documentation
+    url: https://developer.deluxe.com/docs-content/payments/merchant-services/overview
+  - type: RAML
+    url: raml/deluxe-dpp-reports.raml.json
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/reports
+  - type: RAML
+    url: raml/deluxe-dpp-invoices.raml.json
+  - type: APIReference
+    url: https://developer.deluxe.com/api-ref/merchant-services/invoices
+  - type: APIReference
+    url: >-
+      https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 common:
 - type: Overlay
   url: overlays/deluxe-dpp-gateway-overlay.yaml
