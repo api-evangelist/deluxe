@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: payments
+- name: Payments
 paths:
   /payments:
     post:
       operationId: createPayment
       summary: Create Payment
       tags:
-      - payments
+      - Payments
       description: The Payments resource in the API is a comprehensive service that manages essential payment operations, processing sales, handling recurring payments, authorizing transactions, capturing funds, and voiding payments. This resource ensures seamless and secure payment processing, supporting various transaction types and providing the necessary flexibility for managing payment workflows efficiently.
       requestBody:
         required: true
@@ -1408,7 +1408,7 @@ paths:
       operationId: cancelPayment
       summary: Cancel Payment
       tags:
-      - payments
+      - Payments
       description: Use this API to cancel a payment that is still in process and has not yet been settled. This endpoint is typically used to void transactions on the same day they are initiated, before the batch closure occurs. By utilizing this API, you can halt a payment before it enters the settlement phase, effectively preventing the transfer of funds. This is particularly useful in scenarios where a payment needs to be stopped due to errors, cancellations, or changes in the transaction.
       requestBody:
         required: true
@@ -1498,7 +1498,7 @@ paths:
       operationId: authorizePayment
       summary: Authorize Payment
       tags:
-      - payments
+      - Payments
       description: Submits a payment authorization request to reserve the specified amount on the customer's payment method. This authorization process ensures that the funds are available but does not complete the transaction until a capture is performed. The endpoint supports authorizations using a direct card, a tokenized payment method, or a card stored in a secure vault. This process is crucial for scenarios where the payment needs to be confirmed or adjusted before finalizing the charge.
       requestBody:
         required: true
@@ -2697,7 +2697,7 @@ paths:
       operationId: completePayment
       summary: Complete Payment
       tags:
-      - payments
+      - Payments
       description: Use this API to finalize a previously authorized payment or to add a tip to the original transaction. This endpoint allows you to capture or complete an amount that is either equal to or less than the initially authorized amount. Partial captures are supported, enabling flexibility in payment processing. Any remaining authorized funds that are not captured will be automatically released by the bank after a specified period. This feature is particularly useful for scenarios like tip adjustments or when the final amount is determined after the initial authorization.
       requestBody:
         required: true
@@ -2835,7 +2835,7 @@ paths:
       operationId: searchPayments
       summary: Search Payments
       tags:
-      - payments
+      - Payments
       description: This API endpoint is used to search and retrieve a list of payments, providing details about each payment for a given data range. The response indicates whether the search was successful or if there were errors or validation issues.
       requestBody:
         required: true
@@ -3747,7 +3747,7 @@ paths:
       operationId: createBatchPayments
       summary: Create Batch Payments
       tags:
-      - payments
+      - Payments
       description: The Create Batch Payments end point allows you to send multiple transctions in a single API call and process all of them in single batch in a given date. This feature is useful for processing multiple payment transactions in one batch.
       requestBody:
         required: true

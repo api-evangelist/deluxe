@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: DPP Invoice Experience Invoices API
   version: '1'
-  description: The DPP Invoice Experience API enables merchants to manage invoice lifecycles and configurations efficiently. It provides endpoints for creating, updating, sharing, cloning, searching, downloading, and configuring invoices. Each operation is designed to ensure accuracy, consistency, and ease of integration. The API supports flexible routing through baseUri parameters, ensuring compatibility with current and future structures. By offering features like invoice branding, payment terms, health checks, Base64-encoded downloads, and secure sharing, it helps merchants streamline workflows and enhance customer experiences. This API is particularly useful for businesses looking to standardize invoicing practices, improve customer communication, and maintain professional and reliable financial records.
+  description: The DPP Invoice Experience API enables merchants to manage invoice lifecycles and configurations efficiently.
   x-provenance:
     method: derived
     derived_from: RAML 1.0 published by Deluxe at https://developer.deluxe.com/api-ref/api/merchant-services/
@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: invoices
+- name: Invoices
 paths:
   /invoices:
     post:
       operationId: createDraftInvoice
       summary: Create Draft Invoice
       tags:
-      - invoices
+      - Invoices
       description: 'Creates draft invoice using customer details, billing information, and optional shipping data. Line items such as sale item name, price, and quantity are required along with payment terms like due days or discounts. Draft invoices allow merchants to review and edit before publishing, ensuring accuracy. This endpoint is the first step in generating a professional, standardized invoice aligned with predefined invoice configurations.
 
         > **Note:** An active invoice configuration is required before you can start creating invoices.'
@@ -361,7 +361,7 @@ paths:
       operationId: modifyInvoiceDetails
       summary: Modify Invoice Details
       tags:
-      - invoices
+      - Invoices
       description: Updates details of an existing draft invoice using its `invoiceId`. Merchants can adjust billing, shipping, customer information, line items, and payment terms. This ensures invoice accuracy before publishing. Useful when customer details change or corrections are needed after initial creation.
       parameters:
       - name: invoiceId
@@ -701,7 +701,7 @@ paths:
       operationId: modifyInvoiceStatus
       summary: Modify Invoice Status
       tags:
-      - invoices
+      - Invoices
       description: Allows merchants to **publish** or **cancel** a draft invoice using its `invoiceId`. Publishing makes it visible to customers, while canceling removes drafts that are no longer valid. This helps maintain accurate records and prevents unintended distribution of invoices.
       parameters:
       - name: invoiceId
@@ -792,7 +792,7 @@ paths:
       operationId: getSpecificInvoice
       summary: Get Specific Invoice
       tags:
-      - invoices
+      - Invoices
       description: Retrieves details of a specific invoice using its invoiceId. The response includes billing and shipping addresses, items, totals, discounts, payment terms, and current status. If payment is made, details are also included. This endpoint is key for auditing, reporting, and customer inquiries.
       parameters:
       - name: invoiceId
@@ -1184,7 +1184,7 @@ paths:
       operationId: searchInvoice
       summary: Search Invoice
       tags:
-      - invoices
+      - Invoices
       description: Enables merchants to find invoices using filters like date ranges, invoiceId, customerId, and status. This is useful for audits, reporting, overdue payment tracking, or quickly locating invoices during customer support inquiries. It reduces manual searches and improves operational efficiency.
       parameters:
       - name: partnerToken
@@ -1404,7 +1404,7 @@ paths:
       operationId: shareInvoice
       summary: Share Invoice
       tags:
-      - invoices
+      - Invoices
       description: Allows invoices to be shared with customers via email, SMS, or both. This ensures customers are promptly notified and can easily access their invoices. Sharing supports better communication, reduces missed payments, and enhances customer satisfaction.
       parameters:
       - name: partnerToken
@@ -1534,7 +1534,7 @@ paths:
       operationId: cloneInvoice
       summary: Clone Invoice
       tags:
-      - invoices
+      - Invoices
       description: Creates a duplicate of an existing invoice using its invoiceId. The cloned invoice includes all original details but is saved in draft status, allowing edits before publishing. This is particularly useful for recurring customers or repeat orders, reducing manual entry and errors.
       parameters:
       - name: partnerToken
@@ -1618,7 +1618,7 @@ paths:
       operationId: downloadInvoice
       summary: Download Invoice
       tags:
-      - invoices
+      - Invoices
       description: Retrieves an invoice as a Base64-encoded string, which can be decoded into a PDF. This ensures customers receive professional, printable documents suitable for storage, sharing, and compliance purposes.
       parameters:
       - name: invoiceId
@@ -1683,7 +1683,7 @@ paths:
       operationId: createInvoiceConfiguration
       summary: Create Invoice Configuration
       tags:
-      - invoices
+      - Invoices
       description: Allows merchants to set up invoice configurations, including merchant details, branding, payment reminders, due days, colors, logos, and display options. A configuration must be created before generating invoices, ensuring standardization and professionalism across all invoices.
       parameters:
       - name: partnerToken
@@ -1989,7 +1989,7 @@ paths:
       operationId: getInvoiceConfiguration
       summary: Get Invoice Configuration
       tags:
-      - invoices
+      - Invoices
       description: Retrieves current configuration details for a merchant, including branding preferences, reminders, and invoice enablement status. This ensures merchants can review or validate settings applied to all generated invoices.
       parameters:
       - name: partnerToken
@@ -2266,7 +2266,7 @@ paths:
       operationId: modifyInvoiceConfiguration
       summary: Modify Invoice Configuration
       tags:
-      - invoices
+      - Invoices
       description: Modify an existing configuration using configurationId. Merchants can revise merchant details, logos, colors, reminders, display preferences, and enable/disable invoice generation. This ensures configurations remain aligned with branding and policy changes.
       parameters:
       - name: configurationId

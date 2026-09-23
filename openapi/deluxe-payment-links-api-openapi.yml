@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: paymentlinks
+- name: Payment Links
 paths:
   /paymentlinks:
     post:
       operationId: createPaymentLink
       summary: Create Payment Link
       tags:
-      - paymentlinks
+      - Payment Links
       description: The Create Payment Link API endpoint generates a customized URL that can be shared with customers to accept online payments. It allows the specification of payment details, customer information, order data, itemized purchases, and additional custom data. The generated payment link can be configured with various options like payment method acceptance, billing, and contact requirements. The link can be sent to the customer via email and includes a personalized confirmation message. Upon successful creation, the API returns a unique payment link ID, the URL for the payment link, and a payment ID for tracking.
       requestBody:
         required: true
@@ -357,7 +357,7 @@ paths:
       operationId: deletePaymentLink
       summary: Delete Payment Link
       tags:
-      - paymentlinks
+      - Payment Links
       description: The Delete Payment Link operation allows you to remove an existing payment link that is no longer needed. This action permanently deletes the specified payment link.
       parameters:
       - name: paymentLinkId

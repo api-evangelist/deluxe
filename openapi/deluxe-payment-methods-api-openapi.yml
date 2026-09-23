@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: paymentmethods
+- name: Payment Methods
 paths:
   /paymentmethods:
     post:
       operationId: createPaymentMethod
       summary: Create Payment Method
       tags:
-      - paymentmethods
+      - Payment Methods
       description: This API endpoint allows you to create a new payment method for a customer. You need to provide details including a nickname for the payment method, its active status, ACH information (such as account number and routing number), and the billing address. Additionally, you must specify the customer ID associated with the payment method. The API will store these details securely for future transactions.
       requestBody:
         required: true
@@ -548,7 +548,7 @@ paths:
       operationId: modifyPaymentMethod
       summary: Modify Payment Method
       tags:
-      - paymentmethods
+      - Payment Methods
       description: This API endpoint allows you to update an existing payment method for a customer. You can modify details such as the payment method nickname, its active status, ACH information (including account number and routing number), and the billing address. Additionally, you need to provide the customer ID to identify which payment method to update. The API ensures that all changes are applied securely to the specified payment method.
       parameters:
       - name: paymentMethodId
@@ -1200,7 +1200,7 @@ paths:
       operationId: generateToken
       summary: Generate Token
       tags:
-      - paymentmethods
+      - Payment Methods
       description: This API endpoint generates a secure token for a payment method, which can be used for future transactions without storing sensitive payment details directly. The input requires credit card information, including the card number, expiry date, and CVV. The API responds with a token that represents the payment method, along with a response code, payment ID, and request ID. This token can then be used in subsequent API calls to process payments securely.
       requestBody:
         required: true
@@ -1342,7 +1342,7 @@ paths:
       operationId: verifyAddress
       summary: Verify Address
       tags:
-      - paymentmethods
+      - Payment Methods
       description: Initiates an Address Verification Service (AVS) check for the provided billing address.This request will validate the address details (e.g., street address, zip code) and return a response indicating whether the address matches the records on file with the payment provider.
       requestBody:
         required: true
@@ -1941,7 +1941,7 @@ paths:
       operationId: verifyAch
       summary: Verify ACH
       tags:
-      - paymentmethods
+      - Payment Methods
       description: Initiates an ACH Verification
       requestBody:
         required: true
@@ -2041,7 +2041,7 @@ paths:
       operationId: checkSurcharge
       summary: Check Surcharge
       tags:
-      - paymentmethods
+      - Payment Methods
       description: This API endpoint allows you to verify the surcharge associated to merchant for the given payment methods such as card, token, vault and cryptogram. The input requires a payment method and optional amount and currency and you will get surcharge rate/percentage and surcharge amount in response. This will help merchants to check the applicable surcharge rate before actual transaction.
       requestBody:
         required: true
@@ -2193,7 +2193,7 @@ paths:
       operationId: binLookup
       summary: BIN Lookup
       tags:
-      - paymentmethods
+      - Payment Methods
       description: Verify BIN lookup retrieves details by passing the first 6 to 8 digits of the card number. It returns information such as whether the cardholder is eligible for Level 2 or Level 3 surcharges, the card type, brand, and country.
       parameters:
       - name: partnerToken

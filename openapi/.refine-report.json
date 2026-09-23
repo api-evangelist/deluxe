@@ -1,0 +1,61 @@
+{
+  "provider": "deluxe",
+  "sources": [
+    "_original/deluxe-dpp-gateway-openapi.yml",
+    "_original/deluxe-dpp-invoices-openapi.yml",
+    "_original/deluxe-dpp-reports-openapi.yml",
+    "_original/deluxe-postman-sandbox-openapi.yml"
+  ],
+  "outputs": [
+    "deluxe-batches-api-openapi.yml",
+    "deluxe-customers-api-openapi.yml",
+    "deluxe-emv-api-openapi.yml",
+    "deluxe-events-api-openapi.yml",
+    "deluxe-paymentlinks-api-openapi.yml",
+    "deluxe-paymentmethods-api-openapi.yml",
+    "deluxe-payments-api-openapi.yml",
+    "deluxe-refunds-api-openapi.yml",
+    "deluxe-subscriptions-api-openapi.yml",
+    "deluxe-invoices-api-openapi.yml",
+    "deluxe-reports-api-openapi.yml",
+    "deluxe-american-api-openapi.yml",
+    "deluxe-secservices-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 2 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (4 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "deluxe-dpp-gateway-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "deluxe-dpp-invoices-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "deluxe-dpp-reports-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "deluxe-postman-sandbox-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths POST /secservices/oauth2/v2/token -> Secservices",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths POST /american/v1/family/transactions -> American",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths POST /american/v1/family/reports -> American",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths POST /american/v1/family/vault -> American",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths PATCH /american/v1/family/vault -> American",
+    "deluxe-postman-sandbox-openapi.yml: tagged paths GET /american/v1/family/vault -> American",
+    "deluxe-postman-sandbox-openapi.yml: declared missing tag: American",
+    "deluxe-postman-sandbox-openapi.yml: declared missing tag: Secservices",
+    "superseded outputs removed: deluxe-payment-links-api-openapi.yml, deluxe-payment-methods-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 13 total)"
+  ],
+  "skipped": [
+    "deluxe-american-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-batches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-emv-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-payment-links-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-payment-methods-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-refunds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-secservices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "deluxe-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

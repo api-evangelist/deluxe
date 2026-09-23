@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: subscriptions
+- name: Subscriptions
 paths:
   /subscriptions:
     post:
       operationId: createSubscription
       summary: Create Subscription
       tags:
-      - subscriptions
+      - Subscriptions
       description: This API endpoint creates a new subscription for a customer with the specified payment and billing details. You need to provide the following information payment type, amount (including currency), payment method (such as credit card details and billing address), and subscription details (such as start and end dates, frequency, and payment schedule). Additionally, you can specify shipping address, tax information, itemized details (Level 2 and Level 3 data), custom data, merchant category, and any alternate fees. Upon successful subscription creation, a unique subscription identifier and order details will be generated, and the subscription will be scheduled according to the provided parameters.
       requestBody:
         required: true
@@ -1257,7 +1257,7 @@ paths:
       operationId: modifySubscription
       summary: Modify Subscription
       tags:
-      - subscriptions
+      - Subscriptions
       description: This API endpoint modifies an existing subscription identified by the subscriptionId passed in the URL. You must provide the customer’s ID, the payment method ID, and updated subscription details including frequency, paymentDay, startDate, endDate, paymentMonth, amount, and active. Upon successful modification, the subscription is updated accordingly, and a confirmation with the updated details is returned.
       parameters:
       - name: subscriptionId

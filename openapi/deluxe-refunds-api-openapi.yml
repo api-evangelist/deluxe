@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: refunds
+- name: Refunds
 paths:
   /refunds:
     post:
       operationId: createRefund
       summary: Create Refund
       tags:
-      - refunds
+      - Refunds
       description: Processes refunds through a single endpoint supporting multiple use cases. For standard refunds, provide the paymentId and refund amount. For standalone refunds, specify the refund amount and payment method details, such as card information (cardNumber, expirationDate, CVV) or ACH/Credit details (accountNumber, routingNumber, accountType). For vault refunds, use the paymentMethodId of a stored payment method along with the refund amount. This endpoint ensures flexibility and secure handling of all refund scenarios.
       requestBody:
         required: true
@@ -699,7 +699,7 @@ paths:
       operationId: createBatchRefunds
       summary: Create Batch Refunds
       tags:
-      - refunds
+      - Refunds
       description: The Batch refund end point allows you to send multiple refund or credit transctions in a single API call. This feature is useful when processing multiple refunds in one batch.
       requestBody:
         required: true

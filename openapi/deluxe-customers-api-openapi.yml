@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: customers
+- name: Customers
 paths:
   /customers:
     post:
       operationId: createCustomer
       summary: Create Customer
       tags:
-      - customers
+      - Customers
       description: The Create Customer API allows you to add a new customer to the system by providing their personal and contact information, including name, address, phone number, and email. Additionally, you can also crate a payment method using card, ACH, token, ACHToken and Cryptograms while creating customer with optional billing address details.
       requestBody:
         required: true
@@ -796,7 +796,7 @@ paths:
       operationId: getAllCustomers
       summary: Get All Customers
       tags:
-      - customers
+      - Customers
       description: The Get Customers API retrieves a list of all customers along with their associated details. Each customer record includes basic information such as name, address, contact details, and email. Additionally, the response provides information about the customer’s shipping address, payment methods stored in the vault, and any active subscriptions. Payment methods include details like card type, masked PAN, and account information, while subscription details include the start and end dates, frequency, and status.
       responses:
         '200':
@@ -987,7 +987,7 @@ paths:
       operationId: modifySpecificCustomer
       summary: Modify Specific Customer
       tags:
-      - customers
+      - Customers
       description: The Modify Customer API allows you to update the details of an existing customer. You can modify the customer’s personal information, such as their first and last name, address, phone number, and email. This ensures that all customer records remain accurate and up-to-date.
       parameters:
       - name: customerId
@@ -1118,7 +1118,7 @@ paths:
       operationId: getSpecificCustomer
       summary: Get Specific Customer
       tags:
-      - customers
+      - Customers
       description: This API retrieves the details of a specific customer using their unique identifier, including name, address, contact details, and email. It also returns the customer's shipping address, stored payment methods, and any active subscriptions. Payment methods include details such as card type, masked PAN, and account information, while subscription details cover start and end dates, frequency, and status.
       parameters:
       - name: customerId
@@ -1563,7 +1563,7 @@ paths:
       operationId: deleteSpecificCustomer
       summary: Delete Specific Customer
       tags:
-      - customers
+      - Customers
       description: 'Deletes the customer identified by the given customer ID and permanently removes all associated records, including personal details,contact information,email,payment methods and subscriptions.
 
         >**Note:**
@@ -1625,7 +1625,7 @@ paths:
       operationId: getCustomerSPaymentMethod
       summary: Get Customer's Payment Method
       tags:
-      - customers
+      - Customers
       description: This API endpoint allows you to get an existing payment method for a customer. The payment details such as orderId, batchNumber, SubscriptionId (if applicable), fee, token details, account response data, paymentId etc details can be seen as part of this response.
       parameters:
       - name: customerId
@@ -1798,8 +1798,14 @@ paths:
       operationId: deleteCustomerSPaymentMethod
       summary: Delete Customer's Payment Method
       tags:
-      - customers
-      description: "Delete an existing payment method for a customer.All upcoming payments linked to this payment method will also be deleted.\n> **Note:** \n> - Once a payment method is deleted, all the upcoming payments linked to that payment method will be deleted. \n> - To modify a payment method use \"https://api.deluxe.com/dpp/v1/paymentmethods/{paymentMethodId}\""
+      - Customers
+      description: 'Delete an existing payment method for a customer.All upcoming payments linked to this payment method will also be deleted.
+
+        > **Note:**
+
+        > - Once a payment method is deleted, all the upcoming payments linked to that payment method will be deleted.
+
+        > - To modify a payment method use "https://api.deluxe.com/dpp/v1/paymentmethods/{paymentMethodId}"'
       parameters:
       - name: customerId
         in: path

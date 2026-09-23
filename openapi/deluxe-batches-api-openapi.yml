@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: batches
+- name: Batches
 paths:
   /batches:
     post:
       operationId: closeBatch
       summary: Close Batch
       tags:
-      - batches
+      - Batches
       description: The Close Batch API endpoint finalizes and closes a transaction batch, sending notifications based on the provided email addresses. Input includes emails for success notifications, failure notifications, and general notifications to ensure relevant stakeholders are informed of the batch status.
       requestBody:
         required: true

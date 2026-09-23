@@ -158,6 +158,8 @@ paths:
       description: Use this call to authenticate and receive a bearer token. Bearer token is valid for 59 minutes only and required on all API calls.
       tags:
       - Secservices
+      operationId: postSecservicesOauth2V2Token
+      x-operation-id-source: derived
 components:
   securitySchemes:
     oauth2Auth:

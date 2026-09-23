@@ -18,14 +18,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: events
+- name: Events
 paths:
   /events/subscribe:
     post:
       operationId: subscribeEvent
       summary: Subscribe Event
       tags:
-      - events
+      - Events
       description: This endpoint allows you to subscribe to specific events by providing a URL where event notifications will be sent. Upon successful subscription, you will receive notifications based on the specified event types at the provided webhook URL.
       requestBody:
         required: true
@@ -179,7 +179,7 @@ paths:
       operationId: unsubscribeEvent
       summary: Unsubscribe Event
       tags:
-      - events
+      - Events
       description: This endpoint allows you to unsubscribe from specific events by providing the associated subscription details, including the email address and eventSubscriptionId. Upon successful unsubscription, you will no longer receive notifications for the specified events.
       requestBody:
         required: true
@@ -261,7 +261,7 @@ paths:
       operationId: resendEvent
       summary: Resend Event
       tags:
-      - events
+      - Events
       description: The Resend Event API endpoint allows you to resend a previously triggered event, enabling the system to reprocess the event's associated actions or notifications. This is useful for scenarios where the original event processing may have failed or needs to be re-triggered for verification purposes.
       requestBody:
         required: true
@@ -343,7 +343,7 @@ paths:
       operationId: retrieveEventsReports
       summary: Retrieve Events Reports
       tags:
-      - events
+      - Events
       description: This call is related to reports for different kinds of webhooks such as Merchant Boarded, Merchant Updated, CC Batch, ACH Batch, ACH Reject, Vault, CC chargeback. The result has all kinds of webhooks requests and responses along with their report statuses.
       parameters:
       - name: pageNumber
@@ -511,7 +511,7 @@ paths:
       operationId: performTestEvent
       summary: Perform Test Event
       tags:
-      - events
+      - Events
       description: This API endpoint allows you to test the webhook endpoint. This endpoint posts a sample/test data as payload based on the webhook type to the URL provided in the request.
       requestBody:
         required: true

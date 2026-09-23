@@ -264,6 +264,8 @@ paths:
                 TransactionId: 9d5a3e8b-2396-422f-a0a0-c8d187db0f23
       tags:
       - American
+      operationId: postAmericanV1FamilyTransactions
+      x-operation-id-source: derived
   /american/v1/family/reports:
     post:
       summary: Report Processing
@@ -413,6 +415,8 @@ paths:
       description: The reporting endpoint is used to get transaction information based on specific search criteria.
       tags:
       - American
+      operationId: postAmericanV1FamilyReports
+      x-operation-id-source: derived
   /american/v1/family/vault:
     parameters: []
     post:
@@ -588,6 +592,8 @@ paths:
                               description: Indicates if the specific target update was successful. 1 = success, 0 = not success
       tags:
       - American
+      operationId: postAmericanV1FamilyVault
+      x-operation-id-source: derived
     patch:
       summary: Vault / Customer Processing
       parameters:
@@ -736,6 +742,8 @@ paths:
                               description: Indicates if the specific target update was successful. 1 = success, 0 = not success
       tags:
       - American
+      operationId: patchAmericanV1FamilyVault
+      x-operation-id-source: derived
     get:
       summary: Vault / Customer Processing
       parameters:
@@ -933,6 +941,8 @@ paths:
                   recurringStartDate: '2022-07-13T00:00:00'
       tags:
       - American
+      operationId: getAmericanV1FamilyVault
+      x-operation-id-source: derived
 components:
   securitySchemes:
     oauth2Auth:

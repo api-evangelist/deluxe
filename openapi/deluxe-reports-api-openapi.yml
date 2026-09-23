@@ -16,14 +16,14 @@ servers:
 security:
 - bearerAuth: []
 tags:
-- name: reports
+- name: Reports
 paths:
   /reports:
     post:
       operationId: customReports
       summary: Custom Reports
       tags:
-      - reports
+      - Reports
       description: The Custom Report API endpoint allows users to fetch a report based on a specified title and date range. Query parameters page and pageSize enable pagination of the report results for efficient data retrieval.
       parameters:
       - name: partnerToken
@@ -154,7 +154,7 @@ paths:
       operationId: retrieveCreditCardDailySettlementReport
       summary: Retrieve Credit Card Daily Settlement Report
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the Credit Card Settlement Reports on daily basis
       parameters:
       - name: partnerToken
@@ -235,7 +235,7 @@ paths:
       operationId: retrieveAchDailySettlementReport
       summary: Retrieve ACH Daily Settlement Report
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the ACH Settlement Reports on daily basis
       parameters:
       - name: partnerToken
@@ -316,8 +316,8 @@ paths:
       operationId: retrieveCreditCardMonthlyFeesStatement
       summary: Retrieve Credit Card Monthly Fees Statement
       tags:
-      - reports
-      description: This endpoint allows you to retrieve the  Credit Card Fees Statment on Monthly basis
+      - Reports
+      description: This endpoint allows you to retrieve the Credit Card Fees Statment on Monthly basis
       parameters:
       - name: partnerToken
         in: header
@@ -397,7 +397,7 @@ paths:
       operationId: retrieveAchMonthlyFeesStatment
       summary: Retrieve ACH Monthly Fees Statment
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the ACH Fees Statment on Monthly basis
       parameters:
       - name: partnerToken
@@ -478,7 +478,7 @@ paths:
       operationId: retrieveAuthorizedTransactions
       summary: Retrieve Authorized Transactions
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the Authorized Transactions on given date range
       parameters:
       - name: partnerToken
@@ -691,7 +691,7 @@ paths:
       operationId: retrieveCapturedTransactions
       summary: Retrieve Captured Transactions
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the Captured Transactions on given date range
       parameters:
       - name: partnerToken
@@ -897,7 +897,7 @@ paths:
       operationId: retrieveSettledTransactions
       summary: Retrieve Settled Transactions
       tags:
-      - reports
+      - Reports
       description: This endpoint allows you to retrieve the settled transactions on given date range
       parameters:
       - name: partnerToken
