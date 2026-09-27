@@ -1,6 +1,6 @@
 aid: deluxe
 url: https://raw.githubusercontent.com/api-evangelist/deluxe/refs/heads/main/apis.yml
-name: Deluxe Corporation
+name: Deluxe
 type: Index
 deliveryModel:
   model: saas
@@ -407,8 +407,8 @@ apis:
     url: >-
       https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-payment-links-api
-  name: Deluxe Corporation Payment Links API
-  description: The Payment Links API from Deluxe Corporation — 2 operation(s) for payment links.
+  name: Deluxe Payment Links API
+  description: The Payment Links API from Deluxe — 2 operation(s) for payment links.
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
@@ -436,8 +436,8 @@ apis:
     url: >-
       https://docs.deluxe.com/docs/deluxe-payments-platform/cc313e0a380f7-deluxe-postman-sandbox
 - aid: deluxe:deluxe-payment-methods-api
-  name: Deluxe Corporation Payment Methods API
-  description: The Payment Methods API from Deluxe Corporation — 7 operation(s) for payment methods.
+  name: Deluxe Payment Methods API
+  description: The Payment Methods API from Deluxe — 7 operation(s) for payment methods.
   humanURL: https://developer.deluxe.com/api-ref/merchant-services/payments
   baseURL: https://api.deluxe.com/dpp/v1
   tags:
@@ -547,3 +547,4 @@ x-enrichment:
   status: enriched
   artifacts_added: 36
   pass: local-v1
+x-legal-name: Deluxe Corporation
