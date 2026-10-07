@@ -141,13 +141,10 @@ apis:
 unitEconomics:
   - name: Effective Take Rate
     metric: payments_revenue / payments_volume
-    target: TBD
   - name: Cost per Item Processed
     metric: per_item_cost / items_processed
-    target: TBD
   - name: Cost per Payroll Seat
     metric: payroll_subscription_cost / payroll_seats
-    target: TBD
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
