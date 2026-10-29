@@ -1,4 +1,4 @@
-# Deluxe Corporation (deluxe)
+# Deluxe
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,23 +64,151 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Deluxe Corporation is a major US corporation and Fortune 1000 company. The Deluxe Corporation API provides programmatic access to its platform services, data, and integrations for enterprise customers and partners.
+Deluxe Corporation (NYSE: DLX) is a US payments and data company that has moved from its origin as a check printer into merchant services, treasury management, payroll and marketing data. Its developer surface is the Deluxe Payments Platform (DPP), a gateway sold to independent software vendors and merchants and documented at developer.deluxe.com. DPP publishes three RAML 1.0 APIs covering 56 operations: a Gateway Experience API for card and ACH/EFT sales, authorizations, captures, voids, refunds, batches, EMV card-present processing on Ingenico terminals, customer vault and tokenization, subscriptions, payment links and an eight-event webhook surface; a Reports Experience API for daily card and ACH settlement, monthly fee statements and authorized/captured/settled transaction reports; and an Invoice Experience API for drafting, editing, sharing, cloning and downloading invoices. Deluxe also ships two browser-embeddable payment surfaces — a Hosted Payment Form and an Embedded Payments JavaScript SDK — both of which keep the integrator out of PCI DSS scope. Access is not self-serve: credentials are issued by the Deluxe integrations team after an email request, and no pricing is published.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/deluxe/refs/heads/main/apis.yml)
+**Areas:** Payments · Merchant Services · Card Processing · ACH · Invoicing · Subscription · Tokenization · Webhook · Reporting · Data Analytics · Marketing · Small Business
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Deluxe on APIs.io
 
-## Tags:
+Everything profiled for Deluxe is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/deluxe/](https://apis.io/providers/deluxe/)** — or go straight to one of the APIs or properties below.
 
- - Payments, Data Analytics, Marketing
+### APIs (13)
 
-## Timestamps
+- [Deluxe Corporation American API](https://apis.io/apis/deluxe/deluxe-american-api/) — The American API from Deluxe Corporation — 3 operation(s) for american.
+- [Deluxe Corporation Batches API](https://apis.io/apis/deluxe/deluxe-batches-api/) — The batches API from Deluxe Corporation — 1 operation(s) for batches.
+- [Deluxe Corporation Customers API](https://apis.io/apis/deluxe/deluxe-customers-api/) — The customers API from Deluxe Corporation — 3 operation(s) for customers.
+- [Deluxe Corporation Emv API](https://apis.io/apis/deluxe/deluxe-emv-api/) — The emv API from Deluxe Corporation — 5 operation(s) for emv.
+- [Deluxe Corporation Events API](https://apis.io/apis/deluxe/deluxe-events-api/) — The events API from Deluxe Corporation — 5 operation(s) for events.
+- [Deluxe Corporation Invoices API](https://apis.io/apis/deluxe/deluxe-invoices-api/) — The invoices API from Deluxe Corporation — 8 operation(s) for invoices.
+- [Deluxe Corporation Payments API](https://apis.io/apis/deluxe/deluxe-payments-api/) — The payments API from Deluxe Corporation — 6 operation(s) for payments.
+- [Deluxe Corporation Refunds API](https://apis.io/apis/deluxe/deluxe-refunds-api/) — The refunds API from Deluxe Corporation — 2 operation(s) for refunds.
+- [Deluxe Corporation Reports API](https://apis.io/apis/deluxe/deluxe-reports-api/) — The reports API from Deluxe Corporation — 8 operation(s) for reports.
+- [Deluxe Corporation Secservices API](https://apis.io/apis/deluxe/deluxe-secservices-api/) — The Secservices API from Deluxe Corporation — 1 operation(s) for secservices.
+- [Deluxe Corporation Subscriptions API](https://apis.io/apis/deluxe/deluxe-subscriptions-api/) — The subscriptions API from Deluxe Corporation — 2 operation(s) for subscriptions.
+- [Deluxe Payment Links API](https://apis.io/apis/deluxe/deluxe-payment-links-api/) — The Payment Links API from Deluxe — 2 operation(s) for payment links.
+- [Deluxe Payment Methods API](https://apis.io/apis/deluxe/deluxe-payment-methods-api/) — The Payment Methods API from Deluxe — 7 operation(s) for payment methods.
 
-- **Created:** 2026-04-19
-- **Modified:** 2026-04-19
+### Published properties
 
-## Maintainers
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-**FN:** Kin Lane
+#### AsyncAPI (1)
 
-**Email:** kin@apievangelist.com
+Event-driven and webhook contracts.
+
+- [Deluxe Webhooks](https://apis.io/asyncapis/deluxe/deluxe-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [deluxe-mcp.yml](https://apis.io/servers/deluxe/deluxe-mcp-yml/)
+
+#### Collections (4)
+
+Postman and Open Collection request collections.
+
+- [DPP Gateway Experience API](https://apis.io/collections/deluxe/open-deluxe-dpp-gateway/)
+- [DPP Invoice Experience API](https://apis.io/collections/deluxe/open-deluxe-dpp-invoices/)
+- [DPP Reports Experience API](https://apis.io/collections/deluxe/open-deluxe-dpp-reports/)
+- [Deluxe Postman-Sandbox](https://apis.io/collections/deluxe/open-deluxe-postman-sandbox/)
+
+#### Overlays (4)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Deluxe Dpp Gateway Overlay](https://apis.io/overlays/deluxe/deluxe-dpp-gateway-overlay/)
+- [Deluxe Dpp Invoices Overlay](https://apis.io/overlays/deluxe/deluxe-dpp-invoices-overlay/)
+- [Deluxe Dpp Reports Overlay](https://apis.io/overlays/deluxe/deluxe-dpp-reports-overlay/)
+- [Deluxe Postman Sandbox Overlay](https://apis.io/overlays/deluxe/deluxe-postman-sandbox-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Deluxe Authentication](https://apis.io/security/deluxe/deluxe-authentication/)
+- [Deluxe Domain Security](https://apis.io/security/deluxe/deluxe-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Deluxe Plans Pricing](https://apis.io/plans/deluxe/deluxe-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Deluxe Rate Limits](https://apis.io/rate-limits/deluxe/deluxe-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Deluxe Finops](https://apis.io/finops/deluxe/deluxe-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.deluxe.com)
+- [Documentation](https://docs.deluxe.com/docs/deluxe-payments-platform/zoi9qoo2d5tf2-deluxe-payments-platform)
+- [Getting started](https://developer.deluxe.com/docs-content/payments/merchant-services/get-started)
+- [API reference](https://developer.deluxe.com/api-ref/merchant-services/payments)
+- [Support](https://www.deluxe.com/about/contact-us/)
+- [Blog](https://www.deluxe.com/blog/)
+- [Terms of service](https://www.deluxe.com/policy/terms-of-use/)
+- [Privacy policy](https://www.deluxe.com/policy/privacy/)
+
+## API Evangelist rating
+
+**Kin Score 22.5** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 22.8 |
+| Contract governance | 4.5 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 33.9 |
+| Access clarity | 10.5 |
+
+**Agent readiness 32.8** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 18.8** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/deluxe/](https://apis.io/providers/deluxe/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Deluxe: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/deluxe/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
